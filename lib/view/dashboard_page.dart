@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:posyandu_care_apps/themes/colors.dart';
+import 'package:posyandu_care_apps/view/detail_screen/kunjungan.dart';
 import 'package:weekly_date_picker/weekly_date_picker.dart';
 
 import '../models/list_menu.dart';
@@ -190,19 +193,36 @@ class _DashboardPageState extends State<DashboardPage> {
                               borderRadius: BorderRadius.circular(20),
                             ),
                           ),
-                          Container(
-                            alignment: Alignment.center,
-                            height: 80,
-                            width: 80,
-                            decoration: BoxDecoration(
-                              color: AppTheme.primaryColor,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Icon(
-                              menu[index]['icons'],
-                              size: 40,
-                              weight: 2.0,
-                              color: Colors.white,
+                          InkWell(
+                            onTap: () {
+                              log('Tapped ${menu[index]['judul'].toString()}');
+                              if (index == 0) {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => Kunjungan(
+                                          index: index,
+                                        )));
+                              } else if (index == 1) {
+                                log("  peralatan posyandu");
+                                // Navigator.of(context).push(MaterialPageRoute(
+                                //     builder: (context) => Kunjungan(
+                                //           index: index,
+                                //         )));
+                              }
+                            },
+                            child: Container(
+                              alignment: Alignment.center,
+                              height: 80,
+                              width: 80,
+                              decoration: BoxDecoration(
+                                color: AppTheme.primaryColor,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Icon(
+                                menu[index]['icons'],
+                                size: 40,
+                                weight: 2.0,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ],

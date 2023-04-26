@@ -6,6 +6,22 @@ List menu = [
   {"judul": "Data Kader", "icons": IconlyBroken.user_2},
   {"judul": "Data UPT", "icons": IconlyBroken.hide}
 ];
+List warga = [
+  {"namaWarga": "Sudarma Mahesa", "blok": "Rt 004/003"},
+  {"namaWarga": "Sri Mae", "blok": "Rt 004/003"},
+  {"namaWarga": "Kasjem", "blok": "Rt 001/003"},
+  {"namaWarga": "Sudarma Mahesa", "blok": "Rt 004/003"},
+  {"namaWarga": "Sri Mae", "blok": "Rt 004/003"},
+  {"namaWarga": "Kasjem", "blok": "Rt 001/003"},
+  {"namaWarga": "Sudarma Mahesa", "blok": "Rt 004/003"},
+  {"namaWarga": "Sri Mae", "blok": "Rt 004/003"},
+  {"namaWarga": "Majidin", "blok": "Rt 004/003"},
+  {"namaWarga": "Sudarma Mahesa", "blok": "Rt 004/003"},
+  {"namaWarga": "Sri Mae", "blok": "Rt 004/003"},
+  {"namaWarga": "Sri Mae", "blok": "Rt 004/003"},
+  {"namaWarga": "Kasjem", "blok": "Rt 001/003"},
+  {"namaWarga": "Sudarma Mahesa", "blok": "Rt 004/003"},
+];
 
 List listBerita = [
   {
