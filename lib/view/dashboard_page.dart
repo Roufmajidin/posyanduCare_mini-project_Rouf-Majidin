@@ -331,16 +331,17 @@ class _DashboardPageState extends State<DashboardPage> {
                           ],
                         ),
                         Container(
-                            padding: EdgeInsets.symmetric(horizontal: 40),
+                            padding: EdgeInsets.symmetric(horizontal: 12),
                             decoration: BoxDecoration(
-                                color: Colors.grey.withOpacity(0.2),
+                                color: Color.fromARGB(255, 189, 187, 187)
+                                    .withOpacity(0.2),
                                 borderRadius: BorderRadius.circular(12)),
                             height: 100,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: const [
                                 Icon(IconlyBroken.hide),
-                                Text("no previews")
+                                Text("no image")
                               ],
                             )
                             // Image.asset(
