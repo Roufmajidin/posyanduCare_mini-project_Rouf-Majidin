@@ -283,7 +283,7 @@ class _DashboardPageState extends State<DashboardPage> {
                               width: 200,
                               child: Text(
                                 listBerita[index]["judulBerita"],
-                                style: PrimaryTextStyle.judulStyle,
+                                style: PrimaryTextStyle.subTxt,
                               ),
                             ),
                             const SizedBox(
@@ -293,7 +293,7 @@ class _DashboardPageState extends State<DashboardPage> {
                               children: [
                                 Text(
                                   listBerita[index]["tanggal"],
-                                  style: PrimaryTextStyle.subTxt,
+                                  style: TextStyle(fontSize: 12),
                                 ),
                                 const SizedBox(
                                   width: 5,
@@ -307,7 +307,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                 ),
                                 Text(
                                   listBerita[index]["waktu_pub"],
-                                  style: PrimaryTextStyle.subTxt,
+                                  style: TextStyle(fontSize: 12),
                                 ),
                               ],
                             ),
@@ -331,7 +331,7 @@ class _DashboardPageState extends State<DashboardPage> {
                           ],
                         ),
                         Container(
-                            padding: EdgeInsets.symmetric(horizontal: 12),
+                            padding: EdgeInsets.symmetric(horizontal: 14),
                             decoration: BoxDecoration(
                                 color: Color.fromARGB(255, 189, 187, 187)
                                     .withOpacity(0.2),
@@ -352,9 +352,6 @@ class _DashboardPageState extends State<DashboardPage> {
                       ],
                     ),
                   ),
-                  const SizedBox(
-                    height: 2,
-                  )
                 ],
               );
             },
