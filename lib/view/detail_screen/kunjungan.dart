@@ -3,13 +3,14 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:posyandu_care_apps/themes/colors.dart';
+import 'package:posyandu_care_apps/view/detail_screen/kunjungan_detail.dart';
 
 import '../../models/list_menu.dart';
 
 class Kunjungan extends StatelessWidget {
   final index;
-  const Kunjungan({super.key, required this.index});
-
+  Kunjungan({super.key, required this.index});
+  var formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     var mediaquery = MediaQuery.of(context);
@@ -65,6 +66,109 @@ class Kunjungan extends StatelessWidget {
       floatingActionButton: ElevatedButton.icon(
           onPressed: () {
             log("add kunjungan warga");
+            // showModalBottomSheet(context);
+            showModalBottomSheet(
+                isScrollControlled: true,
+                backgroundColor: Colors.white,
+                context: context,
+                shape: const RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.vertical(top: Radius.circular(25.0)),
+                ),
+                builder: (context) {
+                  return Container(
+                    height: 500,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 20),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: SizedBox(
+                        height: 900,
+                        child: Form(
+                          key: formKey,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          child: Column(
+                            children: [
+                              TextFormField(
+                                validator: (value) {},
+                                obscureText: false,
+                                decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: 'Nama Warga',
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 12,
+                              ),
+                              TextFormField(
+                                validator: (value) {},
+                                obscureText: false,
+                                decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: 'Rt/Rw',
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 12,
+                              ),
+                              TextFormField(
+                                validator: (value) {},
+                                obscureText: false,
+                                decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: 'Berat Badan (Kg)',
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 12,
+                              ),
+                              TextFormField(
+                                validator: (value) {},
+                                obscureText: false,
+                                decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: 'Tinggi Badan (Cm)',
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 12,
+                              ),
+                              TextFormField(
+                                validator: (value) {},
+                                obscureText: false,
+                                decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: 'Keluhan',
+                                ),
+                                maxLines: 4,
+                              ),
+                              const SizedBox(
+                                height: 12,
+                              ),
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    primary: AppTheme.primaryColor),
+                                onPressed: () {},
+                                child: Center(
+                                  child: Text(
+                                    "Done",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                });
           },
           icon: Icon(IconlyBroken.add_user),
           style: ElevatedButton.styleFrom(
@@ -160,19 +264,28 @@ class Kunjungan extends StatelessWidget {
                           ],
                         ),
                         Spacer(),
-                        SizedBox(
-                          height: 40,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                IconlyBroken.arrow_right_2,
-                                size: 15,
-                                color: AppTheme.primaryColor,
-                              ),
-                              Text("Detail",
-                                  style: PrimaryTextStyle.judulStyle),
-                            ],
+                        GestureDetector(
+                          onTap: () {
+                            log("masuk Ke detail");
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => KunjunganDetail(
+                                      index: index,
+                                    )));
+                          },
+                          child: SizedBox(
+                            height: 40,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  IconlyBroken.arrow_right_2,
+                                  size: 15,
+                                  color: AppTheme.primaryColor,
+                                ),
+                                Text("Detail",
+                                    style: PrimaryTextStyle.judulStyle),
+                              ],
+                            ),
                           ),
                         )
                       ],
