@@ -218,83 +218,79 @@ class Kunjungan extends StatelessWidget {
             physics: ScrollPhysics(),
             itemCount: warga.length,
             itemBuilder: (context, index) {
-              return Column(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(12),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                            decoration: BoxDecoration(
-                                color: Colors.grey.withOpacity(0.2),
-                                borderRadius: BorderRadius.circular(12)),
-                            height: 80,
-                            width: 80,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Icon(IconlyBroken.hide),
-                                Text("no img")
-                              ],
-                            )
-                            // Image.asset(
-                            //   listBerita[index]["gambar"].toString(),
-                            //   fit: BoxFit.contain,
-                            // )
-                            ),
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              warga[index]["namaWarga"],
-                              style: PrimaryTextStyle.judulStyle,
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            Text(
-                              warga[index]["blok"],
-                              style: PrimaryTextStyle.subTxt,
-                            ),
-                          ],
-                        ),
-                        Spacer(),
-                        GestureDetector(
-                          onTap: () {
-                            log("masuk Ke detail");
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => KunjunganDetail(
-                                      index: index,
-                                    )));
-                          },
-                          child: SizedBox(
-                            height: 40,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  IconlyBroken.arrow_right_2,
-                                  size: 15,
-                                  color: AppTheme.primaryColor,
-                                ),
-                                Text("Detail",
-                                    style: PrimaryTextStyle.judulStyle),
-                              ],
-                            ),
+              return Card(
+                elevation: 0.2,
+                child: Container(
+                  padding: const EdgeInsets.all(12),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                          decoration: BoxDecoration(
+                              color: Colors.grey.withOpacity(0.2),
+                              borderRadius: BorderRadius.circular(12)),
+                          height: 80,
+                          width: 80,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Icon(IconlyBroken.hide),
+                              Text("no img")
+                            ],
+                          )
+                          // Image.asset(
+                          //   listBerita[index]["gambar"].toString(),
+                          //   fit: BoxFit.contain,
+                          // )
                           ),
-                        )
-                      ],
-                    ),
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            warga[index]["namaWarga"],
+                            style: PrimaryTextStyle.judulStyle,
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            warga[index]["blok"],
+                            style: PrimaryTextStyle.subTxt,
+                          ),
+                        ],
+                      ),
+                      Spacer(),
+                      GestureDetector(
+                        onTap: () {
+                          log("masuk Ke detail");
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => KunjunganDetail(
+                                    index: index,
+                                  )));
+                        },
+                        child: SizedBox(
+                          height: 40,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                IconlyBroken.arrow_right_2,
+                                size: 15,
+                                color: AppTheme.primaryColor,
+                              ),
+                              Text("Detail",
+                                  style: PrimaryTextStyle.judulStyle),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
                   ),
-                  const SizedBox(
-                    height: 2,
-                  )
-                ],
+                ),
               );
             },
           ),
