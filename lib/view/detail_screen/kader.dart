@@ -17,46 +17,7 @@ class KaderPage extends StatelessWidget {
     // var a = menu[index];
 
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(200.0),
-        child: AppBar(
-          backgroundColor: AppTheme.primaryColor,
-          title: Text(menu[index]['judul']),
-          actions: const [
-            Padding(
-              padding: EdgeInsets.only(right: 8.0),
-              child: Icon(IconlyBroken.info_circle),
-            )
-          ],
-          flexibleSpace: Padding(
-            padding: const EdgeInsets.only(top: 130.0, left: 20, right: 20),
-            child: Container(
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(40)),
-                width: mediaquery.size.width * 15,
-                height: 40,
-                alignment: Alignment.center,
-                child: TextFormField(
-                  initialValue: "Cari data Kader",
-                  decoration: InputDecoration(
-                    // fillColor: Colors.white,
-                    prefixIcon: const Icon(
-                      Icons.search,
-                      color: Colors.grey,
-                    ),
-                    hintText: "Search",
-
-                    enabledBorder: InputBorder.none,
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(40),
-                        borderSide:
-                            const BorderSide(width: 2, color: Colors.white)),
-                  ),
-                )),
-          ),
-        ),
-      ),
+      appBar: customAppBar(mediaquery),
       body: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           physics: NeverScrollableScrollPhysics(),
@@ -78,6 +39,48 @@ class KaderPage extends StatelessWidget {
           style: ElevatedButton.styleFrom(
               primary: AppTheme.primaryColor), // Background color ,
           label: Text("Kader Posyandu")),
+    );
+  }
+
+  PreferredSize customAppBar(MediaQueryData mediaquery) {
+    return PreferredSize(
+      preferredSize: const Size.fromHeight(200.0),
+      child: AppBar(
+        backgroundColor: AppTheme.primaryColor,
+        title: Text(menu[index]['judul']),
+        actions: const [
+          Padding(
+            padding: EdgeInsets.only(right: 8.0),
+            child: Icon(IconlyBroken.info_circle),
+          )
+        ],
+        flexibleSpace: Padding(
+          padding: const EdgeInsets.only(top: 130.0, left: 20, right: 20),
+          child: Container(
+              decoration: BoxDecoration(
+                  color: Colors.white, borderRadius: BorderRadius.circular(40)),
+              width: mediaquery.size.width * 15,
+              height: 40,
+              alignment: Alignment.center,
+              child: TextFormField(
+                initialValue: "Cari data Kader",
+                decoration: InputDecoration(
+                  // fillColor: Colors.white,
+                  prefixIcon: const Icon(
+                    Icons.search,
+                    color: Colors.grey,
+                  ),
+                  hintText: "Search",
+
+                  enabledBorder: InputBorder.none,
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(40),
+                      borderSide:
+                          const BorderSide(width: 2, color: Colors.white)),
+                ),
+              )),
+        ),
+      ),
     );
   }
 
