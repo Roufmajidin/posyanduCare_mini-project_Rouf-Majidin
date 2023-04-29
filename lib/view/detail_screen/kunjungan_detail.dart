@@ -72,7 +72,7 @@ class KunjunganDetail extends StatelessWidget {
                         warga[index]["blok"],
                         style: PrimaryTextStyle.subTxt,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       GestureDetector(
@@ -86,100 +86,153 @@ class KunjunganDetail extends StatelessWidget {
                                     top: Radius.circular(25.0)),
                               ),
                               builder: (context) {
-                                return Container(
-                                  height: 500,
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 20),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: SingleChildScrollView(
-                                    scrollDirection: Axis.vertical,
-                                    child: SizedBox(
-                                      height: 900,
-                                      child: Form(
-                                        key: formKey,
-                                        autovalidateMode:
-                                            AutovalidateMode.onUserInteraction,
-                                        child: Column(
-                                          children: [
-                                            TextFormField(
-                                              validator: (value) {},
-                                              obscureText: false,
-                                              decoration: const InputDecoration(
-                                                border: OutlineInputBorder(),
-                                                labelText: 'Nama Warga',
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              height: 12,
-                                            ),
-                                            TextFormField(
-                                              validator: (value) {},
-                                              obscureText: false,
-                                              decoration: const InputDecoration(
-                                                border: OutlineInputBorder(),
-                                                labelText: 'Rt/Rw',
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              height: 12,
-                                            ),
-                                            TextFormField(
-                                              validator: (value) {},
-                                              obscureText: false,
-                                              decoration: const InputDecoration(
-                                                border: OutlineInputBorder(),
-                                                labelText: 'Berat Badan (Kg)',
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              height: 12,
-                                            ),
-                                            TextFormField(
-                                              validator: (value) {},
-                                              obscureText: false,
-                                              decoration: const InputDecoration(
-                                                border: OutlineInputBorder(),
-                                                labelText: 'Tinggi Badan (Cm)',
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              height: 12,
-                                            ),
-                                            TextFormField(
-                                              validator: (value) {},
-                                              obscureText: false,
-                                              decoration: const InputDecoration(
-                                                border: OutlineInputBorder(),
-                                                labelText: 'Keluhan',
-                                              ),
-                                              maxLines: 4,
-                                            ),
-                                            const SizedBox(
-                                              height: 12,
-                                            ),
-                                            ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                  primary:
-                                                      AppTheme.primaryColor),
-                                              onPressed: () {},
-                                              child: const Center(
-                                                child: Text(
-                                                  "Done",
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 20),
-                                                ),
-                                              ),
-                                            )
-                                          ],
+                                return Wrap(
+                                  alignment: WrapAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 8.0,
+                                      ),
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        margin: EdgeInsets.all(12),
+                                        height: 2,
+                                        width: 100,
+                                        decoration: BoxDecoration(
+                                          color: AppTheme.primaryColor,
                                         ),
                                       ),
                                     ),
-                                  ),
+                                    Container(height: 10),
+                                    Container(
+                                      height: 400,
+                                      padding: EdgeInsets.only(
+                                          bottom: MediaQuery.of(context)
+                                              .viewInsets
+                                              .bottom,
+                                          top: 20,
+                                          left: 20,
+                                          right: 20),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: SingleChildScrollView(
+                                        scrollDirection: Axis.vertical,
+                                        child: SizedBox(
+                                          height: 400,
+                                          child: Form(
+                                            key: formKey,
+                                            autovalidateMode: AutovalidateMode
+                                                .onUserInteraction,
+                                            child: Column(
+                                              children: [
+                                                SizedBox(
+                                                  height: 40,
+                                                  child: TextFormField(
+                                                    validator: (value) {},
+                                                    obscureText: false,
+                                                    decoration:
+                                                        const InputDecoration(
+                                                      border:
+                                                          OutlineInputBorder(),
+                                                      labelText: 'Nama Warga',
+                                                    ),
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 12,
+                                                ),
+                                                SizedBox(
+                                                  height: 40,
+                                                  child: TextFormField(
+                                                    validator: (value) {},
+                                                    obscureText: false,
+                                                    decoration:
+                                                        const InputDecoration(
+                                                      border:
+                                                          OutlineInputBorder(),
+                                                      labelText: 'Rt/Rw',
+                                                    ),
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 12,
+                                                ),
+                                                SizedBox(
+                                                  height: 40,
+                                                  child: TextFormField(
+                                                    validator: (value) {},
+                                                    obscureText: false,
+                                                    decoration:
+                                                        const InputDecoration(
+                                                      border:
+                                                          OutlineInputBorder(),
+                                                      labelText:
+                                                          'Berat Badan (Kg)',
+                                                    ),
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 12,
+                                                ),
+                                                SizedBox(
+                                                  height: 40,
+                                                  child: TextFormField(
+                                                    validator: (value) {},
+                                                    obscureText: false,
+                                                    decoration:
+                                                        const InputDecoration(
+                                                      border:
+                                                          OutlineInputBorder(),
+                                                      labelText:
+                                                          'Tinggi Badan (Cm)',
+                                                    ),
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 12,
+                                                ),
+                                                SizedBox(
+                                                  height: 40,
+                                                  child: TextFormField(
+                                                    validator: (value) {},
+                                                    obscureText: false,
+                                                    decoration:
+                                                        const InputDecoration(
+                                                      border:
+                                                          OutlineInputBorder(),
+                                                      labelText: 'Keluhan',
+                                                    ),
+                                                    maxLines: 4,
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 12,
+                                                ),
+                                                ElevatedButton(
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                          primary: AppTheme
+                                                              .primaryColor),
+                                                  onPressed: () {},
+                                                  child: const Center(
+                                                    child: Text(
+                                                      "Update",
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 20),
+                                                    ),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 );
                               });
                         },
