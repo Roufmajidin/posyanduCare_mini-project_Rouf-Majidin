@@ -97,143 +97,169 @@ class KaderPage extends StatelessWidget {
           borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
         ),
         builder: (context) {
-          return Container(
-            height: 400,
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
+          return Wrap(alignment: WrapAlignment.center, children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 8.0,
+              ),
+              child: Container(
+                alignment: Alignment.center,
+                margin: EdgeInsets.all(12),
+                height: 2,
+                width: 100,
+                decoration: BoxDecoration(
+                  color: AppTheme.primaryColor,
+                ),
+              ),
             ),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: SizedBox(
-                height: 900,
-                child: Form(
-                  key: formKey,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 40,
-                        child: TextFormField(
-                          validator: (value) {},
-                          obscureText: false,
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Nama Kader',
+            Container(height: 10),
+            // Text(
+            //   'Tambah Data Kader Posyandu',
+            //   style: TextStyle(
+            //       color: Colors.grey[600], // Set the text color.
+            //       fontSize: 16 // Set the text size.
+            //       ),
+            // ),
+            Container(height: 10),
+            Container(
+              height: 400,
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: SizedBox(
+                  height: 900,
+                  child: Form(
+                    key: formKey,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 40,
+                          child: TextFormField(
+                            validator: (value) {},
+                            obscureText: false,
+                            decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Nama Kader',
+                            ),
                           ),
                         ),
-                      ),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      SizedBox(
-                        height: 40,
-                        child: TextFormField(
-                          validator: (value) {},
-                          obscureText: false,
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Alamat',
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        SizedBox(
+                          height: 40,
+                          child: TextFormField(
+                            validator: (value) {},
+                            obscureText: false,
+                            decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Alamat',
+                            ),
                           ),
                         ),
-                      ),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      SizedBox(
-                        // width: 400,
-                        height: 80,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                                decoration: BoxDecoration(
-                                    color:
-                                        AppTheme.primaryColor.withOpacity(0.2),
-                                    borderRadius: BorderRadius.circular(12)),
-                                height: 40,
-                                width: 40,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: const [
-                                    Icon(IconlyBroken.image),
-                                  ],
-                                )
-                                // if null rencana nya
-                                // Image.asset(
-                                //   listBerita[index]["gambar"].toString(),
-                                //   fit: BoxFit.contain,
-                                // )
-                                ),
-                            GestureDetector(
-                              onTap: () {
-                                log("memilih image");
-                              },
-                              child: SizedBox(
-                                width: 240,
-                                height: 40,
-                                child: TextFormField(
-                                  enabled: false,
-                                  validator: (value) {},
-                                  obscureText: false,
-                                  decoration: const InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    // logika kalo terpilih image nya ganti text ke TERPILIH
-                                    labelText: 'Pilih Foto',
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        SizedBox(
+                          // width: 400,
+                          height: 80,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                  decoration: BoxDecoration(
+                                      color: AppTheme.primaryColor
+                                          .withOpacity(0.2),
+                                      borderRadius: BorderRadius.circular(12)),
+                                  height: 40,
+                                  width: 40,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: const [
+                                      Icon(IconlyBroken.image),
+                                    ],
+                                  )
+                                  // if null rencana nya
+                                  // Image.asset(
+                                  //   listBerita[index]["gambar"].toString(),
+                                  //   fit: BoxFit.contain,
+                                  // )
+                                  ),
+                              GestureDetector(
+                                onTap: () {
+                                  log("memilih image");
+                                },
+                                child: SizedBox(
+                                  width: 240,
+                                  height: 40,
+                                  child: TextFormField(
+                                    enabled: false,
+                                    validator: (value) {},
+                                    obscureText: false,
+                                    decoration: const InputDecoration(
+                                      border: OutlineInputBorder(),
+                                      // logika kalo terpilih image nya ganti text ke TERPILIH
+                                      labelText: 'Pilih Foto',
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      DropDownTextField(
-                        dropDownItemCount: 2,
-                        clearOption: true,
-                        keyboardType: TextInputType.number,
-                        autovalidateMode: AutovalidateMode.always,
-                        clearIconProperty: IconProperty(color: Colors.green),
-                        searchDecoration: const InputDecoration(
-                            hintText: "enter your custom hint text here"),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Posisi Perlu Diisi";
-                          } else {
-                            return null;
-                          }
-                        },
-                        dropDownList: const [
-                          DropDownValueModel(
-                              name: 'ketua Posyandu', value: "Ketua"),
-                          DropDownValueModel(name: 'Anggota', value: "Anggota")
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            primary: AppTheme.primaryColor),
-                        onPressed: () {},
-                        child: const Center(
-                          child: Text(
-                            "Simpan Data Kader",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w400,
-                                fontSize: 14),
+                            ],
                           ),
                         ),
-                      )
-                    ],
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        DropDownTextField(
+                          dropDownItemCount: 2,
+                          clearOption: true,
+                          keyboardType: TextInputType.number,
+                          autovalidateMode: AutovalidateMode.always,
+                          clearIconProperty: IconProperty(color: Colors.green),
+                          searchDecoration: const InputDecoration(
+                              hintText: "enter your custom hint text here"),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Posisi Perlu Diisi";
+                            } else {
+                              return null;
+                            }
+                          },
+                          dropDownList: const [
+                            DropDownValueModel(
+                                name: 'ketua Posyandu', value: "Ketua"),
+                            DropDownValueModel(
+                                name: 'Anggota', value: "Anggota")
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              primary: AppTheme.primaryColor),
+                          onPressed: () {},
+                          child: const Center(
+                            child: Text(
+                              "Simpan Data Kader",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
-          );
+          ]);
         });
   }
 
