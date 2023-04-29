@@ -226,126 +226,133 @@ class _KaderDetailState extends State<KaderDetail> {
 
   Container profileDetail(MediaQueryData mediaquery) {
     return Container(
-        alignment: Alignment.center,
-        margin: const EdgeInsets.only(top: 12),
-        decoration:
-            const BoxDecoration(color: Color.fromARGB(255, 239, 238, 238)),
-        padding: const EdgeInsets.only(top: 20, left: 12),
-        height: 150,
-        width: mediaquery.size.width * 1,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(50),
-              child: Container(
-                width: 70,
-                height: 70,
-                color: Color.fromARGB(255, 195, 195, 195),
-                // child: Image.network(
-                //   "https://wiki.d-addicts.com/images/thumb/0/0f/NamJiHyun.jpg/300px-NamJiHyun.jpg",
-                //   fit: BoxFit.contain,
-                // ),
-              ),
-            ),
-            SizedBox(
+      alignment: Alignment.center,
+      margin: const EdgeInsets.only(top: 12),
+      decoration:
+          const BoxDecoration(color: Color.fromARGB(255, 239, 238, 238)),
+      padding: const EdgeInsets.only(top: 20, left: 12),
+      height: 150,
+      width: mediaquery.size.width * 1,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(50),
+            child: Container(
+              width: 70,
               height: 70,
-              width: onTapped == false ? 200 : 180,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    kader[widget.index]['namaKader'],
-                  ),
-                  Text(kader[widget.index]['posisiJabatan']),
-                ],
-              ),
+              color: Color.fromARGB(255, 195, 195, 195),
+              // child: Image.network(
+              //   "https://wiki.d-addicts.com/images/thumb/0/0f/NamJiHyun.jpg/300px-NamJiHyun.jpg",
+              //   fit: BoxFit.contain,
+              // ),
             ),
-            onTapped == true
-                ? Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        GestureDetector(
-                            onTap: () {
-                              log("Mengahpus ?");
-                              onTapped = false;
-                              onTapStatusHapus = true;
-                              log('Hapus is ${onTapStatusHapus.toString()}');
-                              final snackBar = SnackBar(
-                                content: Text(
-                                    'Hapus is ${onTapStatusHapus.toString()}'),
-                                action: SnackBarAction(
-                                  label: 'Undo',
-                                  onPressed: () {
-                                    onTapped = true;
-                                    setState(() {});
-                                  },
-                                ),
-                              );
+          ),
+          SizedBox(
+            height: 80,
+            width: 160,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  kader[widget.index]['namaKader'],
+                  style: PrimaryTextStyle.judulStyle,
+                ),
+                Text(kader[widget.index]['posisiJabatan']),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 0),
+            child: SizedBox(
+              height: 100,
+              width: 100,
+              child: GestureDetector(
+                onTap: () {
+                  log("aksi ?");
+                  onTapped = true;
+                  setState(() {});
+                },
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    onTapped == true
+                        ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  log("Mengahpus ?");
+                                  onTapped = false;
+                                  onTapStatusHapus = true;
+                                  log('Hapus is ${onTapStatusHapus.toString()}');
+                                  final snackBar = SnackBar(
+                                    content: Text(
+                                        'Hapus is ${onTapStatusHapus.toString()}'),
+                                    action: SnackBarAction(
+                                      label: 'Undo',
+                                      onPressed: () {
+                                        onTapped = true;
+                                        setState(() {});
+                                      },
+                                    ),
+                                  );
 
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(snackBar);
-                              setState(() {});
-                            },
-                            child: Text("Hapus")),
-                        SizedBox(
-                          height: 30,
-                          child: GestureDetector(
-                              onTap: () {
-                                log("Mengedit ?");
-                                onTapped = false;
-                                onTapStatusEdit = true;
-                                log('Edit is ${onTapStatusEdit.toString()}');
-                                updateKader(context, widget.index, mediaquery,
-                                    widget.formKey);
-                              },
-                              child: const Text("Edit")),
-                        ),
-                      ],
-                    ),
-                  )
-                : Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: SizedBox(
-                      height: 80,
-                      child: GestureDetector(
-                        onTap: () {
-                          log("aksi ?");
-                          onTapped = true;
-                          setState(() {});
-                        },
-                        child: SizedBox(
-                          height: 80,
-                          child: Row(
-                            children: const [
-                              Icon(
-                                Icons.circle,
-                                size: 5,
-                                color: Color.fromARGB(255, 69, 69, 69),
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(snackBar);
+                                  setState(() {});
+                                },
+                                child: Text(
+                                  "Hapus",
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      color: AppTheme.primaryColor),
+                                ),
                               ),
-                              Icon(
-                                Icons.circle,
-                                size: 5,
-                                color: Color.fromARGB(255, 69, 69, 69),
+                              const SizedBox(
+                                height: 10,
                               ),
-                              Icon(
-                                Icons.circle,
-                                size: 5,
-                                color: Color.fromARGB(255, 69, 69, 69),
+                              GestureDetector(
+                                onTap: () {
+                                  log("Mengedit ?");
+                                  onTapped = false;
+                                  onTapStatusEdit = true;
+                                  log('Edit is ${onTapStatusEdit.toString()}');
+                                  updateKader(context, widget.index, mediaquery,
+                                      widget.formKey);
+                                },
+                                child: Text(
+                                  "Update",
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      color: AppTheme.primaryColor),
+                                ),
                               ),
                             ],
+                          )
+                        : GestureDetector(
+                            onTap: () {
+                              log("aksi ?");
+                              onTapped = true;
+                              setState(() {});
+                            },
+                            child: const Icon(
+                              Icons.more_horiz,
+                              size: 24,
+                              color: Color.fromARGB(255, 69, 69, 69),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
-                  ),
-          ],
-        ));
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
 // edit bottomsheet
