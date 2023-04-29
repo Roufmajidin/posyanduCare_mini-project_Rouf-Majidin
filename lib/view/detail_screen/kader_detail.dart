@@ -47,8 +47,66 @@ class _KaderDetailState extends State<KaderDetail> {
           profileDetail(mediaquery),
           posisiDetail(mediaquery),
           alamatDetail(mediaquery),
+          statusDetail(mediaquery),
         ],
       )),
+    );
+  }
+
+  Container statusDetail(MediaQueryData mediaquery) {
+    return Container(
+      alignment: Alignment.center,
+      margin: EdgeInsets.only(top: 12),
+      decoration: BoxDecoration(color: Color.fromARGB(255, 239, 238, 238)),
+      padding: EdgeInsets.only(top: 20, left: 12),
+      height: 80,
+      width: mediaquery.size.width * 1,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Icon(IconlyBroken.lock),
+          SizedBox(
+            width: 240,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              // mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Verfied Status",
+                  style: PrimaryTextStyle.judulStyle,
+                ),
+                Text(
+                  "Pending",
+                  style: PrimaryTextStyle.subTxt,
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20),
+            child: Row(
+              children: const [
+                Icon(
+                  Icons.circle,
+                  size: 5,
+                  color: Color.fromARGB(255, 69, 69, 69),
+                ),
+                Icon(
+                  Icons.circle,
+                  size: 5,
+                  color: Color.fromARGB(255, 69, 69, 69),
+                ),
+                Icon(
+                  Icons.circle,
+                  size: 5,
+                  color: Color.fromARGB(255, 69, 69, 69),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 
