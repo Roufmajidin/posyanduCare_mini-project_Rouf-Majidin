@@ -263,7 +263,7 @@ class _DashboardPageState extends State<DashboardPage> {
           ),
         ),
         SizedBox(
-          height: 300,
+          height: 200,
           child: ListView.builder(
             padding: const EdgeInsets.only(bottom: 20),
             scrollDirection: Axis.vertical,
