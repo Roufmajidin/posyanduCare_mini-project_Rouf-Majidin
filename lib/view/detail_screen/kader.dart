@@ -4,6 +4,7 @@ import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:posyandu_care_apps/themes/colors.dart';
+import 'package:posyandu_care_apps/view/detail_screen/kader_detail.dart';
 import 'package:posyandu_care_apps/view/detail_screen/kunjungan_detail.dart';
 
 import '../../models/list_menu.dart';
@@ -353,6 +354,10 @@ class KaderPage extends StatelessWidget {
                       GestureDetector(
                         onTap: () {
                           log("masuk Ke detail Kader");
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => KaderDetail(
+                                    index: index,
+                                  )));
                         },
                         child: const SizedBox(
                           height: 40,
