@@ -3,9 +3,11 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:posyandu_care_apps/themes/colors.dart';
+import 'package:posyandu_care_apps/view/detail_screen/kader.dart';
 import 'package:weekly_date_picker/weekly_date_picker.dart';
 
 import '../models/list_menu.dart';
+import 'detail_screen/kunjungan.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -194,19 +196,19 @@ class _DashboardPageState extends State<DashboardPage> {
                           ),
                           InkWell(
                             onTap: () {
-                              // log('Tapped ${menu[index]['judul'].toString()}');
-                              // if (index == 0) {
-                              //   Navigator.of(context).push(MaterialPageRoute(
-                              //       builder: (context) => Kunjungan(
-                              //             index: index,
-                              //           )));
-                              // } else if (index == 1) {
-                              //   log("  peralatan posyandu");
-                              // Navigator.of(context).push(MaterialPageRoute(
-                              //     builder: (context) => Kunjungan(
-                              //           index: index,
-                              //         )));
-                              // }
+                              log('Tapped ${menu[index]['judul'].toString()}');
+                              if (index == 0) {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => Kunjungan(
+                                          index: index,
+                                        )));
+                              } else if (index == 2) {
+                                log("  peralatan posyandu");
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => KaderPage(
+                                          index: index,
+                                        )));
+                              }
                             },
                             child: Container(
                               alignment: Alignment.center,
