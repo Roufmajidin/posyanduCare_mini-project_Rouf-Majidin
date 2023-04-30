@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:posyandu_care_apps/themes/colors.dart';
 import 'package:posyandu_care_apps/view/detail_screen/kader.dart';
+import 'package:posyandu_care_apps/view/detail_screen/upt_page.dart';
 import 'package:weekly_date_picker/weekly_date_picker.dart';
 
 import '../models/list_menu.dart';
@@ -202,10 +203,14 @@ class _DashboardPageState extends State<DashboardPage> {
                                     builder: (context) => Kunjungan(
                                           index: index,
                                         )));
-                              } else if (index == 2) {
-                                log("  peralatan posyandu");
+                              } else if (index == 1) {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => KaderPage(
+                                          index: index,
+                                        )));
+                              } else if (index == 2) {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => UptPage(
                                           index: index,
                                         )));
                               }

@@ -25,6 +25,11 @@ class PrimaryTextStyle {
     // fontStyle: FontStyle.italic
     // fontWeight: FontWeight.w500,
   );
+  static TextStyle thirdStyle = GoogleFonts.lato(
+    fontSize: 14, color: Color.fromARGB(255, 64, 64, 64),
+    // fontStyle: FontStyle.italic
+    fontWeight: FontWeight.w700,
+  );
   static TextStyle judulStyle = GoogleFonts.lato(
     fontSize: 16,
     color: Color.fromARGB(255, 70, 70, 70),
