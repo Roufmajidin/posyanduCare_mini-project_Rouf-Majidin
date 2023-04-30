@@ -171,7 +171,7 @@ class Kunjungan extends StatelessWidget {
                                     height: 12,
                                   ),
                                   SizedBox(
-                                    height: 40,
+                                    height: 80,
                                     child: TextFormField(
                                       validator: (value) {},
                                       obscureText: false,
