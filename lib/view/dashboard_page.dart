@@ -3,11 +3,13 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:posyandu_care_apps/themes/colors.dart';
+import 'package:posyandu_care_apps/view/detail_screen/artikel_kesehatan.dart';
 import 'package:posyandu_care_apps/view/detail_screen/kader.dart';
 import 'package:posyandu_care_apps/view/detail_screen/upt_page.dart';
 import 'package:weekly_date_picker/weekly_date_picker.dart';
 
 import '../models/list_menu.dart';
+import 'detail_screen/artikel_detail.dart';
 import 'detail_screen/kunjungan.dart';
 
 class DashboardPage extends StatefulWidget {
@@ -265,9 +267,16 @@ class _DashboardPageState extends State<DashboardPage> {
                 "Baca Kesehatan",
                 style: PrimaryTextStyle.judulStyle,
               ),
-              Text(
-                "More",
-                style: PrimaryTextStyle.judulStyle,
+              GestureDetector(
+                onTap: () {
+                  log("Ke halaman artikel kesehatan");
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => ArtikelKesehatan()));
+                },
+                child: Text(
+                  "More",
+                  style: PrimaryTextStyle.judulStyle,
+                ),
               ),
             ],
           ),
@@ -329,19 +338,28 @@ class _DashboardPageState extends State<DashboardPage> {
                             const SizedBox(
                               height: 10,
                             ),
-                            Row(
-                              children: [
-                                Icon(
-                                  IconlyBroken.arrow_right_2,
-                                  size: 10,
-                                  color: AppTheme.primaryColor,
-                                ),
-                                Text(
-                                  "Read more for read",
-                                  style:
-                                      TextStyle(color: AppTheme.primaryColor),
-                                ),
-                              ],
+                            GestureDetector(
+                              onTap: () {
+                                log("Ke detail Artikel Kesehatan");
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => ArtikelDetail(
+                                          index: index,
+                                        )));
+                              },
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    IconlyBroken.arrow_right_2,
+                                    size: 10,
+                                    color: AppTheme.primaryColor,
+                                  ),
+                                  Text(
+                                    "Read more for read",
+                                    style:
+                                        TextStyle(color: AppTheme.primaryColor),
+                                  ),
+                                ],
+                              ),
                             )
                           ],
                         ),
