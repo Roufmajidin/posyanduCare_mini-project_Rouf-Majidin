@@ -174,13 +174,16 @@ class _DashboardPageState extends State<DashboardPage> {
         ),
         SizedBox(
           // width: 400,
+
           height: 150,
           child: ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
               scrollDirection: Axis.horizontal,
               itemCount: menu.length,
               itemBuilder: (context, index) {
                 return Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  // padding: const EdgeInsets.all(8.0),
+                  padding: EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
                     children: [
                       Stack(
