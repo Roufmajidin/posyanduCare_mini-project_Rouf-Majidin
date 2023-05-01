@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:posyandu_care_apps/themes/colors.dart';
 import 'package:posyandu_care_apps/view/detail_screen/kunjungan_detail.dart';
+import 'package:readmore/readmore.dart';
 
 import '../../models/list_menu.dart';
 
@@ -14,6 +15,9 @@ class ArtikelDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var mediaquery = MediaQuery.of(context);
+    var width = MediaQuery.of(context).size.width;
+    var height = MediaQuery.of(context).size.height;
+
     // var a = menu[index];
 
     return Scaffold(
@@ -27,34 +31,30 @@ class ArtikelDetail extends StatelessWidget {
         ),
       ),
       body: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          physics: NeverScrollableScrollPhysics(),
-          child: SizedBox(
-            height: mediaquery.size.height * 1, //70 for bottom
-            child: Stack(
-              children: [
-                Positioned(
-                  top: -600,
-                  bottom: 20, // to shift little up
-                  left: 0,
-                  right: 0,
-                  child: Image.asset(
-                    listBerita[index]['gambar'],
-                    fit: BoxFit.contain,
+        physics: NeverScrollableScrollPhysics(),
+        child: SizedBox(
+          height: height,
+          child: Stack(
+            children: [
+              Column(
+                children: [
+                  Container(
+                    height: height * .3,
+                    width: width,
+                    child: Image.asset(
+                      listBerita[index]['gambar'],
+                      fit: BoxFit.fitWidth,
+                    ),
+                    decoration: BoxDecoration(
+                        // color: Colors.green,
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(20),
+                            bottomRight: Radius.circular(20))),
                   ),
-                ),
-                Positioned(
-                    top: 250,
-                    height: 900,
-                    left: 0,
-                    right: 0,
+                  Expanded(
                     child: Container(
-                      // width: mediaquery.size.width * 2,
                       decoration: BoxDecoration(
                         color: AppTheme.bgColor,
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(40),
-                        ),
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(20.0),
@@ -82,26 +82,32 @@ class ArtikelDetail extends StatelessWidget {
                               height: 12,
                             ),
                             SingleChildScrollView(
-                              physics: ScrollPhysics(),
-                              scrollDirection: Axis.vertical,
-                              child: SizedBox(
-                                height: 600,
-                                child: Text(
-                                  listBerita[index]["isi"],
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400,
-                                      color: Color.fromARGB(255, 80, 80, 80)),
-                                ),
-                              ),
-                            ),
+                                physics: ScrollPhysics(),
+                                scrollDirection: Axis.vertical,
+                                child: Container(
+                                  height: height * .5,
+                                  child: ReadMoreText(listBerita[index]["isi"],
+                                      trimLines: 10,
+                                      textAlign: TextAlign.justify,
+                                      trimMode: TrimMode.Line,
+                                      trimCollapsedText: "baca Lebih Lanjut",
+                                      moreStyle: TextStyle(
+                                          color: AppTheme.primaryColor),
+                                      lessStyle: TextStyle(
+                                          color: AppTheme.primaryColor),
+                                      style: PrimaryTextStyle.subTxt),
+                                )),
                           ],
                         ),
                       ),
-                    )),
-              ],
-            ),
-          )),
+                    ),
+                  )
+                ],
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
