@@ -26,8 +26,10 @@ class _DashboardPageState extends State<DashboardPage> {
       backgroundColor: AppTheme.bgColor,
       body: SingleChildScrollView(
         physics: const NeverScrollableScrollPhysics(),
-        child: SizedBox(
-          height: mediaquery.size.height * 5,
+        child: SafeArea(
+          // before is sizebox, tapi listview nya beda2 ketika beda device antara SM
+          // height: mediaquery.size.height * 5,
+
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -271,94 +273,99 @@ class _DashboardPageState extends State<DashboardPage> {
           ),
         ),
         SizedBox(
-          height: 200,
+          height: 300,
           child: ListView.builder(
             padding: const EdgeInsets.only(bottom: 20),
             scrollDirection: Axis.vertical,
             physics: ScrollPhysics(),
             itemCount: listBerita.length,
             itemBuilder: (context, index) {
-              return Card(
-                elevation: 0.1,
-                child: Container(
-                  padding: const EdgeInsets.all(12),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            width: 200,
-                            child: Text(
-                              listBerita[index]["judulBerita"],
-                              style: PrimaryTextStyle.judulStyle,
+              return Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: Card(
+                  // wrap ke padding, :)
+                  elevation: 0.1,
+                  child: Container(
+                    padding: const EdgeInsets.all(12),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              width: 200,
+                              child: Text(
+                                listBerita[index]["judulBerita"],
+                                style: PrimaryTextStyle.judulStyle,
+                              ),
                             ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                listBerita[index]["tanggal"],
-                                style: PrimaryTextStyle.subTxt,
-                              ),
-                              const SizedBox(
-                                width: 5,
-                              ),
-                              const Icon(
-                                Icons.circle,
-                                size: 5,
-                              ),
-                              const SizedBox(
-                                width: 5,
-                              ),
-                              Text(
-                                listBerita[index]["waktu_pub"],
-                                style: PrimaryTextStyle.subTxt,
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            children: [
-                              Icon(
-                                IconlyBroken.arrow_right_2,
-                                size: 10,
-                                color: AppTheme.primaryColor,
-                              ),
-                              Text(
-                                "Read more for read",
-                                style: TextStyle(color: AppTheme.primaryColor),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                      Container(
-                          padding: EdgeInsets.symmetric(horizontal: 12),
-                          decoration: BoxDecoration(
-                              color: Color.fromARGB(255, 189, 187, 187)
-                                  .withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(12)),
-                          height: 100,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              Icon(IconlyBroken.hide),
-                              Text("no image")
-                            ],
-                          )
-                          // Image.asset(
-                          //   listBerita[index]["gambar"].toString(),
-                          //   fit: BoxFit.contain,
-                          // )
-                          )
-                    ],
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  listBerita[index]["tanggal"],
+                                  style: PrimaryTextStyle.subTxt,
+                                ),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                const Icon(
+                                  Icons.circle,
+                                  size: 5,
+                                ),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                Text(
+                                  listBerita[index]["waktu_pub"],
+                                  style: PrimaryTextStyle.subTxt,
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              children: [
+                                Icon(
+                                  IconlyBroken.arrow_right_2,
+                                  size: 10,
+                                  color: AppTheme.primaryColor,
+                                ),
+                                Text(
+                                  "Read more for read",
+                                  style:
+                                      TextStyle(color: AppTheme.primaryColor),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                        Container(
+                            padding: EdgeInsets.symmetric(horizontal: 12),
+                            decoration: BoxDecoration(
+                                color: Color.fromARGB(255, 189, 187, 187)
+                                    .withOpacity(0.2),
+                                borderRadius: BorderRadius.circular(12)),
+                            height: 100,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Icon(IconlyBroken.hide),
+                                Text("no image")
+                              ],
+                            )
+                            // Image.asset(
+                            //   listBerita[index]["gambar"].toString(),
+                            //   fit: BoxFit.contain,
+                            // )
+                            )
+                      ],
+                    ),
                   ),
                 ),
               );
