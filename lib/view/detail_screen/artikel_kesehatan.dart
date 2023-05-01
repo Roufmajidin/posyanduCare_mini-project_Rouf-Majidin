@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:posyandu_care_apps/themes/colors.dart';
+import 'package:posyandu_care_apps/view/detail_screen/artikel_detail.dart';
 
 import '../../models/list_menu.dart';
 
@@ -114,10 +115,20 @@ class ArtikelKesehatan extends StatelessWidget {
                                   size: 10,
                                   color: AppTheme.primaryColor,
                                 ),
-                                Text(
-                                  "Read more for read",
-                                  style:
-                                      TextStyle(color: AppTheme.primaryColor),
+                                GestureDetector(
+                                  onTap: () {
+                                    log("Ke detail Artikel Kesehatan");
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                            builder: (context) => ArtikelDetail(
+                                                  index: index,
+                                                )));
+                                  },
+                                  child: Text(
+                                    "Read more for read",
+                                    style:
+                                        TextStyle(color: AppTheme.primaryColor),
+                                  ),
                                 ),
                               ],
                             )
