@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:posyandu_care_apps/themes/colors.dart';
+import 'package:posyandu_care_apps/view/detail_screen/artikel_kesehatan.dart';
 import 'package:posyandu_care_apps/view/detail_screen/kader.dart';
 import 'package:posyandu_care_apps/view/detail_screen/upt_page.dart';
 import 'package:weekly_date_picker/weekly_date_picker.dart';
@@ -265,9 +266,16 @@ class _DashboardPageState extends State<DashboardPage> {
                 "Baca Kesehatan",
                 style: PrimaryTextStyle.judulStyle,
               ),
-              Text(
-                "More",
-                style: PrimaryTextStyle.judulStyle,
+              GestureDetector(
+                onTap: () {
+                  log("Ke halaman artikel kesehatan");
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => ArtikelKesehatan()));
+                },
+                child: Text(
+                  "More",
+                  style: PrimaryTextStyle.judulStyle,
+                ),
               ),
             ],
           ),
