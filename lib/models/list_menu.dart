@@ -27,6 +27,21 @@ List kader = [
   {"namaKader": "Angelia", "posisiJabatan": "Ketua Posyandu"},
   {"namaKader": "Shinta", "posisiJabatan": "Anggota Posyandu"},
   {"namaKader": "Maeda", "posisiJabatan": "Anggota Posyandu"},
+  {"namaKader": "Angelia", "posisiJabatan": "Ketua Posyandu"},
+  {"namaKader": "Shinta", "posisiJabatan": "Anggota Posyandu"},
+  {"namaKader": "Maeda", "posisiJabatan": "Anggota Posyandu"},
+  {"namaKader": "Angelia", "posisiJabatan": "Ketua Posyandu"},
+  {"namaKader": "Shinta", "posisiJabatan": "Anggota Posyandu"},
+  {"namaKader": "Maeda", "posisiJabatan": "Anggota Posyandu"},
+  {"namaKader": "Angelia", "posisiJabatan": "Ketua Posyandu"},
+  {"namaKader": "Shinta", "posisiJabatan": "Anggota Posyandu"},
+  {"namaKader": "Maeda", "posisiJabatan": "Anggota Posyandu"},
+  {"namaKader": "Angelia", "posisiJabatan": "Ketua Posyandu"},
+  {"namaKader": "Shinta", "posisiJabatan": "Anggota Posyandu"},
+  {"namaKader": "Maeda", "posisiJabatan": "Anggota Posyandu"},
+  {"namaKader": "Angelia", "posisiJabatan": "Ketua Posyandu"},
+  {"namaKader": "Shinta", "posisiJabatan": "Anggota Posyandu"},
+  {"namaKader": "Maeda", "posisiJabatan": "Anggota Posyandu"},
 ];
 
 List listBerita = [
