@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:posyandu_care_apps/themes/colors.dart';
+import 'package:posyandu_care_apps/view/home_page.dart';
 
 import 'view/dashboard_page.dart';
 
@@ -14,9 +16,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         title: 'Posyandu Care Apps',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
+            primarySwatch: Colors.blue, canvasColor: AppTheme.bgColor),
         debugShowCheckedModeBanner: false,
-        home: const DashboardPage());
+        home: const HomePage());
   }
 }
