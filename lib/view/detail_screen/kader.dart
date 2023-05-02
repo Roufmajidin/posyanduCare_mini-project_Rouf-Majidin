@@ -21,18 +21,16 @@ class KaderPage extends StatelessWidget {
 
     return Scaffold(
       appBar: customAppBar(mediaquery),
-      body: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          physics: NeverScrollableScrollPhysics(),
-          child: SizedBox(
-            height: mediaquery.size.height * 1,
-            child: Column(
-              children: [
-                listKader(mediaquery),
-                // Spacer(),
-              ],
-            ),
-          )),
+      backgroundColor: AppTheme.primaryColor,
+      body: SizedBox(
+        height: mediaquery.size.height * 1,
+        child: Column(
+          children: [
+            listKader(mediaquery),
+            // Spacer(),
+          ],
+        ),
+      ),
       floatingActionButton: ElevatedButton.icon(
           onPressed: () {
             var mediaQ = MediaQuery.of(context);
@@ -49,41 +47,143 @@ class KaderPage extends StatelessWidget {
 
   PreferredSize customAppBar(MediaQueryData mediaquery) {
     return PreferredSize(
-      preferredSize: const Size.fromHeight(200.0),
+      preferredSize: const Size.fromHeight(80.0),
       child: AppBar(
+        elevation: 0.3,
         backgroundColor: AppTheme.primaryColor,
         title: Text(menu[index]['judul']),
+        centerTitle: true,
         actions: const [
           Padding(
             padding: EdgeInsets.only(right: 8.0),
-            child: Icon(IconlyBroken.info_circle),
+            child: Icon(IconlyBroken.info_square),
           )
         ],
-        flexibleSpace: Padding(
-          padding: const EdgeInsets.only(top: 130.0, left: 20, right: 20),
-          child: Container(
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(40)),
-              width: mediaquery.size.width * 15,
-              height: 40,
-              alignment: Alignment.center,
-              child: TextFormField(
-                initialValue: "Cari data Kader",
-                decoration: InputDecoration(
-                  // fillColor: Colors.white,
-                  prefixIcon: const Icon(
-                    Icons.search,
-                    color: Colors.grey,
-                  ),
-                  hintText: "Search",
+      ),
+    );
+  }
 
-                  enabledBorder: InputBorder.none,
-                  focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(40),
-                      borderSide:
-                          const BorderSide(width: 2, color: Colors.white)),
-                ),
-              )),
+  listKader(mediaQuery) {
+    return Expanded(
+      child: Container(
+        decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30), topRight: Radius.circular(30))),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                  top: 30.0, left: 20, right: 20, bottom: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Data Kader",
+                    style: PrimaryTextStyle.judulStyle,
+                  ),
+                  Column(
+                    children: const [
+                      Icon(
+                        Icons.circle,
+                        size: 5,
+                      ),
+                      Icon(
+                        Icons.circle,
+                        size: 5,
+                      ),
+                      Icon(
+                        Icons.circle,
+                        size: 5,
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            SizedBox(
+              height: mediaQuery.size.height * 0.8,
+              width: mediaQuery.size.width * 5,
+              child: ListView.builder(
+                padding: const EdgeInsets.only(bottom: 20),
+                scrollDirection: Axis.vertical,
+                physics: ScrollPhysics(),
+                itemCount: kader.length,
+                itemBuilder: (context, index) {
+                  return Card(
+                    elevation: 0.2,
+                    child: Container(
+                      padding: const EdgeInsets.all(12),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.grey.withOpacity(0.2),
+                                  borderRadius: BorderRadius.circular(12)),
+                              height: 80,
+                              width: 80,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const [
+                                  Icon(IconlyBroken.hide),
+                                  Text("Image Kader")
+                                ],
+                              )
+                              // Image.asset(
+                              //   listBerita[index]["gambar"].toString(),
+                              //   fit: BoxFit.contain,
+                              // )
+                              ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                kader[index]["namaKader"],
+                                style: PrimaryTextStyle.judulStyle,
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Text(
+                                kader[index]["posisiJabatan"],
+                                style: PrimaryTextStyle.subTxt,
+                              ),
+                            ],
+                          ),
+                          Spacer(),
+                          GestureDetector(
+                            onTap: () {
+                              log("masuk Ke detail Kader");
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => KaderDetail(
+                                        index: index,
+                                      )));
+                            },
+                            child: const SizedBox(
+                              height: 40,
+                              child: Align(
+                                alignment: Alignment.bottomCenter,
+                                child: Icon(
+                                  IconlyBroken.arrow_right_2,
+                                  size: 20,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -262,123 +362,5 @@ class KaderPage extends StatelessWidget {
             ),
           ]);
         });
-  }
-
-  listKader(mediaQuery) {
-    return Column(
-      children: [
-        Padding(
-          padding:
-              const EdgeInsets.only(top: 30.0, left: 10, right: 10, bottom: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "Data Kader",
-                style: PrimaryTextStyle.judulStyle,
-              ),
-              Column(
-                children: const [
-                  Icon(
-                    Icons.circle,
-                    size: 5,
-                  ),
-                  Icon(
-                    Icons.circle,
-                    size: 5,
-                  ),
-                  Icon(
-                    Icons.circle,
-                    size: 5,
-                  ),
-                ],
-              )
-            ],
-          ),
-        ),
-        SizedBox(
-          height: 600,
-          width: mediaQuery.size.width * 5,
-          child: ListView.builder(
-            padding: const EdgeInsets.only(bottom: 20),
-            scrollDirection: Axis.vertical,
-            physics: ScrollPhysics(),
-            itemCount: kader.length,
-            itemBuilder: (context, index) {
-              return Card(
-                elevation: 0.2,
-                child: Container(
-                  padding: const EdgeInsets.all(12),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                          decoration: BoxDecoration(
-                              color: Colors.grey.withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(12)),
-                          height: 80,
-                          width: 80,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              Icon(IconlyBroken.hide),
-                              Text("Image Kader")
-                            ],
-                          )
-                          // Image.asset(
-                          //   listBerita[index]["gambar"].toString(),
-                          //   fit: BoxFit.contain,
-                          // )
-                          ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            kader[index]["namaKader"],
-                            style: PrimaryTextStyle.judulStyle,
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Text(
-                            kader[index]["posisiJabatan"],
-                            style: PrimaryTextStyle.subTxt,
-                          ),
-                        ],
-                      ),
-                      Spacer(),
-                      GestureDetector(
-                        onTap: () {
-                          log("masuk Ke detail Kader");
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => KaderDetail(
-                                    index: index,
-                                  )));
-                        },
-                        child: const SizedBox(
-                          height: 40,
-                          child: Align(
-                            alignment: Alignment.bottomCenter,
-                            child: Icon(
-                              IconlyBroken.arrow_right_2,
-                              size: 20,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
-      ],
-    );
   }
 }
