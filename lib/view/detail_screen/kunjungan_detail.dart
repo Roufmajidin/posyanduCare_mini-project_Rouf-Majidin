@@ -17,21 +17,49 @@ class KunjunganDetail extends StatelessWidget {
     var formKey = GlobalKey<FormState>();
 
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(100.0),
-        child: AppBar(
-          backgroundColor: AppTheme.primaryColor,
-          title: Text("Detail Warga"),
+      appBar: customAppBar(mediaquery),
+      backgroundColor: AppTheme.primaryColor,
+      body: SizedBox(
+        height: mediaquery.size.height * 1,
+        child: Column(
+          children: [
+            detailWidget(context, formKey),
+          ],
         ),
       ),
-      backgroundColor: AppTheme.bgColor,
-      body: SingleChildScrollView(
+    );
+  }
+
+  PreferredSize customAppBar(MediaQueryData mediaquery) {
+    return PreferredSize(
+      preferredSize: const Size.fromHeight(80.0),
+      child: AppBar(
+        elevation: 0.3,
+        backgroundColor: AppTheme.primaryColor,
+        title: const Text("Detail Warga"),
+        centerTitle: true,
+        actions: const [
+          Padding(
+            padding: EdgeInsets.only(right: 8.0),
+            child: Icon(IconlyBroken.info_square),
+          )
+        ],
+      ),
+    );
+  }
+
+  detailWidget(BuildContext context, GlobalKey<FormState> formKey) {
+    return Expanded(
+      child: Container(
+        decoration: BoxDecoration(
+            color: AppTheme.bgColor,
+            borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(30), topRight: Radius.circular(30))),
         child: Column(
           children: [
             Container(
               height: 200,
               margin: const EdgeInsets.only(top: 12),
-              decoration: const BoxDecoration(color: Colors.white),
               padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 12),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
