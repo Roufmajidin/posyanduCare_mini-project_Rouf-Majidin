@@ -45,61 +45,8 @@ class _UptPageState extends State<UptPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          widgetUpt(mediaquery),
+          profilUpt(mediaquery),
         ],
-      ),
-    );
-  }
-
-  widgetUpt(MediaQueryData mediaquery) {
-    return Expanded(
-      child: Container(
-        // height: 200,
-        decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30), topRight: Radius.circular(30))),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Row(
-                children: [
-                  Container(
-                    width: 80,
-                    height: 80,
-                    decoration: BoxDecoration(
-                        color: const Color.fromARGB(129, 158, 158, 158),
-                        borderRadius: BorderRadius.circular(20)),
-                    child: const Icon(
-                      IconlyBroken.paper_fail,
-                      color: Colors.white,
-                      size: 60,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "UPT Puskesmas Dukupuntang",
-                          style: PrimaryTextStyle.judulStyle,
-                        ),
-                        const Text("Kecamatan Dupuntang"),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            detailUpt(mediaquery),
-            keteranganWidget(mediaquery),
-            dokterTugasWidget(mediaquery),
-          ],
-        ),
       ),
     );
   }
@@ -415,6 +362,59 @@ class _UptPageState extends State<UptPage> {
           ),
         ),
       ],
+    );
+  }
+
+  profilUpt(MediaQueryData mediaquery) {
+    return Expanded(
+      child: Container(
+        // height: 200,
+        decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30), topRight: Radius.circular(30))),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Row(
+                children: [
+                  Container(
+                    width: 80,
+                    height: 80,
+                    decoration: BoxDecoration(
+                        color: const Color.fromARGB(129, 158, 158, 158),
+                        borderRadius: BorderRadius.circular(20)),
+                    child: const Icon(
+                      IconlyBroken.paper_fail,
+                      color: Colors.white,
+                      size: 60,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "UPT Puskesmas Dukupuntang",
+                          style: PrimaryTextStyle.judulStyle,
+                        ),
+                        const Text("Kecamatan Dupuntang"),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            detailUpt(mediaquery),
+            keteranganWidget(mediaquery),
+            dokterTugasWidget(mediaquery),
+          ],
+        ),
+      ),
     );
   }
 }
