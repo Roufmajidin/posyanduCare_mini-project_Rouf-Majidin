@@ -2,19 +2,41 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
+import 'package:posyandu_care_apps/models/data_kunjungan_model.dart';
 import 'package:posyandu_care_apps/themes/colors.dart';
 import 'package:posyandu_care_apps/view/detail_screen/kunjungan_detail.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/list_menu.dart';
+import '../../view_model/kunjungan_provider.dart';
 
-class Kunjungan extends StatelessWidget {
+class Kunjungan extends StatefulWidget {
   final index;
   Kunjungan({super.key, required this.index});
+
+  @override
+  State<Kunjungan> createState() => _KunjunganState();
+}
+
+class _KunjunganState extends State<Kunjungan> {
   var formKey = GlobalKey<FormState>();
+  late TextEditingController namaController = TextEditingController();
+  late TextEditingController alamatController = TextEditingController();
+  late TextEditingController bbController = TextEditingController();
+  late TextEditingController tinggiController = TextEditingController();
+  late TextEditingController keluhanController = TextEditingController();
+  void initState() {
+    super.initState();
+
+    Future.microtask(
+      () => Provider.of<KunjunganProvider>(context, listen: false)
+          .fetchDataKunjungan(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     var mediaquery = MediaQuery.of(context);
-    // var a = menu[index];
 
     return Scaffold(
       appBar: PreferredSize(
@@ -22,7 +44,7 @@ class Kunjungan extends StatelessWidget {
         child: AppBar(
           backgroundColor: AppTheme.primaryColor,
           centerTitle: true,
-          title: Text(menu[index]['judul']),
+          title: Text(menu[widget.index]['judul']),
           elevation: 0.6,
           actions: const [
             Padding(
@@ -45,6 +67,7 @@ class Kunjungan extends StatelessWidget {
       floatingActionButton: ElevatedButton.icon(
           onPressed: () {
             log("add kunjungan warga");
+
             // showModalBottomSheet(context);
             showModalBottomSheet(
                 isScrollControlled: true,
@@ -96,6 +119,7 @@ class Kunjungan extends StatelessWidget {
                                   SizedBox(
                                     height: 40,
                                     child: TextFormField(
+                                      controller: namaController,
                                       validator: (value) {},
                                       obscureText: false,
                                       decoration: const InputDecoration(
@@ -110,11 +134,12 @@ class Kunjungan extends StatelessWidget {
                                   SizedBox(
                                     height: 40,
                                     child: TextFormField(
+                                      controller: alamatController,
                                       validator: (value) {},
                                       obscureText: false,
                                       decoration: const InputDecoration(
                                         border: OutlineInputBorder(),
-                                        labelText: 'Rt/Rw',
+                                        labelText: 'Alamat',
                                       ),
                                     ),
                                   ),
@@ -124,6 +149,7 @@ class Kunjungan extends StatelessWidget {
                                   SizedBox(
                                     height: 40,
                                     child: TextFormField(
+                                      controller: bbController,
                                       validator: (value) {},
                                       obscureText: false,
                                       decoration: const InputDecoration(
@@ -138,6 +164,7 @@ class Kunjungan extends StatelessWidget {
                                   SizedBox(
                                     height: 40,
                                     child: TextFormField(
+                                      controller: tinggiController,
                                       validator: (value) {},
                                       obscureText: false,
                                       decoration: const InputDecoration(
@@ -152,6 +179,7 @@ class Kunjungan extends StatelessWidget {
                                   SizedBox(
                                     height: 80,
                                     child: TextFormField(
+                                      controller: keluhanController,
                                       validator: (value) {},
                                       obscureText: false,
                                       decoration: const InputDecoration(
@@ -167,7 +195,39 @@ class Kunjungan extends StatelessWidget {
                                   ElevatedButton(
                                     style: ElevatedButton.styleFrom(
                                         primary: AppTheme.primaryColor),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      final snackBar = SnackBar(
+                                        content: Text('add data'),
+                                        action: SnackBarAction(
+                                          label: 'Undo',
+                                          onPressed: () {
+                                            setState(() {});
+                                          },
+                                        ),
+                                      );
+                                      Future.microtask(
+                                        () => Provider.of<KunjunganProvider>(
+                                                context,
+                                                listen: false)
+                                            .addDataKunjungan(
+                                                DataKunjunganModel(
+                                          nama: namaController.text,
+                                          alamat: alamatController.text,
+                                          berat_badan:
+                                              int.parse(bbController.text),
+                                          tinggi_badan:
+                                              int.parse(tinggiController.text),
+                                          keluhan: keluhanController.text,
+                                        )),
+                                      ).whenComplete(() {
+                                        Navigator.pop(context);
+
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(snackBar);
+                                        setState(() {});
+                                        return snackBar;
+                                      });
+                                    },
                                     child: Center(
                                       child: Text(
                                         "Done",
@@ -255,92 +315,106 @@ class Kunjungan extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(
-              height: 600,
-              width: mediaquery.size.width * 5,
-              child: ListView.builder(
-                padding: const EdgeInsets.only(bottom: 20),
-                scrollDirection: Axis.vertical,
-                physics: ScrollPhysics(),
-                itemCount: warga.length,
-                itemBuilder: (context, index) {
-                  return Card(
-                    elevation: 0.9,
-                    child: Container(
-                      padding: const EdgeInsets.all(12),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.grey.withOpacity(0.2),
-                                  borderRadius: BorderRadius.circular(12)),
-                              height: 80,
-                              width: 80,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: const [
-                                  Icon(IconlyBroken.hide),
-                                  Text("no img")
-                                ],
-                              )
-                              // Image.asset(
-                              //   listBerita[index]["gambar"].toString(),
-                              //   fit: BoxFit.contain,
-                              // )
-                              ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                warga[index]["namaWarga"],
-                                style: PrimaryTextStyle.judulStyle,
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                warga[index]["blok"],
-                                style: PrimaryTextStyle.subTxt,
-                              ),
-                            ],
-                          ),
-                          Spacer(),
-                          GestureDetector(
-                            onTap: () {
-                              log("masuk Ke detail");
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => KunjunganDetail(
-                                        index: index,
-                                      )));
-                            },
-                            child: SizedBox(
-                              height: 40,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    IconlyBroken.arrow_right_2,
-                                    size: 15,
-                                    color: AppTheme.primaryColor,
-                                  ),
-                                  Text("Detail",
-                                      style: PrimaryTextStyle.judulStyle),
-                                ],
-                              ),
+            Expanded(child:
+                Consumer<KunjunganProvider>(builder: (context, prov, child) {
+              if (prov.requestState == RequestState.loading) {
+                return CircularProgressIndicator();
+              } else if (prov.requestState == RequestState.loaded) {
+                final item = prov.dataKunjunganfetched;
+                return ListView.builder(
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.only(bottom: 20),
+                  scrollDirection: Axis.vertical,
+                  physics: ScrollPhysics(),
+                  itemCount: prov.dataKunjunganfetched.length,
+                  itemBuilder: (context, index) {
+                    final item = prov.dataKunjunganfetched[index];
+                    return Card(
+                      elevation: 0.9,
+                      child: Container(
+                        padding: const EdgeInsets.all(12),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                                decoration: BoxDecoration(
+                                    color: Colors.grey.withOpacity(0.2),
+                                    borderRadius: BorderRadius.circular(12)),
+                                height: 80,
+                                width: 80,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const [
+                                    Icon(IconlyBroken.hide),
+                                    Text("no img")
+                                  ],
+                                )
+                                // Image.asset(
+                                //   listBerita[index]["gambar"].toString(),
+                                //   fit: BoxFit.contain,
+                                // )
+                                ),
+                            const SizedBox(
+                              width: 20,
                             ),
-                          )
-                        ],
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  item.nama,
+                                  style: PrimaryTextStyle.judulStyle,
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                  'alamat : ${item.alamat}',
+                                  style: PrimaryTextStyle.subTxt,
+                                ),
+                              ],
+                            ),
+                            Spacer(),
+                            GestureDetector(
+                              onTap: () {
+                                log(item.nama);
+                                log("masuk Ke detail");
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => KunjunganDetail(
+                                          index: item,
+                                        )));
+                              },
+                              child: SizedBox(
+                                height: 40,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      IconlyBroken.arrow_right_2,
+                                      size: 15,
+                                      color: AppTheme.primaryColor,
+                                    ),
+                                    Text("Detail",
+                                        style: PrimaryTextStyle.judulStyle),
+                                  ],
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                  );
-                },
-              ),
-            ),
+                    );
+                  },
+                );
+              }
+              if (prov.requestState == RequestState.error) {
+                return const Center(
+                    child: Text(
+                        "Gagal Mengambil Data, Periksa Akses Internet Mu"));
+              } else {
+                return const Text("tidak diketahui");
+              }
+            })),
           ],
         ),
       ),
