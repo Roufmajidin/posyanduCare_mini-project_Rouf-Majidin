@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:posyandu_care_apps/models/data_kunjungan_model.dart';
@@ -196,6 +197,9 @@ class _KunjunganState extends State<Kunjungan> {
                                     style: ElevatedButton.styleFrom(
                                         primary: AppTheme.primaryColor),
                                     onPressed: () {
+                                      String id = DateTime.now()
+                                          .millisecondsSinceEpoch
+                                          .toString();
                                       final snackBar = SnackBar(
                                         content: Text('add data'),
                                         action: SnackBarAction(
@@ -205,20 +209,22 @@ class _KunjunganState extends State<Kunjungan> {
                                           },
                                         ),
                                       );
+                                      DataKunjunganModel addData =
+                                          DataKunjunganModel(
+                                        doc_id: id,
+                                        nama: namaController.text,
+                                        alamat: alamatController.text,
+                                        berat_badan:
+                                            int.parse(bbController.text),
+                                        tinggi_badan:
+                                            int.parse(tinggiController.text),
+                                        keluhan: keluhanController.text,
+                                      );
                                       Future.microtask(
                                         () => Provider.of<KunjunganProvider>(
                                                 context,
                                                 listen: false)
-                                            .addDataKunjungan(
-                                                DataKunjunganModel(
-                                          nama: namaController.text,
-                                          alamat: alamatController.text,
-                                          berat_badan:
-                                              int.parse(bbController.text),
-                                          tinggi_badan:
-                                              int.parse(tinggiController.text),
-                                          keluhan: keluhanController.text,
-                                        )),
+                                            .addDataKunjungan(addData),
                                       ).whenComplete(() {
                                         Navigator.pop(context);
 
@@ -377,11 +383,11 @@ class _KunjunganState extends State<Kunjungan> {
                             Spacer(),
                             GestureDetector(
                               onTap: () {
-                                log(item.nama);
+                                log(item.doc_id.toString());
                                 log("masuk Ke detail");
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => KunjunganDetail(
-                                          index: item,
+                                          whereDocId: item.doc_id!,
                                         )));
                               },
                               child: SizedBox(
