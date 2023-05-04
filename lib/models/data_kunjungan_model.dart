@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DataKunjunganModel {
+  final String doc_id;
   final String nama;
   final String alamat;
   final int berat_badan;
@@ -8,6 +9,7 @@ class DataKunjunganModel {
   final String keluhan;
 
   DataKunjunganModel({
+    required this.doc_id,
     required this.nama,
     required this.alamat,
     required this.berat_badan,
@@ -16,15 +18,16 @@ class DataKunjunganModel {
   });
   factory DataKunjunganModel.fromJson(DocumentSnapshot doc) {
     return DataKunjunganModel(
+        doc_id: doc.id,
         nama: doc.get("nama"),
         alamat: doc.get("alamat"),
-        berat_badan: doc.get("berat_badan")?.toDouble(),
-        tinggi_badan: doc.get("tinggi_badan")?.toDouble(),
+        berat_badan: doc.get("berat_badan"),
+        tinggi_badan: doc.get("tinggi_badan"),
         keluhan: doc.get("keluhan"));
   }
   // factory DataKunjunganModel.fromJson(Map<String, dynamic> json) {
   //   return DataKunjunganModel(
-  //       user_id: json['user_id'],
+  //       doc_id: json['user_id'],
   //       nama: json['nama'],
   //       alamat: json['alamat'],
   //       berat_badan: json['berat_badan']?.toDouble(),
@@ -32,8 +35,9 @@ class DataKunjunganModel {
   //       keluhan: json['keluhan']);
   // }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toMap() {
     return {
+      // 'user_id': doc_id,
       'nama': nama,
       'alamat': alamat,
       'berat_badan': berat_badan,
