@@ -8,12 +8,13 @@ enum RequestState { empty, loading, loaded, error }
 
 class KunjunganProvider extends ChangeNotifier {
   List<DataKunjunganModel> dataKunjunganfetched = [];
-  // late final DataKunjunganModel dataKunjunganM;
-  List<DataKunjunganModel> _newKunjungan = [];
-  List<DataKunjunganModel> get newKunjungan => dataKunjunganfetched;
-
+  // List<DataKunjunganModel> dataKunjunganfetchedById = [];
+  DataKunjunganModel? dataById;
+  DataKunjunganModel? get product => dataById;
   RequestState _requestState = RequestState.empty;
   RequestState get requestState => _requestState;
+  DataKunjunganModel? _item;
+  DataKunjunganModel? get item => _item;
 
   String _message = '';
   String get message => _message;
@@ -27,6 +28,7 @@ class KunjunganProvider extends ChangeNotifier {
     snapshot.snapshots().listen((snapshot) {
       dataKunjunganfetched = snapshot.docs
           .map((doc) => DataKunjunganModel(
+              doc_id: doc.id,
               nama: doc.get("nama"),
               alamat: doc.get("alamat"),
               berat_badan: doc.get("berat_badan"),
@@ -34,12 +36,14 @@ class KunjunganProvider extends ChangeNotifier {
               keluhan: doc.get("keluhan")))
           .toList();
       _requestState = RequestState.loaded;
+
       notifyListeners();
       // print(_dataKunjungan.map((e) => print()));
       // for (var element in dataKunjunganfetched) {
       //   print(element.nama);
       // }
     });
+    notifyListeners();
 
     // _newKunjungan = usersKunjungan;
     // for (var element in newKunjungan) {
@@ -48,37 +52,17 @@ class KunjunganProvider extends ChangeNotifier {
     // print(a);
   }
 
-  Future fetchDataKunjunganById(String name) async {
-    // _requestState = RequestState.loading;
-    // notifyListeners();
-    final snapshot = await FirebaseFirestore.instance
-        .collection('data_kunjungan')
-        .where("user_id", isEqualTo: name);
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-    snapshot.snapshots().listen((snapshot) {
-      dataKunjunganfetched = snapshot.docs
-          .map((doc) => DataKunjunganModel(
-              nama: doc.get("nama"),
-              alamat: doc.get("alamat"),
-              berat_badan: doc.get("berat_badan"),
-              tinggi_badan: doc.get("tinggi_badan"),
-              keluhan: doc.get("keluhan")))
-          .toList();
-      // _requestState = RequestState.loaded;
-      notifyListeners();
-      print(dataKunjunganfetched);
-      // print(_dataKunjungan.map((e) => print()));
-      // for (var element in dataKunjunganfetched) {
-      //   print(element.nama);
-      // }
-    });
+  Future fetchDataKunjunganById(String id) async {
+    print("ok}");
+    final DocumentSnapshot documentSnap =
+        await firestore.collection('data_kunjungan').doc(id).get();
 
-    // _newKunjungan = usersKunjungan;
-    // for (var element in newKunjungan) {
-    //   print(element.nama);
-    // }
-    // print(a);
+    _item = DataKunjunganModel.fromJson(documentSnap);
     notifyListeners();
+    // }
+    print(_item!.alamat);
   }
 
   Future<void> addDataKunjungan(DataKunjunganModel dataKunjungan) async {
@@ -88,12 +72,13 @@ class KunjunganProvider extends ChangeNotifier {
     await FirebaseFirestore.instance
         .collection("data_kunjungan")
         .doc()
-        .set(dataKunjungan.toJson());
+        .set(dataKunjungan.toMap());
     // 2
     // await FirebaseFirestore.instance
     //     .collection("data_kunjungan")
     //     .add(dataKunjungan.toJson());
 
-    notifyListeners();
+    // notifyListeners();
+    // }
   }
 }
