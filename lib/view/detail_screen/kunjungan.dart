@@ -25,6 +25,7 @@ class _KunjunganState extends State<Kunjungan> {
   late TextEditingController alamatController = TextEditingController();
   late TextEditingController bbController = TextEditingController();
   late TextEditingController tinggiController = TextEditingController();
+  late TextEditingController darahController = TextEditingController();
   late TextEditingController keluhanController = TextEditingController();
   void initState() {
     super.initState();
@@ -98,7 +99,7 @@ class _KunjunganState extends State<Kunjungan> {
                       ),
                       Container(height: 10),
                       Container(
-                        height: 400,
+                        height: 500,
                         padding: EdgeInsets.only(
                             bottom: MediaQuery.of(context).viewInsets.bottom,
                             top: 20,
@@ -178,6 +179,21 @@ class _KunjunganState extends State<Kunjungan> {
                                     height: 12,
                                   ),
                                   SizedBox(
+                                    height: 40,
+                                    child: TextFormField(
+                                      controller: darahController,
+                                      validator: (value) {},
+                                      obscureText: false,
+                                      decoration: const InputDecoration(
+                                        border: OutlineInputBorder(),
+                                        labelText: 'Tekanan Darah (Bpm)',
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 12,
+                                  ),
+                                  SizedBox(
                                     height: 80,
                                     child: TextFormField(
                                       controller: keluhanController,
@@ -218,6 +234,7 @@ class _KunjunganState extends State<Kunjungan> {
                                             int.parse(bbController.text),
                                         tinggi_badan:
                                             int.parse(tinggiController.text),
+                                        tekanan_darah: darahController.text,
                                         keluhan: keluhanController.text,
                                       );
                                       Future.microtask(
@@ -226,11 +243,18 @@ class _KunjunganState extends State<Kunjungan> {
                                                 listen: false)
                                             .addDataKunjungan(addData),
                                       ).whenComplete(() {
+                                        namaController.clear();
+                                        alamatController.clear();
+                                        bbController.clear();
+                                        tinggiController.clear();
+                                        darahController.clear();
+                                        keluhanController.clear();
                                         Navigator.pop(context);
 
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(snackBar);
                                         setState(() {});
+
                                         return snackBar;
                                       });
                                     },
@@ -387,7 +411,7 @@ class _KunjunganState extends State<Kunjungan> {
                                 log("masuk Ke detail");
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => KunjunganDetail(
-                                          whereDocId: item.doc_id!,
+                                          whereDocId: item.doc_id,
                                         )));
                               },
                               child: SizedBox(

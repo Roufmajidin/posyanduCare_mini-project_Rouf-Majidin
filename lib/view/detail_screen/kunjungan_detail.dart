@@ -359,7 +359,7 @@ detailWidget(BuildContext context, GlobalKey<FormState> formKey, provDetail) {
                                 style: PrimaryTextStyle.subTxt,
                               ),
                               Text(
-                                ": -",
+                                ": ${provDetail.item.tekanan_darah.toString()} Bpm",
                                 style: PrimaryTextStyle.subTxt,
                               )
                             ],

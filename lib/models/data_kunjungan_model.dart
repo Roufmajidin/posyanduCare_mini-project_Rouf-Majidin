@@ -6,6 +6,7 @@ class DataKunjunganModel {
   final String alamat;
   final int berat_badan;
   final int tinggi_badan;
+  final String tekanan_darah;
   final String keluhan;
 
   DataKunjunganModel({
@@ -14,6 +15,7 @@ class DataKunjunganModel {
     required this.alamat,
     required this.berat_badan,
     required this.tinggi_badan,
+    required this.tekanan_darah,
     required this.keluhan,
   });
   factory DataKunjunganModel.fromJson(DocumentSnapshot doc) {
@@ -23,6 +25,7 @@ class DataKunjunganModel {
         alamat: doc.get("alamat"),
         berat_badan: doc.get("berat_badan"),
         tinggi_badan: doc.get("tinggi_badan"),
+        tekanan_darah: doc.get("tekanan_darah"),
         keluhan: doc.get("keluhan"));
   }
   // factory DataKunjunganModel.fromJson(Map<String, dynamic> json) {
@@ -42,6 +45,7 @@ class DataKunjunganModel {
       'alamat': alamat,
       'berat_badan': berat_badan,
       'tinggi_badan': tinggi_badan,
+      'tekanan_darah': tekanan_darah,
       'keluhan': keluhan,
     };
   }

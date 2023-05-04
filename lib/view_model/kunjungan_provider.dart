@@ -33,6 +33,7 @@ class KunjunganProvider extends ChangeNotifier {
               alamat: doc.get("alamat"),
               berat_badan: doc.get("berat_badan"),
               tinggi_badan: doc.get("tinggi_badan"),
+              tekanan_darah: doc.get("tekanan_darah"),
               keluhan: doc.get("keluhan")))
           .toList();
       _requestState = RequestState.loaded;
@@ -78,7 +79,7 @@ class KunjunganProvider extends ChangeNotifier {
     //     .collection("data_kunjungan")
     //     .add(dataKunjungan.toJson());
 
-    // notifyListeners();
+    notifyListeners();
     // }
   }
 }
