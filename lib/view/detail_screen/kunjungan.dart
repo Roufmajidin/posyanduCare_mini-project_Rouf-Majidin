@@ -216,15 +216,7 @@ class _KunjunganState extends State<Kunjungan> {
                                       String id = DateTime.now()
                                           .millisecondsSinceEpoch
                                           .toString();
-                                      final snackBar = SnackBar(
-                                        content: Text('add data'),
-                                        action: SnackBarAction(
-                                          label: 'Undo',
-                                          onPressed: () {
-                                            setState(() {});
-                                          },
-                                        ),
-                                      );
+
                                       DataKunjunganModel addData =
                                           DataKunjunganModel(
                                         doc_id: id,
@@ -251,10 +243,13 @@ class _KunjunganState extends State<Kunjungan> {
                                         keluhanController.clear();
                                         Navigator.pop(context);
 
+                                        final snackBar = SnackBar(
+                                          content: Text('Sukses Add data'),
+                                        );
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(snackBar);
-                                        setState(() {});
 
+                                        setState(() {});
                                         return snackBar;
                                       });
                                     },

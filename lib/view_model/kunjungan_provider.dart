@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:posyandu_care_apps/models/data_kunjungan_model.dart';
+import 'package:posyandu_care_apps/models/rekomendasi_obat_model.dart';
 
 import '../models/data_kunjungan_model.dart';
 
@@ -15,6 +18,8 @@ class KunjunganProvider extends ChangeNotifier {
   RequestState get requestState => _requestState;
   DataKunjunganModel? _item;
   DataKunjunganModel? get item => _item;
+  RekomendasiObatModels? _itemRekomendasi;
+  RekomendasiObatModels? get itemRekomendasi => _itemRekomendasi;
 
   String _message = '';
   String get message => _message;
@@ -39,47 +44,95 @@ class KunjunganProvider extends ChangeNotifier {
       _requestState = RequestState.loaded;
 
       notifyListeners();
-      // print(_dataKunjungan.map((e) => print()));
-      // for (var element in dataKunjunganfetched) {
-      //   print(element.nama);
-      // }
     });
     notifyListeners();
-
-    // _newKunjungan = usersKunjungan;
-    // for (var element in newKunjungan) {
-    //   print(element.nama);
-    // }
-    // print(a);
   }
 
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   Future fetchDataKunjunganById(String id) async {
-    print("ok}");
     final DocumentSnapshot documentSnap =
         await firestore.collection('data_kunjungan').doc(id).get();
+    // get data collection rekomendasi_obat :) tapi data obat belum terverifikasi / masih null
 
     _item = DataKunjunganModel.fromJson(documentSnap);
+    print("snp");
+    final DocumentSnapshot documentSnapCollctionObat =
+        await firestore.collection('rekomendasi_obat').doc(id).get();
+    _requestState = RequestState.loaded;
+    _itemRekomendasi =
+        RekomendasiObatModels.fromJson(documentSnapCollctionObat);
+
     notifyListeners();
-    // }
-    print(_item!.alamat);
   }
 
   Future<void> addDataKunjungan(DataKunjunganModel dataKunjungan) async {
     // _requestState = RequestState.loading;
     // notifyListeners();
-    // 1
+
+    // TODOD : 1 save data ke collection data_kunjungan
     await FirebaseFirestore.instance
         .collection("data_kunjungan")
-        .doc()
+        .doc(dataKunjungan.doc_id)
         .set(dataKunjungan.toMap());
-    // 2
+    print("ini id nya : ${dataKunjungan.doc_id}");
+    const String namaPuskesmas = "UPT Dukupuntang";
+    final tanggal = DateTime.now();
+    const String dokterTugas = "Shinta, Amd. Kep";
+    await FirebaseFirestore.instance
+        .collection('rekomendasi_obat')
+        .doc(dataKunjungan.doc_id)
+        .set({
+      'data_obat': null.toString(),
+      'dokter_tugas': dokterTugas,
+      'is_verified': false,
+      'penanggung_jawab': namaPuskesmas,
+      'tanggal_kunjungan': tanggal,
+      'tanggal_verifikasi': null.toString(),
+      'updated_at': tanggal
+    });
+
+    // TODO malam ini : bikin modeols baru (rekomendasi_obat);  DONE
+
     // await FirebaseFirestore.instance
     //     .collection("data_kunjungan")
     //     .add(dataKunjungan.toJson());
 
     notifyListeners();
     // }
+  }
+
+// TODO inProgress => update data kunjungan
+  Future<void> updateDataKunjungan(DataKunjunganModel dataKunjungan) async {
+    // _requestState = RequestState.loading;
+    // notifyListeners();
+
+    // TODOD : 1 save data ke collection data_kunjungan
+    await FirebaseFirestore.instance
+        .collection("data_kunjungan")
+        .doc(dataKunjungan.doc_id)
+        .set(dataKunjungan.toMap());
+    print("ini id nya : ${dataKunjungan.doc_id} Sukses Update Data Kunjungan");
+
+    notifyListeners();
+  }
+
+  Future<void> hapusKunjungan(docId) async {
+    // _requestState = RequestState.loading;
+    // notifyListeners();
+
+    // TODOD : 1 save data ke collection data_kunjungan
+    await FirebaseFirestore.instance
+        .collection("data_kunjungan")
+        .doc(docId)
+        .delete()
+        .whenComplete(() async {
+      await FirebaseFirestore.instance
+          .collection("rekomendasi_obat")
+          .doc(docId)
+          .delete();
+    });
+
+    notifyListeners();
   }
 }
