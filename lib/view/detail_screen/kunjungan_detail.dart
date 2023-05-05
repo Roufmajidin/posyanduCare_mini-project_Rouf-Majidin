@@ -1,54 +1,87 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
+import 'package:intl/intl.dart';
+import 'package:posyandu_care_apps/view_model/kunjungan_provider.dart';
+import 'package:provider/provider.dart';
 
+import '../../models/data_kunjungan_model.dart';
 import '../../models/list_menu.dart';
 import '../../themes/colors.dart';
 
-class KunjunganDetail extends StatelessWidget {
-  final index;
+class KunjunganDetail extends StatefulWidget {
+  final String whereDocId;
 
-  const KunjunganDetail({super.key, required this.index});
+  KunjunganDetail({Key? key, required this.whereDocId}) : super(key: key);
 
+  @override
+  State<KunjunganDetail> createState() => _KunjunganDetailState();
+}
+
+class _KunjunganDetailState extends State<KunjunganDetail> {
+  void initState() {
+    super.initState();
+    Future.microtask(
+      () => Provider.of<KunjunganProvider>(context, listen: false)
+          .fetchDataKunjunganById(widget.whereDocId),
+    );
+    // get ddetail di collection rekammedis
+  }
+
+  final TextEditingController namaController = TextEditingController();
+  final TextEditingController alamatController = TextEditingController();
+  final TextEditingController bbController = TextEditingController();
+  final TextEditingController tinggiController = TextEditingController();
+  final TextEditingController darahController = TextEditingController();
+  final TextEditingController keluhanController = TextEditingController();
+  @override
+  void dispose() {
+    namaController.dispose();
+    super.dispose();
+  }
+
+  String nama = '';
+  String alamat = '';
+  late int berat;
+  late int tinggi;
+  String tekanan_darah = '';
+  late String keluhan = '';
   @override
   Widget build(BuildContext context) {
     var mediaquery = MediaQuery.of(context);
     var formKey = GlobalKey<FormState>();
 
     return Scaffold(
-      appBar: customAppBar(mediaquery),
-      backgroundColor: AppTheme.primaryColor,
-      body: SizedBox(
-        height: mediaquery.size.height * 1,
-        child: Column(
-          children: [
-            detailWidget(context, formKey),
-          ],
-        ),
-      ),
-    );
-  }
-
-  PreferredSize customAppBar(MediaQueryData mediaquery) {
-    return PreferredSize(
-      preferredSize: const Size.fromHeight(80.0),
-      child: AppBar(
-        elevation: 0.3,
+        appBar: customAppBar(mediaquery),
         backgroundColor: AppTheme.primaryColor,
-        title: const Text("Detail Warga"),
-        centerTitle: true,
-        actions: const [
-          Padding(
-            padding: EdgeInsets.only(right: 8.0),
-            child: Icon(IconlyBroken.info_square),
-          )
-        ],
-      ),
-    );
+        body: SizedBox(
+            height: mediaquery.size.height * 1,
+            child: Consumer<KunjunganProvider>(
+                builder: (context, provDetail, child) {
+              Timestamp tanggalKunjugan =
+                  provDetail.itemRekomendasi!.tanggalKunjungan;
+              DateTime tanggalKunjunganConvert = tanggalKunjugan.toDate();
+              String resultTanggal =
+                  DateFormat('dd MMMM yyyy').format(tanggalKunjunganConvert);
+
+              if (provDetail.item == null) {
+                // provDetail.fetchDataKunjunganById(widget.whereDocId);
+                return CircularProgressIndicator();
+              } else {
+                provDetail.fetchDataKunjunganById(widget.whereDocId);
+                return Column(
+                  children: [
+                    widgetDetail(provDetail, context, formKey, resultTanggal)
+                  ],
+                );
+              }
+            })));
   }
 
-  detailWidget(BuildContext context, GlobalKey<FormState> formKey) {
+  Expanded widgetDetail(KunjunganProvider provDetail, BuildContext context,
+      GlobalKey<FormState> formKey, String resultTanggal) {
     return Expanded(
       child: Container(
         decoration: BoxDecoration(
@@ -90,14 +123,14 @@ class KunjunganDetail extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        warga[index]["namaWarga"],
+                        "Nama :${provDetail.item!.nama}",
                         style: PrimaryTextStyle.judulStyle,
                       ),
                       const SizedBox(
                         height: 5,
                       ),
                       Text(
-                        warga[index]["blok"],
+                        "Alamat :${provDetail.item!.alamat}",
                         style: PrimaryTextStyle.subTxt,
                       ),
                       const SizedBox(
@@ -105,6 +138,13 @@ class KunjunganDetail extends StatelessWidget {
                       ),
                       GestureDetector(
                         onTap: () {
+                          nama = provDetail.item!.nama;
+                          alamat = provDetail.item!.alamat;
+                          tinggi = provDetail.item!.tinggi_badan;
+                          berat = provDetail.item!.berat_badan;
+                          tekanan_darah = provDetail.item!.tekanan_darah;
+                          keluhan = provDetail.item!.keluhan;
+
                           showModalBottomSheet(
                               isScrollControlled: true,
                               backgroundColor: Colors.white,
@@ -133,7 +173,7 @@ class KunjunganDetail extends StatelessWidget {
                                     ),
                                     Container(height: 10),
                                     Container(
-                                      height: 400,
+                                      height: 600,
                                       padding: EdgeInsets.only(
                                           bottom: MediaQuery.of(context)
                                               .viewInsets
@@ -157,6 +197,12 @@ class KunjunganDetail extends StatelessWidget {
                                                 SizedBox(
                                                   height: 40,
                                                   child: TextFormField(
+                                                    autofocus: true,
+                                                    controller: namaController
+                                                      ..text = nama,
+                                                    onChanged: (value) {
+                                                      nama = value;
+                                                    },
                                                     validator: (value) {},
                                                     obscureText: false,
                                                     decoration:
@@ -173,13 +219,18 @@ class KunjunganDetail extends StatelessWidget {
                                                 SizedBox(
                                                   height: 40,
                                                   child: TextFormField(
+                                                    controller: alamatController
+                                                      ..text = alamat,
+                                                    onChanged: (value) {
+                                                      alamat = value;
+                                                    },
                                                     validator: (value) {},
                                                     obscureText: false,
                                                     decoration:
                                                         const InputDecoration(
                                                       border:
                                                           OutlineInputBorder(),
-                                                      labelText: 'Rt/Rw',
+                                                      labelText: 'Alamat',
                                                     ),
                                                   ),
                                                 ),
@@ -189,6 +240,11 @@ class KunjunganDetail extends StatelessWidget {
                                                 SizedBox(
                                                   height: 40,
                                                   child: TextFormField(
+                                                    controller: bbController
+                                                      ..text = berat.toString(),
+                                                    onChanged: (value) {
+                                                      berat = int.parse(value);
+                                                    },
                                                     validator: (value) {},
                                                     obscureText: false,
                                                     decoration:
@@ -206,6 +262,12 @@ class KunjunganDetail extends StatelessWidget {
                                                 SizedBox(
                                                   height: 40,
                                                   child: TextFormField(
+                                                    controller: tinggiController
+                                                      ..text =
+                                                          tinggi.toString(),
+                                                    onChanged: (value) {
+                                                      tinggi = int.parse(value);
+                                                    },
                                                     validator: (value) {},
                                                     obscureText: false,
                                                     decoration:
@@ -223,6 +285,34 @@ class KunjunganDetail extends StatelessWidget {
                                                 SizedBox(
                                                   height: 40,
                                                   child: TextFormField(
+                                                    controller: darahController
+                                                      ..text = tekanan_darah,
+                                                    onChanged: (value) {
+                                                      tekanan_darah = value;
+                                                    },
+                                                    validator: (value) {},
+                                                    obscureText: false,
+                                                    decoration:
+                                                        const InputDecoration(
+                                                      border:
+                                                          OutlineInputBorder(),
+                                                      labelText:
+                                                          'Tekanan Darah (Bpm)',
+                                                    ),
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 12,
+                                                ),
+                                                SizedBox(
+                                                  height: 80,
+                                                  child: TextFormField(
+                                                    controller:
+                                                        keluhanController
+                                                          ..text = keluhan,
+                                                    onChanged: (value) {
+                                                      keluhan = value;
+                                                    },
                                                     validator: (value) {},
                                                     obscureText: false,
                                                     decoration:
@@ -242,8 +332,56 @@ class KunjunganDetail extends StatelessWidget {
                                                       ElevatedButton.styleFrom(
                                                           primary: AppTheme
                                                               .primaryColor),
-                                                  onPressed: () {},
-                                                  child: const Center(
+                                                  onPressed: () {
+                                                    String id = DateTime.now()
+                                                        .millisecondsSinceEpoch
+                                                        .toString();
+                                                    final nama = namaController;
+
+                                                    DataKunjunganModel
+                                                        updateData =
+                                                        DataKunjunganModel(
+                                                            doc_id: provDetail
+                                                                .item!.doc_id,
+                                                            nama: nama.text,
+                                                            alamat: alamat,
+                                                            berat_badan: berat,
+                                                            tinggi_badan:
+                                                                tinggi,
+                                                            tekanan_darah:
+                                                                tekanan_darah,
+                                                            keluhan: keluhan);
+
+                                                    provDetail
+                                                        .updateDataKunjungan(
+                                                            updateData)
+                                                        .whenComplete(() {
+                                                      namaController.clear();
+                                                      alamatController.clear();
+                                                      bbController.clear();
+                                                      tinggiController.clear();
+                                                      darahController.clear();
+                                                      keluhanController.clear();
+                                                      provDetail
+                                                          .fetchDataKunjunganById(
+                                                              widget
+                                                                  .whereDocId);
+
+                                                      Navigator.pop(context);
+                                                      final snackBar = SnackBar(
+                                                        content: Text(
+                                                            'Sukses Update data'),
+                                                      );
+                                                      ScaffoldMessenger.of(
+                                                              context)
+                                                          .showSnackBar(
+                                                              snackBar);
+
+                                                      setState(() {});
+                                                      return snackBar;
+                                                    });
+                                                  },
+                                                  child: Center(
                                                     child: Text(
                                                       "Update",
                                                       style: TextStyle(
@@ -273,7 +411,16 @@ class KunjunganDetail extends StatelessWidget {
                   ),
                   Spacer(),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      print("delete data");
+                      provDetail
+                          .hapusKunjungan(widget.whereDocId)
+                          .whenComplete(() => Navigator.pop(context));
+                      final snackBar = SnackBar(
+                        content: Text('Sukses Delete data'),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    },
                     child: SizedBox(
                       height: 80,
                       child: Row(
@@ -333,15 +480,15 @@ class KunjunganDetail extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  ": 180 Cm",
+                                  ": ${provDetail.item!.tinggi_badan.toString()} Cm",
                                   style: PrimaryTextStyle.subTxt,
                                 ),
                                 Text(
-                                  ": 50 Kg",
+                                  ": ${provDetail.item!.berat_badan.toString()} Kg",
                                   style: PrimaryTextStyle.subTxt,
                                 ),
                                 Text(
-                                  ": 120/10 Bpm",
+                                  ": ${provDetail.item!.tekanan_darah.toString()} Bpm",
                                   style: PrimaryTextStyle.subTxt,
                                 )
                               ],
@@ -424,17 +571,24 @@ class KunjunganDetail extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  ": 27 Februari 2023",
+                                  ": ${resultTanggal}",
                                   style: PrimaryTextStyle.subTxt,
                                 ),
                                 Text(
-                                  ": sakit mata, gatal kulit",
+                                  ": ${provDetail.item!.keluhan}",
                                   style: PrimaryTextStyle.subTxt,
                                 ),
-                                Text(
-                                  ": Paracetamol",
-                                  style: PrimaryTextStyle.subTxt,
-                                ),
+                                provDetail.itemRekomendasi!.dataObat == "null"
+                                    ? Text(
+                                        ": Belum terverified",
+                                        style: TextStyle(
+                                            color: Colors.redAccent,
+                                            fontSize: 14),
+                                      )
+                                    : Text(
+                                        ": ${provDetail.itemRekomendasi!.dataObat}",
+                                        style: PrimaryTextStyle.subTxt,
+                                      ),
                               ],
                             ),
                           ),
@@ -451,12 +605,19 @@ class KunjunganDetail extends StatelessWidget {
                     width: 5,
                   ),
                   // Spacer(),
-                  Row(
-                    children: [
-                      Icon(Icons.check),
-                      Text("verified", style: TextStyle(fontSize: 12)),
-                    ],
-                  ),
+                  provDetail.itemRekomendasi!.isVerified == false
+                      ? Row(
+                          children: [
+                            Icon(Icons.close),
+                            Text("Unverified", style: TextStyle(fontSize: 12)),
+                          ],
+                        )
+                      : Row(
+                          children: [
+                            Icon(Icons.check),
+                            Text("verified", style: TextStyle(fontSize: 12)),
+                          ],
+                        ),
                 ],
               ),
             ),
@@ -489,7 +650,7 @@ class KunjunganDetail extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Penanggun Jawab",
+                                  "Penanggung Jawab",
                                   style: PrimaryTextStyle.subTxt,
                                 ),
                                 Text(
@@ -510,15 +671,15 @@ class KunjunganDetail extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  ": UPT. Dukupuntang",
+                                  ": ${provDetail.itemRekomendasi!.penanggungJawab}",
                                   style: PrimaryTextStyle.subTxt,
                                 ),
                                 Text(
-                                  ": 28 Februari 2023",
+                                  ": ${resultTanggal}",
                                   style: PrimaryTextStyle.subTxt,
                                 ),
                                 Text(
-                                  ": Rouf  Majid, Amd. Kep",
+                                  ": ${provDetail.itemRekomendasi!.dokterTugas}",
                                   style: PrimaryTextStyle.subTxt,
                                 ),
                               ],
@@ -541,4 +702,22 @@ class KunjunganDetail extends StatelessWidget {
       ),
     );
   }
+}
+
+PreferredSize customAppBar(MediaQueryData mediaquery) {
+  return PreferredSize(
+    preferredSize: const Size.fromHeight(80.0),
+    child: AppBar(
+      elevation: 0.3,
+      backgroundColor: AppTheme.primaryColor,
+      title: const Text("Detail Warga"),
+      centerTitle: true,
+      actions: const [
+        Padding(
+          padding: EdgeInsets.only(right: 8.0),
+          child: Icon(IconlyBroken.info_square),
+        )
+      ],
+    ),
+  );
 }

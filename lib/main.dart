@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:posyandu_care_apps/firebase_options.dart';
 import 'package:posyandu_care_apps/themes/colors.dart';
 import 'package:posyandu_care_apps/view/home_page.dart';
+import 'package:posyandu_care_apps/view_model/kunjungan_provider.dart';
+import 'package:provider/provider.dart';
 
 import 'view/dashboard_page.dart';
 
@@ -19,11 +21,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'Posyandu Care Apps',
-        theme: ThemeData(
-            primarySwatch: Colors.blue, canvasColor: AppTheme.bgColor),
-        debugShowCheckedModeBanner: false,
-        home: const HomePage());
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => KunjunganProvider())
+      ],
+      child: MaterialApp(
+          title: 'Posyandu Care Apps',
+          theme: ThemeData(
+              primarySwatch: Colors.blue, canvasColor: AppTheme.bgColor),
+          debugShowCheckedModeBanner: false,
+          home: const DashboardPage()),
+    );
   }
 }
