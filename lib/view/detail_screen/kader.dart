@@ -3,17 +3,34 @@ import 'dart:developer';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
+import 'package:posyandu_care_apps/models/kader_model.dart';
 import 'package:posyandu_care_apps/themes/colors.dart';
 import 'package:posyandu_care_apps/view/detail_screen/kader_detail.dart';
 import 'package:posyandu_care_apps/view/detail_screen/kunjungan_detail.dart';
+import 'package:posyandu_care_apps/view_model/kader_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/list_menu.dart';
 
-class KaderPage extends StatelessWidget {
+class KaderPage extends StatefulWidget {
   final index;
 
   KaderPage({super.key, required this.index});
+
+  @override
+  State<KaderPage> createState() => _KaderPageState();
+}
+
+class _KaderPageState extends State<KaderPage> {
   var formKey = GlobalKey<FormState>();
+  void initState() {
+    super.initState();
+
+    Future.microtask(
+      () => Provider.of<KaderProvider>(context, listen: false).fetchDataKader(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     var mediaquery = MediaQuery.of(context);
@@ -51,7 +68,7 @@ class KaderPage extends StatelessWidget {
       child: AppBar(
         elevation: 0.3,
         backgroundColor: AppTheme.primaryColor,
-        title: Text(menu[index]['judul']),
+        title: Text(menu[widget.index]['judul']),
         centerTitle: true,
         actions: const [
           Padding(
@@ -64,128 +81,150 @@ class KaderPage extends StatelessWidget {
   }
 
   listKader(mediaQuery) {
-    return Expanded(
-      child: Container(
-        decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30), topRight: Radius.circular(30))),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                  top: 30.0, left: 20, right: 20, bottom: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Consumer<KaderProvider>(
+      builder: (context, provKader, child) {
+        if (provKader.requestState == RequestState.loading) {
+          return CircularProgressIndicator();
+        } else if (provKader.requestState == RequestState.loaded) {
+          final item = provKader.kaderFetched;
+          // print(item.nama);
+          return Expanded(
+            child: Container(
+              decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30))),
+              child: Column(
                 children: [
-                  Text(
-                    "Data Kader",
-                    style: PrimaryTextStyle.judulStyle,
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        top: 30.0, left: 20, right: 20, bottom: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Data Kader",
+                          style: PrimaryTextStyle.judulStyle,
+                        ),
+                        Column(
+                          children: const [
+                            Icon(
+                              Icons.circle,
+                              size: 5,
+                            ),
+                            Icon(
+                              Icons.circle,
+                              size: 5,
+                            ),
+                            Icon(
+                              Icons.circle,
+                              size: 5,
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
                   ),
-                  Column(
-                    children: const [
-                      Icon(
-                        Icons.circle,
-                        size: 5,
-                      ),
-                      Icon(
-                        Icons.circle,
-                        size: 5,
-                      ),
-                      Icon(
-                        Icons.circle,
-                        size: 5,
-                      ),
-                    ],
-                  )
+                  SizedBox(
+                    height: mediaQuery.size.height * 0.8,
+                    width: mediaQuery.size.width * 5,
+                    child: ListView.builder(
+                      padding: const EdgeInsets.only(bottom: 20),
+                      scrollDirection: Axis.vertical,
+                      physics: ScrollPhysics(),
+                      itemCount: provKader.kaderFetched.length,
+                      itemBuilder: (context, index) {
+                        final item = provKader.kaderFetched[index];
+                        // print(item.nama);
+                        return Card(
+                          elevation: 0.2,
+                          child: Container(
+                            padding: const EdgeInsets.all(12),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                    decoration: BoxDecoration(
+                                        color: Colors.grey.withOpacity(0.2),
+                                        borderRadius:
+                                            BorderRadius.circular(12)),
+                                    height: 80,
+                                    width: 80,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: const [
+                                        Icon(IconlyBroken.hide),
+                                        Text("Image Kader")
+                                      ],
+                                    )
+                                    // Image.asset(
+                                    //   listBerita[index]["gambar"].toString(),
+                                    //   fit: BoxFit.contain,
+                                    // )
+                                    ),
+                                const SizedBox(
+                                  width: 20,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      item.nama,
+                                      style: PrimaryTextStyle.judulStyle,
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      item.jabatan,
+                                      style: PrimaryTextStyle.subTxt,
+                                    ),
+                                  ],
+                                ),
+                                Spacer(),
+                                GestureDetector(
+                                  onTap: () {
+                                    log("masuk Ke detail Kader");
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                            builder: (context) => KaderDetail(
+                                                  index: item.docId,
+                                                )));
+                                  },
+                                  child: const SizedBox(
+                                    height: 40,
+                                    child: Align(
+                                      alignment: Alignment.bottomCenter,
+                                      child: Icon(
+                                        IconlyBroken.arrow_right_2,
+                                        size: 20,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
                 ],
               ),
             ),
-            SizedBox(
-              height: mediaQuery.size.height * 0.8,
-              width: mediaQuery.size.width * 5,
-              child: ListView.builder(
-                padding: const EdgeInsets.only(bottom: 20),
-                scrollDirection: Axis.vertical,
-                physics: ScrollPhysics(),
-                itemCount: kader.length,
-                itemBuilder: (context, index) {
-                  return Card(
-                    elevation: 0.2,
-                    child: Container(
-                      padding: const EdgeInsets.all(12),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.grey.withOpacity(0.2),
-                                  borderRadius: BorderRadius.circular(12)),
-                              height: 80,
-                              width: 80,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: const [
-                                  Icon(IconlyBroken.hide),
-                                  Text("Image Kader")
-                                ],
-                              )
-                              // Image.asset(
-                              //   listBerita[index]["gambar"].toString(),
-                              //   fit: BoxFit.contain,
-                              // )
-                              ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                kader[index]["namaKader"],
-                                style: PrimaryTextStyle.judulStyle,
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                kader[index]["posisiJabatan"],
-                                style: PrimaryTextStyle.subTxt,
-                              ),
-                            ],
-                          ),
-                          Spacer(),
-                          GestureDetector(
-                            onTap: () {
-                              log("masuk Ke detail Kader");
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => KaderDetail(
-                                        index: index,
-                                      )));
-                            },
-                            child: const SizedBox(
-                              height: 40,
-                              child: Align(
-                                alignment: Alignment.bottomCenter,
-                                child: Icon(
-                                  IconlyBroken.arrow_right_2,
-                                  size: 20,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
+          );
+        }
+        if (provKader.requestState == RequestState.error) {
+          return const Center(
+              child: Text("Gagal Mengambil Data, Periksa Akses Internet Mu"));
+        } else {
+          return const Text("tidak diketahui");
+        }
+      },
     );
   }
 

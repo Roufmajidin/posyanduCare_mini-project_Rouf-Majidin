@@ -4,11 +4,13 @@ import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:posyandu_care_apps/models/list_menu.dart';
+import 'package:posyandu_care_apps/view_model/kader_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../../themes/colors.dart';
 
 class KaderDetail extends StatefulWidget {
-  final index;
+  final String index;
   KaderDetail({super.key, required this.index});
   var formKey = GlobalKey<FormState>();
 
@@ -20,6 +22,15 @@ class _KaderDetailState extends State<KaderDetail> {
   var onTapped = false;
   var onTapStatusEdit = false;
   var onTapStatusHapus = false;
+  void initState() {
+    super.initState();
+    Future.microtask(
+      () => Provider.of<KaderProvider>(context, listen: false)
+          .fetchKaderById(widget.index),
+    );
+    // get ddetail di collection rekammedis
+  }
+
   @override
   Widget build(BuildContext context) {
     var mediaquery = MediaQuery.of(context);
@@ -39,21 +50,31 @@ class _KaderDetailState extends State<KaderDetail> {
         ),
       ),
       backgroundColor: AppTheme.bgColor,
-      body: SingleChildScrollView(
-          child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          profileDetail(mediaquery),
-          posisiDetail(mediaquery),
-          alamatDetail(mediaquery),
-          statusDetail(mediaquery),
-        ],
+      body: SingleChildScrollView(child: Consumer<KaderProvider>(
+        builder: (context, kaderProv, child) {
+          if (kaderProv.item == null) {
+            // provDetail.fetchDataKunjunganById(widget.whereDocId);
+            return CircularProgressIndicator();
+          } else {
+            // kaderProv.fetchKaderById(widget.index);
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                profileDetail(mediaquery, kaderProv),
+                posisiDetail(mediaquery, kaderProv),
+                alamatDetail(mediaquery, kaderProv),
+                statusDetail(mediaquery, kaderProv),
+              ],
+            );
+          }
+        },
       )),
     );
   }
 
-  Container statusDetail(MediaQueryData mediaquery) {
+  Container statusDetail(MediaQueryData mediaquery, kaderProv) {
     return Container(
       alignment: Alignment.center,
       margin: EdgeInsets.only(top: 12),
@@ -76,10 +97,15 @@ class _KaderDetailState extends State<KaderDetail> {
                   "Verfied Status",
                   style: PrimaryTextStyle.judulStyle,
                 ),
-                Text(
-                  "Pending",
-                  style: PrimaryTextStyle.subTxt,
-                ),
+                kaderProv.item.verfiedAt == "null"
+                    ? Text(
+                        "Pending",
+                        style: PrimaryTextStyle.subTxt,
+                      )
+                    : Text(
+                        "Aktif (Verified)",
+                        style: TextStyle(color: Colors.green, fontSize: 14),
+                      ),
               ],
             ),
           ),
@@ -110,7 +136,7 @@ class _KaderDetailState extends State<KaderDetail> {
     );
   }
 
-  Container alamatDetail(MediaQueryData mediaquery) {
+  Container alamatDetail(MediaQueryData mediaquery, kaderProv) {
     return Container(
       alignment: Alignment.center,
       margin: EdgeInsets.only(top: 12),
@@ -134,7 +160,7 @@ class _KaderDetailState extends State<KaderDetail> {
                   style: PrimaryTextStyle.judulStyle,
                 ),
                 Text(
-                  "Blok Gunung, Rt 001/002",
+                  kaderProv.item.alamat,
                   style: PrimaryTextStyle.subTxt,
                 ),
               ],
@@ -167,7 +193,7 @@ class _KaderDetailState extends State<KaderDetail> {
     );
   }
 
-  Container posisiDetail(MediaQueryData mediaquery) {
+  Container posisiDetail(MediaQueryData mediaquery, kaderProv) {
     return Container(
       alignment: Alignment.center,
       margin: EdgeInsets.only(top: 12),
@@ -191,7 +217,7 @@ class _KaderDetailState extends State<KaderDetail> {
                   style: PrimaryTextStyle.judulStyle,
                 ),
                 Text(
-                  kader[widget.index]['posisiJabatan'],
+                  kaderProv.item.jabatan,
                   style: PrimaryTextStyle.subTxt,
                 ),
               ],
@@ -224,7 +250,7 @@ class _KaderDetailState extends State<KaderDetail> {
     );
   }
 
-  Container profileDetail(MediaQueryData mediaquery) {
+  Container profileDetail(MediaQueryData mediaquery, kaderProv) {
     return Container(
       alignment: Alignment.center,
       margin: const EdgeInsets.only(top: 12),
@@ -257,10 +283,10 @@ class _KaderDetailState extends State<KaderDetail> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  kader[widget.index]['namaKader'],
+                  kaderProv.item.nama,
                   style: PrimaryTextStyle.judulStyle,
                 ),
-                Text(kader[widget.index]['posisiJabatan']),
+                Text(kaderProv.item.jabatan),
               ],
             ),
           ),
@@ -322,7 +348,7 @@ class _KaderDetailState extends State<KaderDetail> {
                                   onTapStatusEdit = true;
                                   log('Edit is ${onTapStatusEdit.toString()}');
                                   updateKader(context, widget.index, mediaquery,
-                                      widget.formKey);
+                                      widget.formKey, kaderProv);
                                 },
                                 child: Text(
                                   "Update",
@@ -356,7 +382,8 @@ class _KaderDetailState extends State<KaderDetail> {
   }
 
 // edit bottomsheet
-  Future<dynamic> updateKader(BuildContext context, index, mediaQ, formKey) {
+  Future<dynamic> updateKader(
+      BuildContext context, index, mediaQ, formKey, kaderProv) {
     return showModalBottomSheet(
         isScrollControlled: true,
         backgroundColor: Colors.white,
