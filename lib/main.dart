@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:posyandu_care_apps/firebase_options.dart';
 import 'package:posyandu_care_apps/themes/colors.dart';
 import 'package:posyandu_care_apps/view/home_page.dart';
+import 'package:posyandu_care_apps/view_model/kader_provider.dart';
 import 'package:posyandu_care_apps/view_model/kunjungan_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -23,7 +24,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => KunjunganProvider())
+        ChangeNotifierProvider(create: (context) => KunjunganProvider()),
+        ChangeNotifierProvider(create: (context) => KaderProvider())
       ],
       child: MaterialApp(
           title: 'Posyandu Care Apps',
