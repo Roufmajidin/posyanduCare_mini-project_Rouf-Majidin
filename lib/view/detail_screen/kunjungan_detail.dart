@@ -21,6 +21,7 @@ class KunjunganDetail extends StatefulWidget {
 }
 
 class _KunjunganDetailState extends State<KunjunganDetail> {
+  @override
   void initState() {
     super.initState();
     Future.microtask(
@@ -68,7 +69,7 @@ class _KunjunganDetailState extends State<KunjunganDetail> {
 
               if (provDetail.item == null) {
                 // provDetail.fetchDataKunjunganById(widget.whereDocId);
-                return CircularProgressIndicator();
+                return Center(child: CircularProgressIndicator());
               } else {
                 provDetail.fetchDataKunjunganById(widget.whereDocId);
                 return Column(
@@ -110,12 +111,7 @@ class _KunjunganDetailState extends State<KunjunganDetail> {
                           Icon(IconlyBroken.hide),
                           Text("no img")
                         ],
-                      )
-                      // Image.asset(
-                      //   listBerita[index]["gambar"].toString(),
-                      //   fit: BoxFit.contain,
-                      // )
-                      ),
+                      )),
                   const SizedBox(
                     width: 20,
                   ),
@@ -136,277 +132,7 @@ class _KunjunganDetailState extends State<KunjunganDetail> {
                       const SizedBox(
                         height: 20,
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          nama = provDetail.item!.nama;
-                          alamat = provDetail.item!.alamat;
-                          tinggi = provDetail.item!.tinggi_badan;
-                          berat = provDetail.item!.berat_badan;
-                          tekanan_darah = provDetail.item!.tekanan_darah;
-                          keluhan = provDetail.item!.keluhan;
-
-                          showModalBottomSheet(
-                              isScrollControlled: true,
-                              backgroundColor: Colors.white,
-                              context: context,
-                              shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.vertical(
-                                    top: Radius.circular(25.0)),
-                              ),
-                              builder: (context) {
-                                return Wrap(
-                                  alignment: WrapAlignment.center,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 8.0,
-                                      ),
-                                      child: Container(
-                                        alignment: Alignment.center,
-                                        margin: EdgeInsets.all(12),
-                                        height: 2,
-                                        width: 100,
-                                        decoration: BoxDecoration(
-                                          color: AppTheme.primaryColor,
-                                        ),
-                                      ),
-                                    ),
-                                    Container(height: 10),
-                                    Container(
-                                      height: 600,
-                                      padding: EdgeInsets.only(
-                                          bottom: MediaQuery.of(context)
-                                              .viewInsets
-                                              .bottom,
-                                          top: 20,
-                                          left: 20,
-                                          right: 20),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      child: SingleChildScrollView(
-                                        scrollDirection: Axis.vertical,
-                                        child: SizedBox(
-                                          height: 400,
-                                          child: Form(
-                                            key: formKey,
-                                            autovalidateMode: AutovalidateMode
-                                                .onUserInteraction,
-                                            child: Column(
-                                              children: [
-                                                SizedBox(
-                                                  height: 40,
-                                                  child: TextFormField(
-                                                    autofocus: true,
-                                                    controller: namaController
-                                                      ..text = nama,
-                                                    onChanged: (value) {
-                                                      nama = value;
-                                                    },
-                                                    validator: (value) {},
-                                                    obscureText: false,
-                                                    decoration:
-                                                        const InputDecoration(
-                                                      border:
-                                                          OutlineInputBorder(),
-                                                      labelText: 'Nama Warga',
-                                                    ),
-                                                  ),
-                                                ),
-                                                const SizedBox(
-                                                  height: 12,
-                                                ),
-                                                SizedBox(
-                                                  height: 40,
-                                                  child: TextFormField(
-                                                    controller: alamatController
-                                                      ..text = alamat,
-                                                    onChanged: (value) {
-                                                      alamat = value;
-                                                    },
-                                                    validator: (value) {},
-                                                    obscureText: false,
-                                                    decoration:
-                                                        const InputDecoration(
-                                                      border:
-                                                          OutlineInputBorder(),
-                                                      labelText: 'Alamat',
-                                                    ),
-                                                  ),
-                                                ),
-                                                const SizedBox(
-                                                  height: 12,
-                                                ),
-                                                SizedBox(
-                                                  height: 40,
-                                                  child: TextFormField(
-                                                    controller: bbController
-                                                      ..text = berat.toString(),
-                                                    onChanged: (value) {
-                                                      berat = int.parse(value);
-                                                    },
-                                                    validator: (value) {},
-                                                    obscureText: false,
-                                                    decoration:
-                                                        const InputDecoration(
-                                                      border:
-                                                          OutlineInputBorder(),
-                                                      labelText:
-                                                          'Berat Badan (Kg)',
-                                                    ),
-                                                  ),
-                                                ),
-                                                const SizedBox(
-                                                  height: 12,
-                                                ),
-                                                SizedBox(
-                                                  height: 40,
-                                                  child: TextFormField(
-                                                    controller: tinggiController
-                                                      ..text =
-                                                          tinggi.toString(),
-                                                    onChanged: (value) {
-                                                      tinggi = int.parse(value);
-                                                    },
-                                                    validator: (value) {},
-                                                    obscureText: false,
-                                                    decoration:
-                                                        const InputDecoration(
-                                                      border:
-                                                          OutlineInputBorder(),
-                                                      labelText:
-                                                          'Tinggi Badan (Cm)',
-                                                    ),
-                                                  ),
-                                                ),
-                                                const SizedBox(
-                                                  height: 12,
-                                                ),
-                                                SizedBox(
-                                                  height: 40,
-                                                  child: TextFormField(
-                                                    controller: darahController
-                                                      ..text = tekanan_darah,
-                                                    onChanged: (value) {
-                                                      tekanan_darah = value;
-                                                    },
-                                                    validator: (value) {},
-                                                    obscureText: false,
-                                                    decoration:
-                                                        const InputDecoration(
-                                                      border:
-                                                          OutlineInputBorder(),
-                                                      labelText:
-                                                          'Tekanan Darah (Bpm)',
-                                                    ),
-                                                  ),
-                                                ),
-                                                const SizedBox(
-                                                  height: 12,
-                                                ),
-                                                SizedBox(
-                                                  height: 80,
-                                                  child: TextFormField(
-                                                    controller:
-                                                        keluhanController
-                                                          ..text = keluhan,
-                                                    onChanged: (value) {
-                                                      keluhan = value;
-                                                    },
-                                                    validator: (value) {},
-                                                    obscureText: false,
-                                                    decoration:
-                                                        const InputDecoration(
-                                                      border:
-                                                          OutlineInputBorder(),
-                                                      labelText: 'Keluhan',
-                                                    ),
-                                                    maxLines: 4,
-                                                  ),
-                                                ),
-                                                const SizedBox(
-                                                  height: 12,
-                                                ),
-                                                ElevatedButton(
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                          primary: AppTheme
-                                                              .primaryColor),
-                                                  onPressed: () {
-                                                    String id = DateTime.now()
-                                                        .millisecondsSinceEpoch
-                                                        .toString();
-                                                    final nama = namaController;
-
-                                                    DataKunjunganModel
-                                                        updateData =
-                                                        DataKunjunganModel(
-                                                            doc_id: provDetail
-                                                                .item!.doc_id,
-                                                            nama: nama.text,
-                                                            alamat: alamat,
-                                                            berat_badan: berat,
-                                                            tinggi_badan:
-                                                                tinggi,
-                                                            tekanan_darah:
-                                                                tekanan_darah,
-                                                            keluhan: keluhan);
-
-                                                    provDetail
-                                                        .updateDataKunjungan(
-                                                            updateData)
-                                                        .whenComplete(() {
-                                                      namaController.clear();
-                                                      alamatController.clear();
-                                                      bbController.clear();
-                                                      tinggiController.clear();
-                                                      darahController.clear();
-                                                      keluhanController.clear();
-                                                      provDetail
-                                                          .fetchDataKunjunganById(
-                                                              widget
-                                                                  .whereDocId);
-
-                                                      Navigator.pop(context);
-                                                      final snackBar = SnackBar(
-                                                        content: Text(
-                                                            'Sukses Update data'),
-                                                      );
-                                                      ScaffoldMessenger.of(
-                                                              context)
-                                                          .showSnackBar(
-                                                              snackBar);
-
-                                                      setState(() {});
-                                                      return snackBar;
-                                                    });
-                                                  },
-                                                  child: Center(
-                                                    child: Text(
-                                                      "Update",
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 20),
-                                                    ),
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              });
-                        },
-                        child: Text(
-                          "Ubah",
-                          style: TextStyle(color: AppTheme.primaryColor),
-                        ),
-                      ),
+                      updateDataKunjungan(provDetail, context, formKey),
                     ],
                   ),
                   Spacer(),
@@ -699,6 +425,241 @@ class _KunjunganDetailState extends State<KunjunganDetail> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  GestureDetector updateDataKunjungan(KunjunganProvider provDetail,
+      BuildContext context, GlobalKey<FormState> formKey) {
+    return GestureDetector(
+      onTap: () {
+        nama = provDetail.item!.nama;
+        alamat = provDetail.item!.alamat;
+        tinggi = provDetail.item!.tinggi_badan;
+        berat = provDetail.item!.berat_badan;
+        tekanan_darah = provDetail.item!.tekanan_darah;
+        keluhan = provDetail.item!.keluhan;
+
+        showDialog(
+          context: context,
+          barrierDismissible: false, // user must tap button!
+          builder: (BuildContext context) {
+            return AlertDialog(
+              icon: Builder(builder: (context) {
+                return GestureDetector(
+                  onTap: () => Navigator.of(context).pop(),
+                  child: const Align(
+                    alignment: Alignment.topRight,
+                    child: Icon(Icons.close),
+                  ),
+                );
+              }),
+              insetPadding: EdgeInsets.all(8),
+              content: SingleChildScrollView(
+                physics: NeverScrollableScrollPhysics(),
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.height,
+                  // form widget
+                  child: Column(children: [
+                    Container(
+                      alignment: Alignment.center,
+                      margin: EdgeInsets.all(12),
+                      height: 2,
+                      width: 100,
+                      decoration: BoxDecoration(
+                        color: AppTheme.primaryColor,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      'Add Data Kader Posyandu',
+                      style: TextStyle(
+                          color: Colors.grey[600], // Set the text color.
+                          fontSize: 16 // Set the text size.
+                          ),
+                    ),
+                    const SizedBox(height: 10),
+                    Form(
+                      key: formKey,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 40,
+                            child: TextFormField(
+                              autofocus: true,
+                              controller: namaController..text = nama,
+                              onChanged: (value) {
+                                nama = value;
+                              },
+                              validator: (value) {},
+                              obscureText: false,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: 'Nama Warga',
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 12,
+                          ),
+                          SizedBox(
+                            height: 40,
+                            child: TextFormField(
+                              controller: alamatController..text = alamat,
+                              onChanged: (value) {
+                                alamat = value;
+                              },
+                              validator: (value) {},
+                              obscureText: false,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: 'Alamat',
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 12,
+                          ),
+                          SizedBox(
+                            height: 40,
+                            child: TextFormField(
+                              controller: bbController..text = berat.toString(),
+                              onChanged: (value) {
+                                berat = int.parse(value);
+                              },
+                              validator: (value) {},
+                              obscureText: false,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: 'Berat Badan (Kg)',
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 12,
+                          ),
+                          SizedBox(
+                            height: 40,
+                            child: TextFormField(
+                              controller: tinggiController
+                                ..text = tinggi.toString(),
+                              onChanged: (value) {
+                                tinggi = int.parse(value);
+                              },
+                              validator: (value) {},
+                              obscureText: false,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: 'Tinggi Badan (Cm)',
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 12,
+                          ),
+                          SizedBox(
+                            height: 40,
+                            child: TextFormField(
+                              controller: darahController..text = tekanan_darah,
+                              onChanged: (value) {
+                                tekanan_darah = value;
+                              },
+                              validator: (value) {},
+                              obscureText: false,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: 'Tekanan Darah (Bpm)',
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 12,
+                          ),
+                          SizedBox(
+                            height: 80,
+                            child: TextFormField(
+                              controller: keluhanController..text = keluhan,
+                              onChanged: (value) {
+                                keluhan = value;
+                              },
+                              validator: (value) {},
+                              obscureText: false,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: 'Keluhan',
+                              ),
+                              maxLines: 4,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 12,
+                          ),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                primary: AppTheme.primaryColor),
+                            onPressed: () {
+                              String id = DateTime.now()
+                                  .millisecondsSinceEpoch
+                                  .toString();
+                              final nama = namaController;
+
+                              DataKunjunganModel updateData =
+                                  DataKunjunganModel(
+                                      doc_id: provDetail.item!.doc_id,
+                                      nama: nama.text,
+                                      alamat: alamat,
+                                      berat_badan: berat,
+                                      tinggi_badan: tinggi,
+                                      tekanan_darah: tekanan_darah,
+                                      keluhan: keluhan);
+
+                              provDetail
+                                  .updateDataKunjungan(updateData)
+                                  .whenComplete(() {
+                                namaController.clear();
+                                alamatController.clear();
+                                bbController.clear();
+                                tinggiController.clear();
+                                darahController.clear();
+                                keluhanController.clear();
+                                provDetail
+                                    .fetchDataKunjunganById(widget.whereDocId);
+
+                                Navigator.pop(context);
+                                final snackBar = SnackBar(
+                                  content: Text('Sukses Update data'),
+                                );
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(snackBar);
+
+                                setState(() {});
+                                return snackBar;
+                              });
+                            },
+                            child: Center(
+                              child: Text(
+                                "Update",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ]),
+                ),
+              ),
+            );
+          },
+        );
+      },
+      child: Text(
+        "Ubah",
+        style: TextStyle(color: AppTheme.primaryColor),
       ),
     );
   }

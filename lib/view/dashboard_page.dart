@@ -181,7 +181,7 @@ class _DashboardPageState extends State<DashboardPage> {
 
           height: 150,
           child: ListView.builder(
-              physics: const NeverScrollableScrollPhysics(),
+              // physics: const NeverScrollableScrollPhysics(),
               scrollDirection: Axis.horizontal,
               itemCount: menu.length,
               itemBuilder: (context, index) {
