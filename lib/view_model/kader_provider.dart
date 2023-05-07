@@ -1,7 +1,10 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:posyandu_care_apps/models/kader_model.dart';
 
 import '../models/data_kunjungan_model.dart';
@@ -16,10 +19,14 @@ class KaderProvider extends ChangeNotifier {
 
   RequestState _requestState = RequestState.empty;
   RequestState get requestState => _requestState;
-
+  // untuk generate doId
+  // String id = DateTime.now().millisecondsSinceEpoch.toString();
+  //
   String _message = '';
+  String posisiKader = '';
   String get message => _message;
-
+  String gambarKader = '';
+  String gambarKaderUpdate = "";
   Future fetchDataKader() async {
     _requestState = RequestState.loading;
     notifyListeners();
@@ -53,6 +60,86 @@ class KaderProvider extends ChangeNotifier {
     print("snap");
 
     _requestState = RequestState.loaded;
+
+    notifyListeners();
+  }
+
+  Future<void> addDataKader(DataKaderModels dataKunjungan) async {
+    // _requestState = RequestState.loading;
+    // notifyListeners();
+
+    // TODOD : 1 save data ke collection add data kader ke collection data_kader
+    await FirebaseFirestore.instance
+        .collection("data_kader")
+        .doc(dataKunjungan.docId)
+        .set(dataKunjungan.toMap());
+    print("ID : ${dataKunjungan.docId}");
+
+    // await FirebaseFirestore.instance
+    //     .collection("data_kunjungan")
+    //     .add(dataKunjungan.toJson());
+
+    notifyListeners();
+    // }
+  }
+
+  void pickImage() async {
+    final image = await ImagePicker().pickImage(
+        source: ImageSource.gallery,
+        maxHeight: 512,
+        maxWidth: 512,
+        imageQuality: 75);
+
+    Reference ref = FirebaseStorage.instance
+        .ref()
+        .child('gambarKader/${DateTime.now()}.jpg');
+    await ref.putFile(File(image!.path));
+    ref.getDownloadURL().then((value) {
+      gambarKader = value;
+      print("terpilih gambar ${value}");
+
+      notifyListeners();
+    });
+    // notifyListeners();
+  }
+
+  void updatepickImage() async {
+    final image = await ImagePicker().pickImage(
+        source: ImageSource.gallery,
+        maxHeight: 512,
+        maxWidth: 512,
+        imageQuality: 75);
+
+    Reference ref = FirebaseStorage.instance
+        .ref()
+        .child('gambarKader/${DateTime.now()}.jpg');
+    await ref.putFile(File(image!.path));
+    ref.getDownloadURL().then((value) {
+      gambarKaderUpdate = value;
+      print("terpilih gambar ${value}");
+
+      notifyListeners();
+    });
+  }
+
+  Future<void> updateDataKader(DataKaderModels dataKader) async {
+    // TODOD : 1 save data ke collection data_kunjungan
+    await FirebaseFirestore.instance
+        .collection("data_kader")
+        .doc(dataKader.docId)
+        .update(dataKader.toMap());
+    print("ini id nya : ${dataKader.docId} Sukses Update Data Kader");
+
+    notifyListeners();
+  }
+
+  Future<void> deleteDataKader(docId) async {
+    // TODOD : 1 save data ke collection data_kunjungan
+    await FirebaseFirestore.instance
+        .collection("data_kader")
+        .doc(docId)
+        .delete();
+    print("ini id nya : ${docId} Sukses Delete Data Kader");
 
     notifyListeners();
   }
