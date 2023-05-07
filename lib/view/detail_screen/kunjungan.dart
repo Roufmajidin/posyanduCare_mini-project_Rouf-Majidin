@@ -27,6 +27,7 @@ class _KunjunganState extends State<Kunjungan> {
   late TextEditingController tinggiController = TextEditingController();
   late TextEditingController darahController = TextEditingController();
   late TextEditingController keluhanController = TextEditingController();
+  @override
   void initState() {
     super.initState();
 
@@ -66,218 +67,215 @@ class _KunjunganState extends State<Kunjungan> {
           ],
         ),
       ),
-      floatingActionButton: ElevatedButton.icon(
-          onPressed: () {
-            log("add kunjungan warga");
+      floatingActionButton: addDataKunjungan(context, mediaquery),
+    );
+  }
 
-            // showModalBottomSheet(context);
-            showModalBottomSheet(
-                isScrollControlled: true,
-                backgroundColor: Colors.white,
-                context: context,
-                shape: const RoundedRectangleBorder(
-                  borderRadius:
-                      BorderRadius.vertical(top: Radius.circular(25.0)),
-                ),
-                builder: (context) {
-                  return Wrap(
-                    alignment: WrapAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8.0,
-                        ),
-                        child: Container(
-                          alignment: Alignment.center,
-                          margin: EdgeInsets.all(12),
-                          height: 2,
-                          width: 100,
-                          decoration: BoxDecoration(
-                            color: AppTheme.primaryColor,
-                          ),
+  ElevatedButton addDataKunjungan(
+      BuildContext context, MediaQueryData mediaquery) {
+    return ElevatedButton.icon(
+        onPressed: () {
+          log("add kunjungan warga");
+          showDialog(
+            context: context,
+            barrierDismissible: false, // user must tap button!
+            builder: (BuildContext context) {
+              return AlertDialog(
+                icon: Builder(builder: (context) {
+                  return GestureDetector(
+                    onTap: () => Navigator.of(context).pop(),
+                    child: const Align(
+                      alignment: Alignment.topRight,
+                      child: Icon(Icons.close),
+                    ),
+                  );
+                }),
+                insetPadding: EdgeInsets.all(8),
+                content: SingleChildScrollView(
+                  physics: NeverScrollableScrollPhysics(),
+                  child: SizedBox(
+                    width: mediaquery.size.height,
+                    // form widget
+                    child: Column(children: [
+                      Container(
+                        alignment: Alignment.center,
+                        margin: EdgeInsets.all(12),
+                        height: 2,
+                        width: 100,
+                        decoration: BoxDecoration(
+                          color: AppTheme.primaryColor,
                         ),
                       ),
-                      Container(height: 10),
-                      Container(
-                        height: 500,
-                        padding: EdgeInsets.only(
-                            bottom: MediaQuery.of(context).viewInsets.bottom,
-                            top: 20,
-                            left: 20,
-                            right: 20),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.vertical,
-                          child: SizedBox(
-                            height: 400,
-                            child: Form(
-                              key: formKey,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              child: Column(
-                                children: [
-                                  SizedBox(
-                                    height: 40,
-                                    child: TextFormField(
-                                      controller: namaController,
-                                      validator: (value) {},
-                                      obscureText: false,
-                                      decoration: const InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        labelText: 'Nama Warga',
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 12,
-                                  ),
-                                  SizedBox(
-                                    height: 40,
-                                    child: TextFormField(
-                                      controller: alamatController,
-                                      validator: (value) {},
-                                      obscureText: false,
-                                      decoration: const InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        labelText: 'Alamat',
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 12,
-                                  ),
-                                  SizedBox(
-                                    height: 40,
-                                    child: TextFormField(
-                                      controller: bbController,
-                                      validator: (value) {},
-                                      obscureText: false,
-                                      decoration: const InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        labelText: 'Berat Badan (Kg)',
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 12,
-                                  ),
-                                  SizedBox(
-                                    height: 40,
-                                    child: TextFormField(
-                                      controller: tinggiController,
-                                      validator: (value) {},
-                                      obscureText: false,
-                                      decoration: const InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        labelText: 'Tinggi Badan (Cm)',
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 12,
-                                  ),
-                                  SizedBox(
-                                    height: 40,
-                                    child: TextFormField(
-                                      controller: darahController,
-                                      validator: (value) {},
-                                      obscureText: false,
-                                      decoration: const InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        labelText: 'Tekanan Darah (Bpm)',
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 12,
-                                  ),
-                                  SizedBox(
-                                    height: 80,
-                                    child: TextFormField(
-                                      controller: keluhanController,
-                                      validator: (value) {},
-                                      obscureText: false,
-                                      decoration: const InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        labelText: 'Keluhan',
-                                      ),
-                                      maxLines: 4,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 12,
-                                  ),
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                        primary: AppTheme.primaryColor),
-                                    onPressed: () {
-                                      String id = DateTime.now()
-                                          .millisecondsSinceEpoch
-                                          .toString();
-
-                                      DataKunjunganModel addData =
-                                          DataKunjunganModel(
-                                        doc_id: id,
-                                        nama: namaController.text,
-                                        alamat: alamatController.text,
-                                        berat_badan:
-                                            int.parse(bbController.text),
-                                        tinggi_badan:
-                                            int.parse(tinggiController.text),
-                                        tekanan_darah: darahController.text,
-                                        keluhan: keluhanController.text,
-                                      );
-                                      Future.microtask(
-                                        () => Provider.of<KunjunganProvider>(
-                                                context,
-                                                listen: false)
-                                            .addDataKunjungan(addData),
-                                      ).whenComplete(() {
-                                        namaController.clear();
-                                        alamatController.clear();
-                                        bbController.clear();
-                                        tinggiController.clear();
-                                        darahController.clear();
-                                        keluhanController.clear();
-                                        Navigator.pop(context);
-
-                                        final snackBar = SnackBar(
-                                          content: Text('Sukses Add data'),
-                                        );
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(snackBar);
-
-                                        setState(() {});
-                                        return snackBar;
-                                      });
-                                    },
-                                    child: Center(
-                                      child: Text(
-                                        "Done",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20),
-                                      ),
-                                    ),
-                                  )
-                                ],
+                      const SizedBox(height: 10),
+                      Text(
+                        'Add Data Kader Posyandu',
+                        style: TextStyle(
+                            color: Colors.grey[600], // Set the text color.
+                            fontSize: 16 // Set the text size.
+                            ),
+                      ),
+                      const SizedBox(height: 10),
+                      Form(
+                        key: formKey,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: 40,
+                              child: TextFormField(
+                                controller: namaController,
+                                validator: (value) {},
+                                obscureText: false,
+                                decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: 'Nama Warga',
+                                ),
                               ),
                             ),
-                          ),
+                            const SizedBox(
+                              height: 12,
+                            ),
+                            SizedBox(
+                              height: 40,
+                              child: TextFormField(
+                                controller: alamatController,
+                                validator: (value) {},
+                                obscureText: false,
+                                decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: 'Alamat',
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 12,
+                            ),
+                            SizedBox(
+                              height: 40,
+                              child: TextFormField(
+                                controller: bbController,
+                                validator: (value) {},
+                                obscureText: false,
+                                decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: 'Berat Badan (Kg)',
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 12,
+                            ),
+                            SizedBox(
+                              height: 40,
+                              child: TextFormField(
+                                controller: tinggiController,
+                                validator: (value) {},
+                                obscureText: false,
+                                decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: 'Tinggi Badan (Cm)',
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 12,
+                            ),
+                            SizedBox(
+                              height: 40,
+                              child: TextFormField(
+                                controller: darahController,
+                                validator: (value) {},
+                                obscureText: false,
+                                decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: 'Tekanan Darah (Bpm)',
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 12,
+                            ),
+                            SizedBox(
+                              height: 80,
+                              child: TextFormField(
+                                controller: keluhanController,
+                                validator: (value) {},
+                                obscureText: false,
+                                decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: 'Keluhan',
+                                ),
+                                maxLines: 4,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 12,
+                            ),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  primary: AppTheme.primaryColor),
+                              onPressed: () {
+                                String id = DateTime.now()
+                                    .millisecondsSinceEpoch
+                                    .toString();
+
+                                DataKunjunganModel addData = DataKunjunganModel(
+                                  doc_id: id,
+                                  nama: namaController.text,
+                                  alamat: alamatController.text,
+                                  berat_badan: int.parse(bbController.text),
+                                  tinggi_badan:
+                                      int.parse(tinggiController.text),
+                                  tekanan_darah: darahController.text,
+                                  keluhan: keluhanController.text,
+                                );
+                                Future.microtask(
+                                  () => Provider.of<KunjunganProvider>(context,
+                                          listen: false)
+                                      .addDataKunjungan(addData),
+                                ).whenComplete(() {
+                                  namaController.clear();
+                                  alamatController.clear();
+                                  bbController.clear();
+                                  tinggiController.clear();
+                                  darahController.clear();
+                                  keluhanController.clear();
+                                  Navigator.pop(context);
+
+                                  final snackBar = SnackBar(
+                                    content: Text('Sukses Add data'),
+                                  );
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(snackBar);
+
+                                  setState(() {});
+                                  return snackBar;
+                                });
+                              },
+                              child: Center(
+                                child: Text(
+                                  "Done",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20),
+                                ),
+                              ),
+                            )
+                          ],
                         ),
                       ),
-                    ],
-                  );
-                });
-          },
-          icon: const Icon(IconlyBroken.add_user),
-          style: ElevatedButton.styleFrom(
-              primary: AppTheme.primaryColor), // Background color ,
-          label: Text(" Kunjungan")),
-    );
+                    ]),
+                  ),
+                ),
+              );
+            },
+          );
+        },
+        icon: const Icon(IconlyBroken.add_user),
+        style: ElevatedButton.styleFrom(
+            primary: AppTheme.primaryColor), // Background color ,
+        label: Text(" Kunjungan"));
   }
 
   listDataWarga(mediaquery) {

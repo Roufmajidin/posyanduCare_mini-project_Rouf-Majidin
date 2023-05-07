@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
               primarySwatch: Colors.blue, canvasColor: AppTheme.bgColor),
           debugShowCheckedModeBanner: false,
-          home: const DashboardPage()),
+          home: const HomePage()),
     );
   }
 }
