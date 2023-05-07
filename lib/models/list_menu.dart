@@ -2,7 +2,6 @@ import 'package:iconly/iconly.dart';
 
 List menu = [
   {"judul": "Data Kunjungan", "icons": IconlyBroken.paper_plus},
-  // {"judul": "Peralatan Posyandu", "icons": IconlyBroken.home},
   {"judul": "Data Kader", "icons": IconlyBroken.user_2},
   {"judul": "Data UPT", "icons": IconlyBroken.hide}
 ];
