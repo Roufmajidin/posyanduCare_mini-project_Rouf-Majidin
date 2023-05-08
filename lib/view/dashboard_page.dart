@@ -3,7 +3,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:posyandu_care_apps/themes/style.dart';
 import 'package:posyandu_care_apps/view/screens/artikel_page/artikel_kesehatan.dart';
-import 'package:posyandu_care_apps/view/screens/kader.dart';
+import 'package:posyandu_care_apps/view/screens/kaders_page/kader.dart';
+import 'package:posyandu_care_apps/view/screens/kunjungan_page/kunjungan.dart';
 import 'package:posyandu_care_apps/view/screens/upt_page/upt_page.dart';
 import 'package:posyandu_care_apps/widget/artikel.dart';
 import 'package:provider/provider.dart';
@@ -11,7 +12,6 @@ import 'package:weekly_date_picker/weekly_date_picker.dart';
 
 import '../models/list_menu.dart';
 import '../view_model/artikel_provider.dart';
-import 'screens/kunjungan.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -161,35 +161,17 @@ class _DashboardPageState extends State<DashboardPage> {
 
   Widget listMenu(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding:
               const EdgeInsets.only(left: 20, right: 20, top: 40, bottom: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "Services",
-                style: PrimaryTextStyle.judulStyle,
-              ),
-              Column(
-                children: const [
-                  Icon(
-                    Icons.circle,
-                    size: 5,
-                  ),
-                  Icon(
-                    Icons.circle,
-                    size: 5,
-                  ),
-                ],
-              )
-            ],
+          child: Text(
+            "Services",
+            style: PrimaryTextStyle.judulStyle,
           ),
         ),
         SizedBox(
-          // width: 400,
-
           height: 150,
           child: ListView.builder(
               // physics: const NeverScrollableScrollPhysics(),
@@ -197,8 +179,7 @@ class _DashboardPageState extends State<DashboardPage> {
               itemCount: menu.length,
               itemBuilder: (context, index) {
                 return Padding(
-                  // padding: const EdgeInsets.all(8.0),
-                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
                     children: [
                       Stack(

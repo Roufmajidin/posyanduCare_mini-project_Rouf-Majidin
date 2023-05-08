@@ -3,11 +3,8 @@ import 'package:iconly/iconly.dart';
 import 'package:posyandu_care_apps/themes/style.dart';
 import 'package:posyandu_care_apps/view/dashboard_page.dart';
 import 'package:posyandu_care_apps/view/screens/artikel_page/artikel_kesehatan.dart';
-import 'package:posyandu_care_apps/view/screens/kader.dart';
-import 'package:posyandu_care_apps/view/screens/kunjungan.dart';
-import 'package:posyandu_care_apps/view/screens/upt_page/upt_page.dart';
-
-import '../models/list_menu.dart';
+import 'package:posyandu_care_apps/view/screens/kaders_page/kader.dart';
+import 'package:posyandu_care_apps/view/screens/kunjungan_page/kunjungan.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
