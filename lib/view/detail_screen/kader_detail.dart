@@ -363,26 +363,50 @@ class _KaderDetailState extends State<KaderDetail> {
                                                                       MainAxisAlignment
                                                                           .center,
                                                                   children: [
-                                                                    // gambarKader != ""
-                                                                    // ? SizedBox(
-                                                                    //     height: 40,
-                                                                    //     child: Image.network(
-                                                                    //       proviKader.item!.image,
-                                                                    //       fit: BoxFit.contain,
-                                                                    //     ),
-                                                                    //   )
-                                                                    // :
-                                                                    SizedBox(
-                                                                      height:
-                                                                          40,
-                                                                      child: Image
-                                                                          .network(
+                                                                    if (proviKader
+                                                                            .gambarKaderUpdate ==
+                                                                        "")
+                                                                      SizedBox(
+                                                                        height:
+                                                                            40,
+                                                                        child: Image
+                                                                            .network(
+                                                                          provKader
+                                                                              .item!
+                                                                              .image,
+                                                                          fit: BoxFit
+                                                                              .contain,
+                                                                        ),
+                                                                      )
+                                                                    else if (proviKader
+                                                                            .gambarKaderUpdate !=
                                                                         proviKader
-                                                                            .gambarKaderUpdate,
-                                                                        fit: BoxFit
-                                                                            .contain,
-                                                                      ),
-                                                                    )
+                                                                            .item!
+                                                                            .image)
+                                                                      SizedBox(
+                                                                        height:
+                                                                            40,
+                                                                        child: Image
+                                                                            .network(
+                                                                          proviKader
+                                                                              .gambarKaderUpdate,
+                                                                          fit: BoxFit
+                                                                              .contain,
+                                                                        ),
+                                                                      )
+                                                                    else
+                                                                      SizedBox(
+                                                                        height:
+                                                                            40,
+                                                                        child: Image
+                                                                            .network(
+                                                                          proviKader
+                                                                              .item!
+                                                                              .image,
+                                                                          fit: BoxFit
+                                                                              .contain,
+                                                                        ),
+                                                                      )
                                                                   ],
                                                                 ),
                                                               )
@@ -493,11 +517,9 @@ class _KaderDetailState extends State<KaderDetail> {
                                                         provKader
                                                             .updateDataKader(DataKaderModels(
                                                                 docId: provKader
-                                                                    .item!
-                                                                    .docId,
-                                                                nama:
-                                                                    namaController
-                                                                        .text,
+                                                                    .item!.docId,
+                                                                nama: namaController
+                                                                    .text,
                                                                 alamat:
                                                                     alamatController
                                                                         .text,
@@ -506,7 +528,13 @@ class _KaderDetailState extends State<KaderDetail> {
                                                                 jabatan: provKader
                                                                     .posisiKader,
                                                                 image: provKader
-                                                                    .gambarKaderUpdate))
+                                                                            .gambarKaderUpdate ==
+                                                                        ""
+                                                                    ? provKader
+                                                                        .item!
+                                                                        .image
+                                                                    : provKader
+                                                                        .gambarKaderUpdate))
                                                             .whenComplete(() {
                                                           Navigator.pop(
                                                               context);
@@ -537,7 +565,7 @@ class _KaderDetailState extends State<KaderDetail> {
                                                             jabatanController
                                                                 .clear();
                                                             provKader
-                                                                .gambarKader = '';
+                                                                .gambarKaderUpdate = '';
                                                             gambarKader = '';
                                                             provKader
                                                                 .posisiKader = '';

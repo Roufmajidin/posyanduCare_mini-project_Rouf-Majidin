@@ -48,10 +48,13 @@ class _KaderPageState extends State<KaderPage> {
     return Scaffold(
         appBar: customAppBar(mediaquery),
         backgroundColor: AppTheme.primaryColor,
-        body: SingleChildScrollView(
-          // height: mediaquery.size.height,
-          child: listKader(mediaquery),
-        ),
+        body: SizedBox(
+            height: mediaquery.size.height * 1,
+            child: Column(
+              children: [
+                listKader(mediaquery),
+              ],
+            )),
         floatingActionButton: addDataKader(context, mediaquery, kaderProv));
   }
 
@@ -153,22 +156,24 @@ class _KaderPageState extends State<KaderPage> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
-                                            // gambarKader != ""
-                                            // ? SizedBox(
-                                            //     height: 40,
-                                            //     child: Image.network(
-                                            //       proviKader.item!.image,
-                                            //       fit: BoxFit.contain,
-                                            //     ),
-                                            //   )
-                                            // :
-                                            SizedBox(
-                                              height: 40,
-                                              child: Image.network(
-                                                proviKader.gambarKaderUpdate,
-                                                fit: BoxFit.contain,
-                                              ),
-                                            )
+                                            proviKader == ""
+                                                ? Container(
+                                                    height: 40,
+                                                    decoration: BoxDecoration(
+                                                        color: AppTheme
+                                                            .primaryColor,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(12)),
+                                                  )
+                                                : SizedBox(
+                                                    height: 40,
+                                                    child: Image.network(
+                                                      proviKader
+                                                          .gambarKaderUpdate,
+                                                      fit: BoxFit.contain,
+                                                    ),
+                                                  )
                                           ],
                                         ),
                                       )
@@ -255,7 +260,7 @@ class _KaderPageState extends State<KaderPage> {
                                         alamat: alamatController.text,
                                         verfiedAt: false,
                                         jabatan: kaderProv.posisiKader,
-                                        image: kaderProv.gambarKader))
+                                        image: kaderProv.gambarKaderUpdate))
                                     .whenComplete(() {
                                   Navigator.pop(context);
                                   final snackBar = SnackBar(
@@ -275,7 +280,7 @@ class _KaderPageState extends State<KaderPage> {
                                     namaController.clear();
                                     alamatController.clear();
                                     jabatanController.clear();
-                                    kaderProv.gambarKader = '';
+                                    kaderProv.gambarKaderUpdate = '';
                                     kaderProv.posisiKader = '';
                                   });
                                 });
@@ -326,7 +331,6 @@ class _KaderPageState extends State<KaderPage> {
 
   listKader(mediaQuery) {
     return Expanded(
-      flex: 1,
       child: Container(
         height: mediaQuery.size.height * 5,
         decoration: const BoxDecoration(
@@ -381,12 +385,13 @@ class _KaderPageState extends State<KaderPage> {
                 ],
               ),
             ),
-            Consumer<KaderProvider>(builder: (context, kaderProv, child) {
-              if (kaderProv.requestState == RequestState.loading) {
-                return Center(child: CircularProgressIndicator());
-              } else if (kaderProv.requestState == RequestState.loaded) {
-                return Expanded(
-                  child: ListView.builder(
+            Expanded(
+              child:
+                  Consumer<KaderProvider>(builder: (context, kaderProv, child) {
+                if (kaderProv.requestState == RequestState.loading) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (kaderProv.requestState == RequestState.loaded) {
+                  return ListView.builder(
                     padding: const EdgeInsets.only(bottom: 1),
                     scrollDirection: Axis.vertical,
                     physics: ScrollPhysics(),
@@ -473,17 +478,17 @@ class _KaderPageState extends State<KaderPage> {
                         kaderProv.fetchDataKader();
                       }
                     },
-                  ),
-                );
-              }
-              if (kaderProv.requestState == RequestState.error) {
-                return const Center(
-                    child: Text(
-                        "Gagal Mengambil Data, Periksa Akses Internet Mu"));
-              } else {
-                return const Text("tidak diketahui");
-              }
-            })
+                  );
+                }
+                if (kaderProv.requestState == RequestState.error) {
+                  return const Center(
+                      child: Text(
+                          "Gagal Mengambil Data, Periksa Akses Internet Mu"));
+                } else {
+                  return const Text("tidak diketahui");
+                }
+              }),
+            )
           ],
         ),
       ),
