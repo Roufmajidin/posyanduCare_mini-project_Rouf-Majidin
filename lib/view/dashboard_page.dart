@@ -2,10 +2,12 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
-import 'package:posyandu_care_apps/themes/colors.dart';
+import 'package:posyandu_care_apps/models/artikel_model.dart';
+import 'package:posyandu_care_apps/themes/style.dart';
 import 'package:posyandu_care_apps/view/detail_screen/artikel_kesehatan.dart';
 import 'package:posyandu_care_apps/view/detail_screen/kader.dart';
 import 'package:posyandu_care_apps/view/detail_screen/upt_page.dart';
+import 'package:posyandu_care_apps/widget/artikel.dart';
 import 'package:provider/provider.dart';
 import 'package:weekly_date_picker/weekly_date_picker.dart';
 
@@ -300,112 +302,18 @@ class _DashboardPageState extends State<DashboardPage> {
             } else if (providerArtikel.requestState == RequestState.loaded) {
               final item = providerArtikel.dataArtikelFetched;
               return SizedBox(
-                height: 300,
+                height: 200,
                 child: ListView.builder(
                   padding: const EdgeInsets.only(bottom: 20),
                   scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
                   physics: const ScrollPhysics(),
-                  itemCount: providerArtikel.dataArtikelFetched.length,
+                  itemCount: providerArtikel.dataArtikelFetched.length < 3
+                      ? providerArtikel.dataArtikelFetched.length
+                      : 3,
                   itemBuilder: (context, index) {
                     final artikel = item[index];
-                    return Padding(
-                      padding: const EdgeInsets.all(2.0),
-                      child: Card(
-                        // wrap ke padding, :)
-                        elevation: 0.1,
-                        child: Container(
-                          padding: const EdgeInsets.all(12),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(
-                                    width: 200,
-                                    child: Text(
-                                      artikel.judulArtikel,
-                                      style: PrimaryTextStyle.judulStyle,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        artikel.tanggalPublish,
-                                        style: PrimaryTextStyle.subTxt,
-                                      ),
-                                      const SizedBox(
-                                        width: 5,
-                                      ),
-                                      const Icon(
-                                        Icons.circle,
-                                        size: 5,
-                                      ),
-                                      const SizedBox(
-                                        width: 5,
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      log("Ke detail Artikel Kesehatan");
-                                      Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ArtikelDetail(
-                                                    index: index,
-                                                  )));
-                                    },
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          IconlyBroken.arrow_right_2,
-                                          size: 10,
-                                          color: AppTheme.primaryColor,
-                                        ),
-                                        Text(
-                                          "Read More",
-                                          style: TextStyle(
-                                              color: AppTheme.primaryColor),
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
-                              Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 12),
-                                  decoration: BoxDecoration(
-                                      // color: Color.fromARGB(255, 189, 187, 187)
-                                      //     .withOpacity(0.2),
-                                      borderRadius: BorderRadius.circular(12)),
-                                  height: 100,
-                                  width: 100,
-                                  child: artikel.image == ""
-                                      ? Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Icon(IconlyBroken.hide),
-                                            Text(artikel.image)
-                                          ],
-                                        )
-                                      : Image.network(
-                                          artikel.image.toString(),
-                                          fit: BoxFit.cover,
-                                        )),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
+                    return ArtikelWiget(artikel: artikel);
                   },
                 ),
               );

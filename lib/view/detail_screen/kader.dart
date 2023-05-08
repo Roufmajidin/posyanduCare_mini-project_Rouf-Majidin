@@ -4,7 +4,7 @@ import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:posyandu_care_apps/models/kader_model.dart';
-import 'package:posyandu_care_apps/themes/colors.dart';
+import 'package:posyandu_care_apps/themes/style.dart';
 import 'package:posyandu_care_apps/view/detail_screen/kader_detail.dart';
 import 'package:posyandu_care_apps/view/detail_screen/kunjungan_detail.dart';
 import 'package:posyandu_care_apps/view_model/kader_provider.dart';
@@ -402,7 +402,7 @@ class _KaderPageState extends State<KaderPage> {
 
                       if (kaderProv.kaderFetched != null) {
                         return Card(
-                          elevation: 0.2,
+                          elevation: 0.9,
                           child: Container(
                             padding: const EdgeInsets.all(12),
                             child: Row(

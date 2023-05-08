@@ -55,4 +55,25 @@ class ArtikelProvider extends ChangeNotifier {
 
     notifyListeners();
   }
+
+  Future<void> addDataArtikel(ArtikelModel artikel) async {
+    // _requestState = RequestState.loading;
+    // notifyListeners();
+
+    // TODOD : 1 save data ke collection data_kunjungan
+    await FirebaseFirestore.instance
+        .collection("data_artikel")
+        .doc()
+        .set(artikel.toMap());
+    print("Berhasil");
+
+    // TODO malam ini : bikin modeols baru (rekomendasi_obat);  DONE
+
+    // await FirebaseFirestore.instance
+    //     .collection("data_kunjungan")
+    //     .add(dataKunjungan.toJson());
+
+    notifyListeners();
+    // }
+  }
 }

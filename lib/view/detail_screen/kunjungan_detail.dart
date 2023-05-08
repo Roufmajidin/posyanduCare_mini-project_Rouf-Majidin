@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 
 import '../../models/data_kunjungan_model.dart';
 import '../../models/list_menu.dart';
-import '../../themes/colors.dart';
+import '../../themes/style.dart';
 
 class KunjunganDetail extends StatefulWidget {
   final String whereDocId;
