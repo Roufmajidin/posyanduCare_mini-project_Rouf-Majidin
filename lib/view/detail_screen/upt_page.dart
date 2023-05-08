@@ -70,7 +70,7 @@ class _UptPageState extends State<UptPage> {
                 color: const Color.fromARGB(255, 239, 238, 238),
                 borderRadius: BorderRadius.circular(12)),
             padding: const EdgeInsets.only(top: 12, left: 12),
-            height: 80,
+            height: 150,
             width: mediaquery.size.width * 1,
             child: Column(
               children: [
@@ -369,6 +369,7 @@ class _UptPageState extends State<UptPage> {
     return Expanded(
       child: SingleChildScrollView(
         child: Container(
+          padding: EdgeInsets.only(bottom: 50),
           // height: 200,
           decoration: const BoxDecoration(
               color: Colors.white,
