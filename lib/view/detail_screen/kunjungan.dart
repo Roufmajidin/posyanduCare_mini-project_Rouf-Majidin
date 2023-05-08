@@ -341,7 +341,7 @@ class _KunjunganState extends State<Kunjungan> {
             Expanded(child:
                 Consumer<KunjunganProvider>(builder: (context, prov, child) {
               if (prov.requestState == RequestState.loading) {
-                return CircularProgressIndicator();
+                return Center(child: CircularProgressIndicator());
               } else if (prov.requestState == RequestState.loaded) {
                 final item = prov.dataKunjunganfetched;
                 return ListView.builder(
