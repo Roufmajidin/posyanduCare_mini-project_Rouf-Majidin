@@ -62,7 +62,7 @@ class KunjunganProvider extends ChangeNotifier {
     _requestState = RequestState.loaded;
     _itemRekomendasi =
         RekomendasiObatModels.fromJson(documentSnapCollctionObat);
-
+    print("bad");
     notifyListeners();
   }
 

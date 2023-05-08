@@ -70,7 +70,7 @@ class _KaderDetailState extends State<KaderDetail> {
         if (provKader.requestState == RequestState.loading) {
           // provDetail.fetchDataKunjunganById(widget.whereDocId);
 
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else if (provKader.requestState == RequestState.loaded) {
           provKader.fetchKaderById(widget.index);
 

@@ -37,11 +37,6 @@ class _KunjunganDetailState extends State<KunjunganDetail> {
   final TextEditingController tinggiController = TextEditingController();
   final TextEditingController darahController = TextEditingController();
   final TextEditingController keluhanController = TextEditingController();
-  @override
-  void dispose() {
-    namaController.dispose();
-    super.dispose();
-  }
 
   String nama = '';
   String alamat = '';
@@ -58,7 +53,7 @@ class _KunjunganDetailState extends State<KunjunganDetail> {
         appBar: customAppBar(mediaquery),
         backgroundColor: AppTheme.primaryColor,
         body: SizedBox(
-            height: mediaquery.size.height * 1,
+            height: mediaquery.size.height,
             child: Consumer<KunjunganProvider>(
                 builder: (context, provDetail, child) {
               Timestamp tanggalKunjugan =
@@ -67,16 +62,432 @@ class _KunjunganDetailState extends State<KunjunganDetail> {
               String resultTanggal =
                   DateFormat('dd MMMM yyyy').format(tanggalKunjunganConvert);
 
-              if (provDetail.item == null) {
+              if (provDetail.requestState == RequestState.loading) {
                 // provDetail.fetchDataKunjunganById(widget.whereDocId);
-                return Center(child: CircularProgressIndicator());
-              } else {
+                return const Center(child: CircularProgressIndicator());
+              } else if (provDetail.requestState == RequestState.loaded) {
                 provDetail.fetchDataKunjunganById(widget.whereDocId);
                 return Column(
                   children: [
-                    widgetDetail(provDetail, context, formKey, resultTanggal)
+                    // widgetDetail(provDetail, context, formKey, resultTanggal)
+                    Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: AppTheme.bgColor,
+                            borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(30),
+                                topRight: Radius.circular(30))),
+                        child: Column(
+                          children: [
+                            Container(
+                              height: 200,
+                              margin: const EdgeInsets.only(top: 12),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 30, horizontal: 12),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                      decoration: BoxDecoration(
+                                          color: Colors.grey.withOpacity(0.2),
+                                          borderRadius:
+                                              BorderRadius.circular(12)),
+                                      height: 80,
+                                      width: 80,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: const [
+                                          Icon(IconlyBroken.hide),
+                                          Text("no img")
+                                        ],
+                                      )),
+                                  const SizedBox(
+                                    width: 20,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Nama :${provDetail.item!.nama}",
+                                        style: PrimaryTextStyle.judulStyle,
+                                      ),
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
+                                      Text(
+                                        "Alamat :${provDetail.item!.alamat}",
+                                        style: PrimaryTextStyle.subTxt,
+                                      ),
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
+                                      updateDataKunjungan(
+                                          provDetail, context, formKey),
+                                    ],
+                                  ),
+                                  Spacer(),
+                                  GestureDetector(
+                                    onTap: () {
+                                      print("delete data");
+                                      provDetail
+                                          .hapusKunjungan(widget.whereDocId)
+                                          .whenComplete(
+                                              () => Navigator.pop(context));
+                                      final snackBar = SnackBar(
+                                        content: Text('Sukses Delete data'),
+                                      );
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(snackBar);
+                                    },
+                                    child: SizedBox(
+                                      height: 80,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [Icon(IconlyBroken.delete)],
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.only(top: 12),
+                              decoration:
+                                  const BoxDecoration(color: Colors.white),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 30, horizontal: 12),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                      child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Details Warga",
+                                        style: PrimaryTextStyle.judulStyle,
+                                      ),
+                                      SizedBox(
+                                        height: 12,
+                                      ),
+                                      Row(
+                                        children: [
+                                          SizedBox(
+                                            width: 120,
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  "Tinggi Badan",
+                                                  style:
+                                                      PrimaryTextStyle.subTxt,
+                                                ),
+                                                Text(
+                                                  "Berat Badan",
+                                                  style:
+                                                      PrimaryTextStyle.subTxt,
+                                                ),
+                                                Text(
+                                                  "Tekanan Darah",
+                                                  style:
+                                                      PrimaryTextStyle.subTxt,
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 100,
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  ": ${provDetail.item!.tinggi_badan.toString()} Cm",
+                                                  style:
+                                                      PrimaryTextStyle.subTxt,
+                                                ),
+                                                Text(
+                                                  ": ${provDetail.item!.berat_badan.toString()} Kg",
+                                                  style:
+                                                      PrimaryTextStyle.subTxt,
+                                                ),
+                                                Text(
+                                                  ": ${provDetail.item!.tekanan_darah.toString()} Bpm",
+                                                  style:
+                                                      PrimaryTextStyle.subTxt,
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  )
+                                      // Image.asset(
+                                      //   listBerita[index]["gambar"].toString(),
+                                      //   fit: BoxFit.contain,
+                                      // )
+                                      ),
+                                  const SizedBox(
+                                    width: 20,
+                                  ),
+                                  const Spacer(),
+                                  GestureDetector(
+                                    onTap: () {},
+                                    child: const SizedBox(
+                                        height: 80,
+                                        child: Center(
+                                          child: Text(
+                                            "",
+                                            style:
+                                                TextStyle(color: Colors.green),
+                                          ),
+                                        )),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.only(top: 12),
+                              decoration:
+                                  const BoxDecoration(color: Colors.white),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 30, horizontal: 8),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                      child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    // mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Riwayat Obat",
+                                        style: PrimaryTextStyle.judulStyle,
+                                      ),
+                                      const SizedBox(
+                                        height: 12,
+                                      ),
+                                      Row(
+                                        children: [
+                                          SizedBox(
+                                            width: 130,
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  "Tanggal Kunjungan",
+                                                  style:
+                                                      PrimaryTextStyle.subTxt,
+                                                ),
+                                                Text(
+                                                  "Keluhan",
+                                                  style:
+                                                      PrimaryTextStyle.subTxt,
+                                                ),
+                                                Text(
+                                                  "List Obat",
+                                                  style:
+                                                      PrimaryTextStyle.subTxt,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 140,
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  ": ${resultTanggal}",
+                                                  style:
+                                                      PrimaryTextStyle.subTxt,
+                                                ),
+                                                Text(
+                                                  ": ${provDetail.item!.keluhan}",
+                                                  style:
+                                                      PrimaryTextStyle.subTxt,
+                                                ),
+                                                provDetail.itemRekomendasi!
+                                                            .dataObat ==
+                                                        "null"
+                                                    ? Text(
+                                                        ": Belum terverikasi",
+                                                        style: TextStyle(
+                                                            color: Colors
+                                                                .redAccent,
+                                                            fontSize: 14),
+                                                      )
+                                                    : Text(
+                                                        ": ${provDetail.itemRekomendasi!.dataObat}",
+                                                        style: PrimaryTextStyle
+                                                            .subTxt,
+                                                      ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  )
+                                      // Image.asset(
+                                      //   listBerita[index]["gambar"].toString(),
+                                      //   fit: BoxFit.contain,
+                                      // )
+                                      ),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  // Spacer(),
+                                  provDetail.itemRekomendasi!.isVerified ==
+                                          false
+                                      ? Row(
+                                          children: const [
+                                            Icon(Icons.close,
+                                                color: Colors.red),
+                                            Text("Unverified",
+                                                style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Colors.red)),
+                                          ],
+                                        )
+                                      : Row(
+                                          children: [
+                                            Icon(
+                                              Icons.check,
+                                              color: Colors.green,
+                                            ),
+                                            Text("verified",
+                                                style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Colors.green)),
+                                          ],
+                                        ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.only(top: 12),
+                              decoration:
+                                  const BoxDecoration(color: Colors.white),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 30, horizontal: 12),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                      child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Verifikasi",
+                                        style: PrimaryTextStyle.judulStyle,
+                                      ),
+                                      const SizedBox(
+                                        height: 12,
+                                      ),
+                                      Row(
+                                        children: [
+                                          SizedBox(
+                                            width: 160,
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  "Penanggung Jawab",
+                                                  style:
+                                                      PrimaryTextStyle.subTxt,
+                                                ),
+                                                Text(
+                                                  "Tanggal",
+                                                  style:
+                                                      PrimaryTextStyle.subTxt,
+                                                ),
+                                                Text(
+                                                  "Dokter tugas",
+                                                  style:
+                                                      PrimaryTextStyle.subTxt,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 150,
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  ": ${provDetail.itemRekomendasi!.penanggungJawab}",
+                                                  style:
+                                                      PrimaryTextStyle.subTxt,
+                                                ),
+                                                Text(
+                                                  ": ${resultTanggal}",
+                                                  style:
+                                                      PrimaryTextStyle.subTxt,
+                                                ),
+                                                Text(
+                                                  ": ${provDetail.itemRekomendasi!.dokterTugas}",
+                                                  style:
+                                                      PrimaryTextStyle.subTxt,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  )
+                                      // Image.asset(
+                                      //   listBerita[index]["gambar"].toString(),
+                                      //   fit: BoxFit.contain,
+                                      // )
+                                      ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
                 );
+              }
+              if (provDetail.requestState == RequestState.error) {
+                return const Center(
+                    child: Text(
+                        "Gagal Mengambil Data, Periksa Akses Internet Mu"));
+              } else {
+                return const Text("tidak diketahui");
               }
             })));
   }
@@ -232,14 +643,14 @@ class _KunjunganDetailState extends State<KunjunganDetail> {
                   const SizedBox(
                     width: 20,
                   ),
-                  Spacer(),
+                  const Spacer(),
                   GestureDetector(
                     onTap: () {},
-                    child: SizedBox(
+                    child: const SizedBox(
                         height: 80,
                         child: Center(
                           child: Text(
-                            "Ideal",
+                            "",
                             style: TextStyle(color: Colors.green),
                           ),
                         )),
@@ -270,7 +681,7 @@ class _KunjunganDetailState extends State<KunjunganDetail> {
                       Row(
                         children: [
                           SizedBox(
-                            width: 130,
+                            width: 150,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -327,9 +738,7 @@ class _KunjunganDetailState extends State<KunjunganDetail> {
                       //   fit: BoxFit.contain,
                       // )
                       ),
-                  const SizedBox(
-                    width: 5,
-                  ),
+
                   // Spacer(),
                   provDetail.itemRekomendasi!.isVerified == false
                       ? Row(
