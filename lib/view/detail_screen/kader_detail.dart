@@ -11,7 +11,7 @@ import 'package:posyandu_care_apps/view_model/kader_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/kader_model.dart';
-import '../../themes/colors.dart';
+import '../../themes/style.dart';
 
 class KaderDetail extends StatefulWidget {
   final String index;

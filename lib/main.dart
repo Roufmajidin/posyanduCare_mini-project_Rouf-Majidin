@@ -1,8 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:posyandu_care_apps/firebase_options.dart';
-import 'package:posyandu_care_apps/themes/colors.dart';
+import 'package:posyandu_care_apps/themes/style.dart';
 import 'package:posyandu_care_apps/view/home_page.dart';
+import 'package:posyandu_care_apps/view_model/artikel_provider.dart';
 import 'package:posyandu_care_apps/view_model/kader_provider.dart';
 import 'package:posyandu_care_apps/view_model/kunjungan_provider.dart';
 import 'package:posyandu_care_apps/view_model/upt_provider.dart';
@@ -27,7 +28,8 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => KunjunganProvider()),
         ChangeNotifierProvider(create: (context) => KaderProvider()),
-        ChangeNotifierProvider(create: (context) => UptProvider())
+        ChangeNotifierProvider(create: (context) => UptProvider()),
+        ChangeNotifierProvider(create: (context) => ArtikelProvider())
       ],
       child: MaterialApp(
           title: 'Posyandu Care Apps',

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
-import 'package:posyandu_care_apps/themes/colors.dart';
+import 'package:posyandu_care_apps/themes/style.dart';
 import 'package:posyandu_care_apps/view/dashboard_page.dart';
 import 'package:posyandu_care_apps/view/detail_screen/artikel_kesehatan.dart';
 import 'package:posyandu_care_apps/view/detail_screen/kader.dart';
