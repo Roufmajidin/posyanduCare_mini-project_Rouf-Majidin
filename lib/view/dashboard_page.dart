@@ -6,9 +6,11 @@ import 'package:posyandu_care_apps/themes/colors.dart';
 import 'package:posyandu_care_apps/view/detail_screen/artikel_kesehatan.dart';
 import 'package:posyandu_care_apps/view/detail_screen/kader.dart';
 import 'package:posyandu_care_apps/view/detail_screen/upt_page.dart';
+import 'package:provider/provider.dart';
 import 'package:weekly_date_picker/weekly_date_picker.dart';
 
 import '../models/list_menu.dart';
+import '../view_model/artikel_provider.dart';
 import 'detail_screen/artikel_detail.dart';
 import 'detail_screen/kunjungan.dart';
 
@@ -21,6 +23,16 @@ class DashboardPage extends StatefulWidget {
 
 class _DashboardPageState extends State<DashboardPage> {
   DateTime _selectedDay = DateTime.now();
+  @override
+  void initState() {
+    super.initState();
+
+    Future.microtask(
+      () => Provider.of<ArtikelProvider>(context, listen: false)
+          .fetchDataArtikel(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     var mediaquery = MediaQuery.of(context);
@@ -281,114 +293,131 @@ class _DashboardPageState extends State<DashboardPage> {
             ],
           ),
         ),
-        SizedBox(
-          height: 300,
-          child: ListView.builder(
-            padding: const EdgeInsets.only(bottom: 20),
-            scrollDirection: Axis.vertical,
-            physics: ScrollPhysics(),
-            itemCount: listBerita.length,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.all(2.0),
-                child: Card(
-                  // wrap ke padding, :)
-                  elevation: 0.1,
-                  child: Container(
-                    padding: const EdgeInsets.all(12),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              width: 200,
-                              child: Text(
-                                listBerita[index]["judulBerita"],
-                                style: PrimaryTextStyle.judulStyle,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  listBerita[index]["tanggal"],
-                                  style: PrimaryTextStyle.subTxt,
-                                ),
-                                const SizedBox(
-                                  width: 5,
-                                ),
-                                const Icon(
-                                  Icons.circle,
-                                  size: 5,
-                                ),
-                                const SizedBox(
-                                  width: 5,
-                                ),
-                                Text(
-                                  listBerita[index]["waktu_pub"],
-                                  style: PrimaryTextStyle.subTxt,
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                log("Ke detail Artikel Kesehatan");
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => ArtikelDetail(
-                                          index: index,
-                                        )));
-                              },
-                              child: Row(
+        Consumer<ArtikelProvider>(
+          builder: ((context, providerArtikel, child) {
+            if (providerArtikel.requestState == RequestState.loading) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (providerArtikel.requestState == RequestState.loaded) {
+              final item = providerArtikel.dataArtikelFetched;
+              return SizedBox(
+                height: 300,
+                child: ListView.builder(
+                  padding: const EdgeInsets.only(bottom: 20),
+                  scrollDirection: Axis.vertical,
+                  physics: const ScrollPhysics(),
+                  itemCount: providerArtikel.dataArtikelFetched.length,
+                  itemBuilder: (context, index) {
+                    final artikel = item[index];
+                    return Padding(
+                      padding: const EdgeInsets.all(2.0),
+                      child: Card(
+                        // wrap ke padding, :)
+                        elevation: 0.1,
+                        child: Container(
+                          padding: const EdgeInsets.all(12),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Icon(
-                                    IconlyBroken.arrow_right_2,
-                                    size: 10,
-                                    color: AppTheme.primaryColor,
+                                  SizedBox(
+                                    width: 200,
+                                    child: Text(
+                                      artikel.judulArtikel,
+                                      style: PrimaryTextStyle.judulStyle,
+                                    ),
                                   ),
-                                  Text(
-                                    "Read more for read",
-                                    style:
-                                        TextStyle(color: AppTheme.primaryColor),
+                                  const SizedBox(
+                                    height: 10,
                                   ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        artikel.tanggalPublish,
+                                        style: PrimaryTextStyle.subTxt,
+                                      ),
+                                      const SizedBox(
+                                        width: 5,
+                                      ),
+                                      const Icon(
+                                        Icons.circle,
+                                        size: 5,
+                                      ),
+                                      const SizedBox(
+                                        width: 5,
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      log("Ke detail Artikel Kesehatan");
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ArtikelDetail(
+                                                    index: index,
+                                                  )));
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          IconlyBroken.arrow_right_2,
+                                          size: 10,
+                                          color: AppTheme.primaryColor,
+                                        ),
+                                        Text(
+                                          "Read More",
+                                          style: TextStyle(
+                                              color: AppTheme.primaryColor),
+                                        ),
+                                      ],
+                                    ),
+                                  )
                                 ],
                               ),
-                            )
-                          ],
+                              Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 12),
+                                  decoration: BoxDecoration(
+                                      // color: Color.fromARGB(255, 189, 187, 187)
+                                      //     .withOpacity(0.2),
+                                      borderRadius: BorderRadius.circular(12)),
+                                  height: 100,
+                                  width: 100,
+                                  child: artikel.image == ""
+                                      ? Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Icon(IconlyBroken.hide),
+                                            Text(artikel.image)
+                                          ],
+                                        )
+                                      : Image.network(
+                                          artikel.image.toString(),
+                                          fit: BoxFit.cover,
+                                        )),
+                            ],
+                          ),
                         ),
-                        Container(
-                            padding: EdgeInsets.symmetric(horizontal: 12),
-                            decoration: BoxDecoration(
-                                color: Color.fromARGB(255, 189, 187, 187)
-                                    .withOpacity(0.2),
-                                borderRadius: BorderRadius.circular(12)),
-                            height: 100,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Icon(IconlyBroken.hide),
-                                Text("no image")
-                              ],
-                            )
-                            // Image.asset(
-                            //   listBerita[index]["gambar"].toString(),
-                            //   fit: BoxFit.contain,
-                            // )
-                            )
-                      ],
-                    ),
-                  ),
+                      ),
+                    );
+                  },
                 ),
               );
-            },
-          ),
+            }
+            if (providerArtikel.requestState == RequestState.error) {
+              return const Center(
+                  child:
+                      Text("Gagal Mengambil Data, Periksa Akses Internet Mu"));
+            } else {
+              return const Text("tidak diketahui");
+            }
+          }),
         ),
       ],
     );
