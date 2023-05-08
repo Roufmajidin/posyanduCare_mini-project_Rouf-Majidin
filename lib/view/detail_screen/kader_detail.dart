@@ -541,16 +541,9 @@ class _KaderDetailState extends State<KaderDetail> {
                                                           final snackBar =
                                                               SnackBar(
                                                             content: Text(
-                                                                'Sukses Add Data'),
+                                                                'Sukses Update Data'),
                                                             duration: Duration(
                                                                 seconds: 4),
-                                                            action:
-                                                                SnackBarAction(
-                                                              label: 'Undo',
-                                                              onPressed: () {
-                                                                setState(() {});
-                                                              },
-                                                            ),
                                                           );
 
                                                           ScaffoldMessenger.of(
