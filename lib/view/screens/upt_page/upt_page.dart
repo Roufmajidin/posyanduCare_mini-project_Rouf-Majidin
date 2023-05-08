@@ -7,7 +7,7 @@ import 'package:posyandu_care_apps/models/list_menu.dart';
 import 'package:posyandu_care_apps/view_model/upt_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../../themes/style.dart';
+import '../../../themes/style.dart';
 
 class UptPage extends StatefulWidget {
   final index;

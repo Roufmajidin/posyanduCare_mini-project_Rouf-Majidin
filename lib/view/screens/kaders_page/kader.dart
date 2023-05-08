@@ -5,12 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:posyandu_care_apps/models/kader_model.dart';
 import 'package:posyandu_care_apps/themes/style.dart';
-import 'package:posyandu_care_apps/view/detail_screen/kader_detail.dart';
-import 'package:posyandu_care_apps/view/detail_screen/kunjungan_detail.dart';
+import 'package:posyandu_care_apps/view/screens/kaders_page/kader_detail.dart';
 import 'package:posyandu_care_apps/view_model/kader_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/list_menu.dart';
+import '../../../models/list_menu.dart';
 
 class KaderPage extends StatefulWidget {
   final index;

@@ -4,12 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:posyandu_care_apps/models/artikel_model.dart';
 import 'package:posyandu_care_apps/themes/style.dart';
-import 'package:posyandu_care_apps/view/detail_screen/artikel_detail.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/list_menu.dart';
-import '../../view_model/artikel_provider.dart';
-import '../../widget/artikel.dart';
+import '../../../models/list_menu.dart';
+import '../../../view_model/artikel_provider.dart';
+import '../../../widget/artikel.dart';
 
 class ArtikelKesehatan extends StatefulWidget {
   ArtikelKesehatan({super.key});

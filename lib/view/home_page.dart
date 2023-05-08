@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:posyandu_care_apps/themes/style.dart';
 import 'package:posyandu_care_apps/view/dashboard_page.dart';
-import 'package:posyandu_care_apps/view/detail_screen/artikel_kesehatan.dart';
-import 'package:posyandu_care_apps/view/detail_screen/kader.dart';
-import 'package:posyandu_care_apps/view/detail_screen/kunjungan.dart';
-import 'package:posyandu_care_apps/view/detail_screen/upt_page.dart';
+import 'package:posyandu_care_apps/view/screens/artikel_page/artikel_kesehatan.dart';
+import 'package:posyandu_care_apps/view/screens/kader.dart';
+import 'package:posyandu_care_apps/view/screens/kunjungan.dart';
+import 'package:posyandu_care_apps/view/screens/upt_page/upt_page.dart';
 
 import '../models/list_menu.dart';
 

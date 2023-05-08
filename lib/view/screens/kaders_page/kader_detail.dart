@@ -6,12 +6,12 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:posyandu_care_apps/models/kader_model.dart';
 import 'package:posyandu_care_apps/models/list_menu.dart';
 import 'package:posyandu_care_apps/view_model/kader_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/kader_model.dart';
-import '../../themes/style.dart';
+import '../../../themes/style.dart';
 
 class KaderDetail extends StatefulWidget {
   final String index;
