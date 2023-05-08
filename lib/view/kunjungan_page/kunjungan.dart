@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:posyandu_care_apps/models/data_kunjungan_model.dart';
 import 'package:posyandu_care_apps/themes/style.dart';
-import 'package:posyandu_care_apps/view/screens/kunjungan_page/kunjungan_detail.dart';
+import 'package:posyandu_care_apps/view/kunjungan_page/kunjungan_detail.dart';
 import 'package:provider/provider.dart';
 
 import '../../../models/list_menu.dart';

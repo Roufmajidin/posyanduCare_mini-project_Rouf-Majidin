@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:posyandu_care_apps/models/kader_model.dart';
 import 'package:posyandu_care_apps/themes/style.dart';
-import 'package:posyandu_care_apps/view/screens/kaders_page/kader_detail.dart';
+import 'package:posyandu_care_apps/view/kaders_page/kader_detail.dart';
 import 'package:posyandu_care_apps/view_model/kader_provider.dart';
 import 'package:provider/provider.dart';
 

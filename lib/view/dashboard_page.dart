@@ -2,16 +2,16 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:posyandu_care_apps/themes/style.dart';
-import 'package:posyandu_care_apps/view/screens/artikel_page/artikel_kesehatan.dart';
-import 'package:posyandu_care_apps/view/screens/kaders_page/kader.dart';
-import 'package:posyandu_care_apps/view/screens/kunjungan_page/kunjungan.dart';
-import 'package:posyandu_care_apps/view/screens/upt_page/upt_page.dart';
 import 'package:posyandu_care_apps/widget/artikel.dart';
 import 'package:provider/provider.dart';
 import 'package:weekly_date_picker/weekly_date_picker.dart';
 
 import '../models/list_menu.dart';
 import '../view_model/artikel_provider.dart';
+import 'artikel_page/artikel_kesehatan.dart';
+import 'kaders_page/kader.dart';
+import 'kunjungan_page/kunjungan.dart';
+import 'upt_page/upt_page.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
