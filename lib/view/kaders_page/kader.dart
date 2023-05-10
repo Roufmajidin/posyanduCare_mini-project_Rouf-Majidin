@@ -5,12 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:posyandu_care_apps/models/kader_model.dart';
 import 'package:posyandu_care_apps/themes/style.dart';
-import 'package:posyandu_care_apps/view/detail_screen/kader_detail.dart';
-import 'package:posyandu_care_apps/view/detail_screen/kunjungan_detail.dart';
+import 'package:posyandu_care_apps/view/kaders_page/kader_detail.dart';
 import 'package:posyandu_care_apps/view_model/kader_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/list_menu.dart';
+import '../../../models/list_menu.dart';
 
 class KaderPage extends StatefulWidget {
   final index;
@@ -58,7 +57,7 @@ class _KaderPageState extends State<KaderPage> {
         floatingActionButton: addDataKader(context, mediaquery, kaderProv));
   }
 
-  ElevatedButton addDataKader(BuildContext context, MediaQueryData mediaquery,
+  addDataKader(BuildContext context, MediaQueryData mediaquery,
       KaderProvider kaderProv) {
     return ElevatedButton.icon(
         onPressed: () {
@@ -76,9 +75,9 @@ class _KaderPageState extends State<KaderPage> {
                     ),
                   );
                 }),
-                insetPadding: EdgeInsets.all(8),
+                insetPadding: const EdgeInsets.all(8),
                 content: SingleChildScrollView(
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   child: SizedBox(
                     width: mediaquery.size.height,
                     // form widget
@@ -151,12 +150,12 @@ class _KaderPageState extends State<KaderPage> {
                                       height: 40,
                                       width: 40,
                                       child: Consumer<KaderProvider>(
-                                        builder: (context, proviKader, _) =>
+                                        builder: (context, providerKader, _) =>
                                             Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
-                                            proviKader == ""
+                                            providerKader == ""
                                                 ? Container(
                                                     height: 40,
                                                     decoration: BoxDecoration(
@@ -169,7 +168,7 @@ class _KaderPageState extends State<KaderPage> {
                                                 : SizedBox(
                                                     height: 40,
                                                     child: Image.network(
-                                                      proviKader
+                                                      providerKader
                                                           .gambarKaderUpdate,
                                                       fit: BoxFit.contain,
                                                     ),
@@ -264,8 +263,8 @@ class _KaderPageState extends State<KaderPage> {
                                     .whenComplete(() {
                                   Navigator.pop(context);
                                   final snackBar = SnackBar(
-                                    content: Text('Sukses Add Data'),
-                                    duration: Duration(seconds: 4),
+                                    content: const Text('Sukses Add Data'),
+                                    duration: const Duration(seconds: 4),
                                     action: SnackBarAction(
                                       label: 'Undo',
                                       onPressed: () {
@@ -305,13 +304,13 @@ class _KaderPageState extends State<KaderPage> {
             },
           );
         },
-        icon: Icon(IconlyBroken.add_user),
+        icon: const Icon(IconlyBroken.add_user),
         style: ElevatedButton.styleFrom(
             primary: AppTheme.primaryColor), // Background color ,
         label: Text("Kader Posyandu"));
   }
 
-  PreferredSize customAppBar(MediaQueryData mediaquery) {
+  customAppBar(MediaQueryData mediaquery) {
     return PreferredSize(
       preferredSize: const Size.fromHeight(80.0),
       child: AppBar(

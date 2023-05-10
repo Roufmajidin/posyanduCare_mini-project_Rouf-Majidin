@@ -5,7 +5,7 @@ import 'package:iconly/iconly.dart';
 import 'package:posyandu_care_apps/models/artikel_model.dart';
 
 import '../themes/style.dart';
-import '../view/detail_screen/artikel_detail.dart';
+import '../view/artikel_page/artikel_detail.dart';
 
 class ArtikelWiget extends StatelessWidget {
   const ArtikelWiget({

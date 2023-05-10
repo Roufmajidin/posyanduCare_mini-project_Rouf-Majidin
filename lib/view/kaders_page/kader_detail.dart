@@ -1,18 +1,15 @@
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:dropdown_textfield/dropdown_textfield.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:posyandu_care_apps/models/list_menu.dart';
+import 'package:posyandu_care_apps/models/kader_model.dart';
 import 'package:posyandu_care_apps/view_model/kader_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/kader_model.dart';
-import '../../themes/style.dart';
+import '../../../themes/style.dart';
 
+// ignore: must_be_immutable
 class KaderDetail extends StatefulWidget {
   final String index;
   KaderDetail({super.key, required this.index});
@@ -78,7 +75,6 @@ class _KaderDetailState extends State<KaderDetail> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              // profileDetail(mediaquery, provKader),
               widgetProfile(mediaquery, provKader, context, gambarKader,
                   posisiKader, formKey),
               posisiDetail(mediaquery, provKader),
@@ -97,7 +93,7 @@ class _KaderDetailState extends State<KaderDetail> {
     );
   }
 
-  Container widgetProfile(
+  widgetProfile(
       MediaQueryData mediaquery,
       KaderProvider provKader,
       BuildContext context,
@@ -121,7 +117,7 @@ class _KaderDetailState extends State<KaderDetail> {
             child: Container(
               width: 70,
               height: 70,
-              color: Color.fromARGB(255, 195, 195, 195),
+              color: const Color.fromARGB(255, 195, 195, 195),
               child: Image.network(
                 provKader.item!.image,
                 fit: BoxFit.contain,

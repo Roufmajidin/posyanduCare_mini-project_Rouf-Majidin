@@ -2,12 +2,9 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:posyandu_care_apps/themes/style.dart';
-import 'package:posyandu_care_apps/view/detail_screen/kunjungan_detail.dart';
 import 'package:posyandu_care_apps/view_model/artikel_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
-
-import '../../models/list_menu.dart';
 
 class ArtikelDetail extends StatefulWidget {
   final String docId;

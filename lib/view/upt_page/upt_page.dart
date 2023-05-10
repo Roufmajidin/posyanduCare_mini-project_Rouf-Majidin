@@ -7,7 +7,7 @@ import 'package:posyandu_care_apps/models/list_menu.dart';
 import 'package:posyandu_care_apps/view_model/upt_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../../themes/style.dart';
+import '../../../themes/style.dart';
 
 class UptPage extends StatefulWidget {
   final index;
@@ -381,9 +381,6 @@ class _UptPageState extends State<UptPage> {
       if (uptProvider.requestState == RequestState.loading) {
         return const Center(child: CircularProgressIndicator());
       } else if (uptProvider.requestState == RequestState.loaded) {
-        uptProvider.fetchDataUpt();
-        uptProvider.fetchDataPosyanduById();
-
         return Expanded(
           child: SingleChildScrollView(
             child: Container(
@@ -397,39 +394,7 @@ class _UptPageState extends State<UptPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 80,
-                          height: 80,
-                          decoration: BoxDecoration(
-                              color: const Color.fromARGB(129, 158, 158, 158),
-                              borderRadius: BorderRadius.circular(20)),
-                          child: const Icon(
-                            IconlyBroken.paper_fail,
-                            color: Colors.white,
-                            size: 60,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                uptProvider.item!.namaUpt,
-                                style: PrimaryTextStyle.judulStyle,
-                              ),
-                              Text(uptProvider.item!.kecamatan),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  profileUpt(uptProvider),
                   detailUpt(mediaquery, uptProvider),
                   keteranganWidget(mediaquery, uptProvider),
                   dokterTugasWidget(mediaquery, uptProvider),
@@ -446,5 +411,41 @@ class _UptPageState extends State<UptPage> {
         return const Text("tidak diketahui");
       }
     });
+  }
+
+  Padding profileUpt(UptProvider uptProvider) {
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Row(
+        children: [
+          Container(
+            width: 80,
+            height: 80,
+            decoration: BoxDecoration(
+                color: const Color.fromARGB(129, 158, 158, 158),
+                borderRadius: BorderRadius.circular(20)),
+            child: const Icon(
+              IconlyBroken.paper_fail,
+              color: Colors.white,
+              size: 60,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  uptProvider.item!.namaUpt,
+                  style: PrimaryTextStyle.judulStyle,
+                ),
+                Text(uptProvider.item!.kecamatan),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
