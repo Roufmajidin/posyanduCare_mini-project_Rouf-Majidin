@@ -32,6 +32,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   dropdown_button2: ^2.1.0
   dropdown_textfield: ^1.0.8
+  email_validator: ^2.1.17
   firebase_core: ^2.10.0
   firebase_storage: ^11.1.2
   flutter:
@@ -39,11 +40,11 @@ dependencies:
   font_awesome_flutter: ^10.4.0
   google_fonts: ^4.0.3
   iconly: ^1.0.1
+  image_picker: ^0.8.6+1
   intl: ^0.18.1
   provider: ^6.0.5
   readmore: ^2.2.0
   weekly_date_picker: ^1.3.0
-  image_picker: ^0.8.6+1
 
 dev_dependencies:
   flutter_lints: ^2.0.0

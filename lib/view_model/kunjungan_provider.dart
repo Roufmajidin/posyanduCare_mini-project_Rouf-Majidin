@@ -135,4 +135,15 @@ class KunjunganProvider extends ChangeNotifier {
 
     notifyListeners();
   }
+
+  Future<void> updateDataRekamObat(RekomendasiObatModels dataVerified) async {
+    // TODO : 1 update data ke collection update data rekam obar ke collection rekam obat
+    await FirebaseFirestore.instance
+        .collection("rekomendasi_obat")
+        .doc(dataVerified.docId)
+        .set(dataVerified.toMap());
+    print("ini id nya : ${dataVerified.docId} Sukses Update Data Kunjungan");
+
+    notifyListeners();
+  }
 }

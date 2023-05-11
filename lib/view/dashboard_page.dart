@@ -265,10 +265,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => ArtikelKesehatan()));
                 },
-                child: Text(
-                  "More",
-                  style: PrimaryTextStyle.judulStyle,
-                ),
+                child: Text("More", style: PrimaryTextStyle.judulStyle),
               ),
             ],
           ),

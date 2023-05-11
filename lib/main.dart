@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:posyandu_care_apps/firebase_options.dart';
 import 'package:posyandu_care_apps/themes/style.dart';
 import 'package:posyandu_care_apps/view/home_page.dart';
+import 'package:posyandu_care_apps/view/login/login_page.dart';
 import 'package:posyandu_care_apps/view_model/artikel_provider.dart';
 import 'package:posyandu_care_apps/view_model/kader_provider.dart';
 import 'package:posyandu_care_apps/view_model/kunjungan_provider.dart';
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
               primarySwatch: Colors.blue, canvasColor: AppTheme.bgColor),
           debugShowCheckedModeBanner: false,
-          home: const HomePage()),
+          home: const Login()),
     );
   }
 }

@@ -5,7 +5,6 @@ import 'package:iconly/iconly.dart';
 import 'package:posyandu_care_apps/models/artikel_model.dart';
 import 'package:posyandu_care_apps/themes/style.dart';
 import 'package:provider/provider.dart';
-
 import '../../../models/list_menu.dart';
 import '../../../view_model/artikel_provider.dart';
 import '../../../widget/artikel.dart';
