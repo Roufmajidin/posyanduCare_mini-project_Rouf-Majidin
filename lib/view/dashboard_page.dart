@@ -1,11 +1,15 @@
 import 'dart:developer';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:posyandu_care_apps/themes/style.dart';
+import 'package:posyandu_care_apps/view/login/login_page.dart';
 import 'package:posyandu_care_apps/widget/artikel.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weekly_date_picker/weekly_date_picker.dart';
 
+import '../helper.dart';
 import '../models/list_menu.dart';
 import '../view_model/artikel_provider.dart';
 import 'artikel_page/artikel_kesehatan.dart';
@@ -93,16 +97,31 @@ class _DashboardPageState extends State<DashboardPage> {
                   // seach bar
                 ],
               ),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(50),
-                child: Container(
-                  width: 50,
-                  height: 50,
-                  color: const Color.fromARGB(255, 250, 250, 250),
-                  // child: Image.network(
-                  //   "https://wiki.d-addicts.com/images/thumb/0/0f/NamJiHyun.jpg/300px-NamJiHyun.jpg",
-                  //   fit: BoxFit.contain,
-                  // ),
+              GestureDetector(
+                onTap: () {
+                  log("Logout");
+
+                  FirebaseAuth.instance.signOut().then((value) async {
+                    Navigator.pushAndRemoveUntil(
+                        (context),
+                        MaterialPageRoute(builder: (context) => const Login()),
+                        (route) => false);
+                    SharedPreferences pref =
+                        await SharedPreferences.getInstance();
+                    pref.remove("email");
+                  });
+                },
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(50),
+                  child: Container(
+                    width: 50,
+                    height: 50,
+                    color: const Color.fromARGB(255, 250, 250, 250),
+                    // child: Image.network(
+                    //   "https://wiki.d-addicts.com/images/thumb/0/0f/NamJiHyun.jpg/300px-NamJiHyun.jpg",
+                    //   fit: BoxFit.contain,
+                    // ),
+                  ),
                 ),
               ),
             ],
@@ -265,10 +284,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => ArtikelKesehatan()));
                 },
-                child: Text(
-                  "More",
-                  style: PrimaryTextStyle.judulStyle,
-                ),
+                child: Text("More", style: PrimaryTextStyle.judulStyle),
               ),
             ],
           ),
