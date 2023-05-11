@@ -19,8 +19,8 @@ class Login extends StatefulWidget {
   State<Login> createState() => _LoginState();
 }
 
-final _pCo = TextEditingController();
-final _uCo = TextEditingController();
+final passwordController = TextEditingController();
+final usernameController = TextEditingController();
 final _auth = FirebaseAuth.instance;
 bool isLihat = true;
 bool visible = false;
@@ -70,17 +70,23 @@ class _LoginState extends State<Login> {
                           height: 70,
                         ),
                         TextFormField(
+                          style: const TextStyle(color: Colors.white),
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                           validator: (value) {
                             if (value == null ||
                                 value.isEmpty ||
                                 !value.contains('@') ||
                                 !value.contains('.')) {
-                              return 'Invalid Email';
+                              return 'Invalid Email (harus ada @)';
                             }
                             return null;
                           },
-                          controller: _uCo,
+                          controller: usernameController,
                           decoration: InputDecoration(
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white),
+                              ),
+                              fillColor: Colors.white,
                               border: OutlineInputBorder(),
                               labelText: 'Username',
                               labelStyle: TextStyle(color: Colors.white)),
@@ -89,15 +95,23 @@ class _LoginState extends State<Login> {
                           height: 20,
                         ),
                         TextFormField(
+                          style: const TextStyle(color: Colors.white),
                           obscureText: isLihat,
-                          controller: _pCo,
+                          controller: passwordController,
                           decoration: InputDecoration(
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white),
+                              ),
                               border: OutlineInputBorder(),
                               labelText: 'Password',
+                              suffixStyle: TextStyle(color: Colors.white),
                               suffixIcon: IconButton(
-                                  icon: Icon(isLihat
-                                      ? Icons.visibility
-                                      : Icons.visibility_off),
+                                  icon: Icon(
+                                    isLihat
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                    color: Colors.white,
+                                  ),
                                   onPressed: () {
                                     setState(() {
                                       isLihat = !isLihat;
@@ -117,7 +131,9 @@ class _LoginState extends State<Login> {
                                     Color.fromARGB(255, 33, 92, 97)),
                             onPressed: () async {
                               loginProvider.signIn(
-                                  context, _uCo.text, _pCo.text);
+                                  context,
+                                  usernameController.text,
+                                  passwordController.text);
                             },
                             child: Text("Login",
                                 style: TextStyle(color: Colors.white)),
