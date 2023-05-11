@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:posyandu_care_apps/models/puskesmas_models.dart';
 import 'package:posyandu_care_apps/models/upt_models.dart';
+import 'package:posyandu_care_apps/models/user_models.dart';
+import 'package:posyandu_care_apps/view_model/login_provider.dart';
 
 enum RequestState { empty, loading, loaded, error }
 
@@ -11,6 +13,10 @@ class UptProvider extends ChangeNotifier {
   // List<DataUptModels> dataKunjunganfetched = [];
   DataUptModels? _item;
   DataUptModels? get item => _item;
+
+  UserModel? _idPosyanduByLogin;
+  UserModel? get i => _idPosyanduByLogin;
+
 // data Posyandu by id dari item.id puskesmas
   DataPuskesmas? _itemPuskemas;
   DataPuskesmas? get itemPuskemas => _itemPuskemas;
@@ -42,15 +48,12 @@ class UptProvider extends ChangeNotifier {
     print("object");
     _requestState = RequestState.loading;
     notifyListeners();
-    final DocumentSnapshot documentSnapshot = await firestore
-        .collection('posyandu')
-        .doc("7qtpgjG9XBC0Axrv3wj2")
-        .get();
+
+    final DocumentSnapshot documentSnapshot =
+        await firestore.collection('posyandu').doc(i!.posyanduId).get();
+    // print('ini id Posyandu yang login :${i}');
     _requestState = RequestState.loaded;
     _itemPuskemas = DataPuskesmas.fromJson(documentSnapshot);
-    // print(_itemPuskemas!.docId);
-    print("OK Posyandu");
-
     notifyListeners();
   }
 }

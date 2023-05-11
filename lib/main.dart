@@ -7,21 +7,26 @@ import 'package:posyandu_care_apps/view/login/login_page.dart';
 import 'package:posyandu_care_apps/view_model/artikel_provider.dart';
 import 'package:posyandu_care_apps/view_model/kader_provider.dart';
 import 'package:posyandu_care_apps/view_model/kunjungan_provider.dart';
+import 'package:posyandu_care_apps/view_model/login_provider.dart';
 import 'package:posyandu_care_apps/view_model/upt_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'view/dashboard_page.dart';
 
+Future<SharedPreferences> prefIsLogin = SharedPreferences.getInstance();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(MyApp(pefIsLogin: prefIsLogin));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  var pefIsLogin;
+
+  MyApp({super.key, required this.pefIsLogin});
 
   @override
   Widget build(BuildContext context) {
@@ -30,14 +35,15 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => KunjunganProvider()),
         ChangeNotifierProvider(create: (context) => KaderProvider()),
         ChangeNotifierProvider(create: (context) => UptProvider()),
-        ChangeNotifierProvider(create: (context) => ArtikelProvider())
+        ChangeNotifierProvider(create: (context) => ArtikelProvider()),
+        ChangeNotifierProvider(create: (context) => LoginProvider())
       ],
       child: MaterialApp(
           title: 'Posyandu Care Apps',
           theme: ThemeData(
               primarySwatch: Colors.blue, canvasColor: AppTheme.bgColor),
           debugShowCheckedModeBanner: false,
-          home: const Login()),
+          home: pefIsLogin == false ? Login() : HomePage()),
     );
   }
 }
