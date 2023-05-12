@@ -1,9 +1,5 @@
-import 'dart:developer';
-
-import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
-import 'package:posyandu_care_apps/models/list_menu.dart';
 import 'package:posyandu_care_apps/view_model/upt_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -24,8 +20,6 @@ class _UptPageState extends State<UptPage> {
     super.initState();
     Future.microtask(
         () => Provider.of<UptProvider>(context, listen: false).fetchDataUpt());
-    Future.microtask(() => Provider.of<UptProvider>(context, listen: false)
-        .fetchDataPosyanduById());
   }
 
   @override
@@ -34,29 +28,56 @@ class _UptPageState extends State<UptPage> {
     var formKey = GlobalKey<FormState>();
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(80.0),
-        child: AppBar(
-          elevation: 0.3,
-          backgroundColor: AppTheme.primaryColor,
-          title: const Text(
-            "Data UPT",
-            style: TextStyle(fontSize: 16),
-          ),
-          centerTitle: true,
-          actions: const [
-            Padding(
-              padding: EdgeInsets.only(right: 8.0),
-              child: Icon(IconlyBroken.info_square),
-            )
-          ],
-        ),
-      ),
+          preferredSize: const Size.fromHeight(80.0),
+          child: AppBar(
+              elevation: 0.3,
+              backgroundColor: AppTheme.primaryColor,
+              title: const Text(
+                "Data UPT",
+                style: TextStyle(fontSize: 16),
+              ),
+              centerTitle: true,
+              actions: const [
+                Padding(
+                    padding: EdgeInsets.only(right: 16.0),
+                    child: Icon(IconlyBroken.info_square))
+              ])),
       backgroundColor: AppTheme.primaryColor,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          profilUpt(mediaquery),
+          Consumer<UptProvider>(builder: (context, uptProvider, _) {
+            if (uptProvider.requestState == RequestState.loading) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (uptProvider.requestState == RequestState.loaded) {
+              return Expanded(
+                  child: SingleChildScrollView(
+                      child: Container(
+                          padding: EdgeInsets.only(bottom: 50),
+                          decoration: const BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(30),
+                                  topRight: Radius.circular(30))),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              profileUpt(uptProvider),
+                              detailUpt(mediaquery, uptProvider),
+                              keteranganWidget(mediaquery, uptProvider),
+                              dokterTugasWidget(mediaquery, uptProvider),
+                            ],
+                          ))));
+            }
+            if (uptProvider.requestState == RequestState.error) {
+              return const Center(
+                  child:
+                      Text("Gagal Mengambil Data, Periksa Akses Internet Mu"));
+            } else {
+              return const Text("tidak diketahui");
+            }
+          })
         ],
       ),
     );
@@ -67,12 +88,11 @@ class _UptPageState extends State<UptPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Text(
-            "Keterangan",
-            style: PrimaryTextStyle.judulStyle,
-          ),
-        ),
+            padding: const EdgeInsets.all(10.0),
+            child: Text(
+              "Keterangan",
+              style: PrimaryTextStyle.judulStyle,
+            )),
         Padding(
           padding: const EdgeInsets.all(10.0),
           child: Container(
@@ -112,7 +132,7 @@ class _UptPageState extends State<UptPage> {
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            uptProvider.itemPuskemas!.nama,
+                            uptProvider.itemPuskemas!.nama ?? false,
                             style: PrimaryTextStyle.subTxt,
                           ),
                           Row(
@@ -122,7 +142,7 @@ class _UptPageState extends State<UptPage> {
                                 style: PrimaryTextStyle.subTxt,
                               ),
                               Text(
-                                uptProvider.itemPuskemas!.desa,
+                                uptProvider.itemPuskemas!.desa ?? false,
                                 style: PrimaryTextStyle.subTxt,
                               ),
                             ],
@@ -193,7 +213,7 @@ class _UptPageState extends State<UptPage> {
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            uptProvider.itemPuskemas!.dokterPembina,
+                            uptProvider.itemPuskemas!.dokterPembina ?? false,
                             style: PrimaryTextStyle.subTxt,
                           ),
                           Row(
@@ -203,7 +223,7 @@ class _UptPageState extends State<UptPage> {
                                 style: PrimaryTextStyle.subTxt,
                               ),
                               Text(
-                                uptProvider.itemPuskemas!.nama,
+                                uptProvider.itemPuskemas!.nama ?? false,
                                 style: PrimaryTextStyle.subTxt,
                               ),
                             ],
@@ -268,7 +288,7 @@ class _UptPageState extends State<UptPage> {
                                 ),
                               ),
                               Text(
-                                uptProvider.item!.kecamatan,
+                                uptProvider.item!.kecamatan ?? false,
                                 style: PrimaryTextStyle.thirdStyle,
                               ),
                             ],
@@ -325,21 +345,21 @@ class _UptPageState extends State<UptPage> {
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Text(
-                                        ': ${uptProvider.item!.alamat}',
+                                        ': ${uptProvider.item!.alamat ?? false}',
                                         style: PrimaryTextStyle.subTxt,
                                       ),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Text(
-                                        ': ${uptProvider.item!.kodePos.toString()}',
+                                        ': ${uptProvider.item!.kodePos ?? false.toString()}',
                                         style: PrimaryTextStyle.subTxt,
                                       ),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Text(
-                                        ': ${uptProvider.item!.kecamatan}',
+                                        ': ${uptProvider.item!.kecamatan ?? false}',
                                         style: PrimaryTextStyle.subTxt,
                                       ),
                                     ),
@@ -375,77 +395,40 @@ class _UptPageState extends State<UptPage> {
       ],
     );
   }
+}
 
-  profilUpt(MediaQueryData mediaquery) {
-    return Consumer<UptProvider>(builder: (context, uptProvider, child) {
-      if (uptProvider.requestState == RequestState.loading) {
-        return const Center(child: CircularProgressIndicator());
-      } else if (uptProvider.requestState == RequestState.loaded) {
-        return Expanded(
-          child: SingleChildScrollView(
-            child: Container(
-              padding: EdgeInsets.only(bottom: 50),
-              // height: 200,
-              decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30))),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  profileUpt(uptProvider),
-                  detailUpt(mediaquery, uptProvider),
-                  keteranganWidget(mediaquery, uptProvider),
-                  dokterTugasWidget(mediaquery, uptProvider),
-                ],
+Padding profileUpt(UptProvider uptProvider) {
+  return Padding(
+    padding: const EdgeInsets.all(20.0),
+    child: Row(
+      children: [
+        Container(
+          width: 80,
+          height: 80,
+          decoration: BoxDecoration(
+              color: const Color.fromARGB(129, 158, 158, 158),
+              borderRadius: BorderRadius.circular(20)),
+          child: const Icon(
+            IconlyBroken.paper_fail,
+            color: Colors.white,
+            size: 60,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                uptProvider.item!.namaUpt.toString(),
+                style: PrimaryTextStyle.judulStyle,
               ),
-            ),
+              Text(uptProvider.item!.kecamatan.toString()),
+            ],
           ),
-        );
-      }
-      if (uptProvider.requestState == RequestState.error) {
-        return const Center(
-            child: Text("Gagal Mengambil Data, Periksa Akses Internet Mu"));
-      } else {
-        return const Text("tidak diketahui");
-      }
-    });
-  }
-
-  Padding profileUpt(UptProvider uptProvider) {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Row(
-        children: [
-          Container(
-            width: 80,
-            height: 80,
-            decoration: BoxDecoration(
-                color: const Color.fromARGB(129, 158, 158, 158),
-                borderRadius: BorderRadius.circular(20)),
-            child: const Icon(
-              IconlyBroken.paper_fail,
-              color: Colors.white,
-              size: 60,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  uptProvider.item!.namaUpt,
-                  style: PrimaryTextStyle.judulStyle,
-                ),
-                Text(uptProvider.item!.kecamatan),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+        ),
+      ],
+    ),
+  );
 }

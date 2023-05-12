@@ -20,22 +20,25 @@ class Kunjungan extends StatefulWidget {
 
 class _KunjunganState extends State<Kunjungan> {
   var formKey = GlobalKey<FormState>();
+  var queryData;
   late TextEditingController namaController = TextEditingController();
   late TextEditingController alamatController = TextEditingController();
   late TextEditingController bbController = TextEditingController();
   late TextEditingController tinggiController = TextEditingController();
   late TextEditingController darahController = TextEditingController();
   late TextEditingController keluhanController = TextEditingController();
+  late TextEditingController searchController = TextEditingController();
   @override
   void initState() {
     super.initState();
-
+    searchController = TextEditingController();
     Future.microtask(
       () => Provider.of<KunjunganProvider>(context, listen: false)
           .fetchDataKunjungan(),
     );
   }
 
+  @override
   @override
   Widget build(BuildContext context) {
     var mediaquery = MediaQuery.of(context);
@@ -50,7 +53,7 @@ class _KunjunganState extends State<Kunjungan> {
           elevation: 0.6,
           actions: const [
             Padding(
-              padding: EdgeInsets.only(right: 8.0),
+              padding: EdgeInsets.only(right: 16.0),
               child: Icon(IconlyBroken.info_square),
             )
           ],
@@ -294,23 +297,32 @@ class _KunjunganState extends State<Kunjungan> {
               width: mediaquery.size.width * 0.9,
               height: 40,
               alignment: Alignment.center,
-              child: TextFormField(
-                validator: (value) {
-                  // if (n.hasMatch(value)) {
-                  //   return "Nama harus benar";
-                  // }
-                },
-                obscureText: false,
-                decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.search),
-                  border: OutlineInputBorder(),
-                  labelText: 'Cari Data',
+              child: Form(
+                key: formKey,
+                child: TextFormField(
+                  controller: searchController,
+                  validator: (value) {
+                    print(queryData);
+                    // if (n.hasMatch(value)) {
+                    //   return "Nama harus benar";
+                    // }
+                  },
+                  onChanged: (value) {
+                    queryData = value;
+                    log(queryData);
+                  },
+                  obscureText: false,
+                  decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.search),
+                    border: OutlineInputBorder(),
+                    labelText: 'Cari Data',
+                  ),
                 ),
               ),
             ),
             Padding(
               padding: const EdgeInsets.only(
-                  top: 30.0, left: 10, right: 10, bottom: 20),
+                  top: 30.0, left: 12, right: 12, bottom: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -362,7 +374,7 @@ class _KunjunganState extends State<Kunjungan> {
                             Container(
                                 decoration: BoxDecoration(
                                     color: Colors.grey.withOpacity(0.2),
-                                    borderRadius: BorderRadius.circular(12)),
+                                    borderRadius: BorderRadius.circular(50)),
                                 height: 80,
                                 width: 80,
                                 child: Column(
@@ -384,7 +396,7 @@ class _KunjunganState extends State<Kunjungan> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  item.nama,
+                                  item.nama!,
                                   style: PrimaryTextStyle.judulStyle,
                                 ),
                                 const SizedBox(

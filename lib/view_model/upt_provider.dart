@@ -4,8 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:posyandu_care_apps/models/puskesmas_models.dart';
 import 'package:posyandu_care_apps/models/upt_models.dart';
-import 'package:posyandu_care_apps/models/user_models.dart';
-import 'package:posyandu_care_apps/view_model/login_provider.dart';
 
 enum RequestState { empty, loading, loaded, error }
 
@@ -14,8 +12,8 @@ class UptProvider extends ChangeNotifier {
   DataUptModels? _item;
   DataUptModels? get item => _item;
 
-  UserModel? _idPosyanduByLogin;
-  UserModel? get i => _idPosyanduByLogin;
+  // UserModel? _idPosyanduByLogin;
+  // UserModel? get i => _idPosyanduByLogin;
 
 // data Posyandu by id dari item.id puskesmas
   DataPuskesmas? _itemPuskemas;
@@ -35,25 +33,37 @@ class UptProvider extends ChangeNotifier {
         .collection('data_upt')
         .doc("iEl06tZbaf0LBPEuEm8w")
         .get();
-    _requestState = RequestState.loaded;
     _item = DataUptModels.fromJson(documentSnapshot);
-    print(_item);
-    print("OK");
+    print('alamat${_item!.alamat}');
 
+    print("OK loaded");
+    final DocumentSnapshot documentSnapshots = await firestore
+        .collection('posyandu')
+        .doc("7qtpgjG9XBC0Axrv3wj2")
+        .get();
+
+    _itemPuskemas = DataPuskesmas.fromJson(documentSnapshots);
+
+    // print('ini desa${_itemPuskemas!.desa}');
+    _requestState = RequestState.loaded;
+    print(_itemPuskemas?.desa);
+    notifyListeners();
     notifyListeners();
   }
 
-  Future fetchDataPosyanduById() async {
-    String id = item!.docId;
-    print("object");
-    _requestState = RequestState.loading;
-    notifyListeners();
+  Future fetchDataPosyanduById(String idPosyandu) async {
+    // _requestState = RequestState.loading;
+    // notifyListeners();
 
+    print("aigo");
+    print(idPosyandu);
+
+    // print('ini id Posyandu yang login :${i!.posyanduId}');
     final DocumentSnapshot documentSnapshot =
-        await firestore.collection('posyandu').doc(i!.posyanduId).get();
-    // print('ini id Posyandu yang login :${i}');
-    _requestState = RequestState.loaded;
+        await firestore.collection('posyandu').doc(idPosyandu).get();
     _itemPuskemas = DataPuskesmas.fromJson(documentSnapshot);
+    // _requestState = RequestState.loaded;
+
     notifyListeners();
   }
 }

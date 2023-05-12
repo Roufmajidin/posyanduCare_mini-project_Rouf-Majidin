@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:posyandu_care_apps/themes/style.dart';
 import 'package:posyandu_care_apps/view/login/login_page.dart';
@@ -8,8 +7,6 @@ import 'package:posyandu_care_apps/widget/artikel.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weekly_date_picker/weekly_date_picker.dart';
-
-import '../helper.dart';
 import '../models/list_menu.dart';
 import '../view_model/artikel_provider.dart';
 import 'artikel_page/artikel_kesehatan.dart';
@@ -34,6 +31,23 @@ class _DashboardPageState extends State<DashboardPage> {
       () => Provider.of<ArtikelProvider>(context, listen: false)
           .fetchDataArtikel(),
     );
+    getEmail();
+  }
+
+  Future logout() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+
+    sharedPreferences.remove('email');
+    Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
+  }
+
+  String role = '';
+  Future getEmail() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    setState(() {
+      role = sharedPreferences.getString('email')!;
+    });
+    print('isemail :{$role}');
   }
 
   @override
@@ -88,7 +102,9 @@ class _DashboardPageState extends State<DashboardPage> {
                     style: PrimaryTextStyle.secondStyle,
                   ),
                   Text(
-                    "Posyandu Cempaka Mulya",
+                    role == "posyandu@mail.com"
+                        ? "Posyandu Cempaka Mulya"
+                        : "Puskesmas Dukupuntang",
                     style: PrimaryTextStyle.primaryStyle,
                   ),
                   const SizedBox(
@@ -100,16 +116,7 @@ class _DashboardPageState extends State<DashboardPage> {
               GestureDetector(
                 onTap: () {
                   log("Logout");
-
-                  FirebaseAuth.instance.signOut().then((value) async {
-                    Navigator.pushAndRemoveUntil(
-                        (context),
-                        MaterialPageRoute(builder: (context) => const Login()),
-                        (route) => false);
-                    SharedPreferences pref =
-                        await SharedPreferences.getInstance();
-                    pref.remove("email");
-                  });
+                  logout();
                 },
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(50),

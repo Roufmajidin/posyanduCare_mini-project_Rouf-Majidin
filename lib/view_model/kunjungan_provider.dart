@@ -6,6 +6,7 @@ import 'package:posyandu_care_apps/models/data_kunjungan_model.dart';
 import 'package:posyandu_care_apps/models/rekomendasi_obat_model.dart';
 
 import '../models/data_kunjungan_model.dart';
+import '../models/user_models.dart';
 
 enum RequestState { empty, loading, loaded, error }
 
@@ -23,7 +24,8 @@ class KunjunganProvider extends ChangeNotifier {
 
   String _message = '';
   String get message => _message;
-
+  UserModel? _getRole;
+  UserModel? get getRole => _getRole;
   Future fetchDataKunjungan() async {
     _requestState = RequestState.loading;
     notifyListeners();
@@ -41,6 +43,7 @@ class KunjunganProvider extends ChangeNotifier {
               tekanan_darah: doc.get("tekanan_darah"),
               keluhan: doc.get("keluhan")))
           .toList();
+
       _requestState = RequestState.loaded;
 
       notifyListeners();
@@ -51,17 +54,23 @@ class KunjunganProvider extends ChangeNotifier {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   Future fetchDataKunjunganById(String id) async {
+    _requestState = RequestState.loading;
+    notifyListeners();
     final DocumentSnapshot documentSnap =
         await firestore.collection('data_kunjungan').doc(id).get();
     // get data collection rekomendasi_obat :) tapi data obat belum terverifikasi / masih null
 
     _item = DataKunjunganModel.fromJson(documentSnap);
     print("snp");
+    // _requestState = RequestState.loaded;
+    // notifyListeners();
+
     final DocumentSnapshot documentSnapCollctionObat =
         await firestore.collection('rekomendasi_obat').doc(id).get();
-    _requestState = RequestState.loaded;
     _itemRekomendasi =
         RekomendasiObatModels.fromJson(documentSnapCollctionObat);
+    _requestState = RequestState.loaded;
+    // _getRole =
     print("bad");
     notifyListeners();
   }
