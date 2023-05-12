@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:posyandu_care_apps/themes/style.dart';
+import 'package:posyandu_care_apps/view/kunjungan_page/kunjungan_detail.dart';
 import 'package:posyandu_care_apps/view/login/login_page.dart';
 import 'package:posyandu_care_apps/widget/artikel.dart';
 import 'package:provider/provider.dart';
@@ -36,6 +37,7 @@ class _DashboardPageState extends State<DashboardPage> {
 
   Future logout() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    await sharedPreferences.clear();
 
     sharedPreferences.remove('email');
     Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));

@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
               primarySwatch: Colors.blue, canvasColor: AppTheme.bgColor),
           debugShowCheckedModeBanner: false,
-          home: const HomePage()),
+          home: pefIsLogin == null ? Login() : HomePage()),
     );
   }
 }

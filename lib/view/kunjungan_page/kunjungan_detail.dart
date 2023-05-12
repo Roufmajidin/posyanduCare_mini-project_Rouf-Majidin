@@ -82,7 +82,9 @@ class _KunjunganDetailState extends State<KunjunganDetail> {
                   return const Center(child: CircularProgressIndicator());
                 } else if (provDetail.requestState == RequestState.loaded) {
                   // provDetail.fetchDataKunjunganById(widget.whereDocId);
-                  if (provDetail.item == null) {
+                  if (provDetail.item == null ||
+                      provDetail.itemRekomendasi == null) {
+                    provDetail.fetchDataKunjunganById(widget.whereDocId);
                     return const Center(child: CircularProgressIndicator());
                   }
                   return Column(
