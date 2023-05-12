@@ -94,7 +94,7 @@ class WidgetDialog extends StatelessWidget {
                                   height: 40,
                                   child: TextFormField(
                                     autofocus: true,
-                                    controller: namaController..text = nama!,
+                                    controller: namaController..text = nama,
                                     onChanged: (value) {
                                       nama = value;
                                     },

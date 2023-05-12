@@ -19,8 +19,8 @@ class Kunjungan extends StatefulWidget {
 }
 
 class _KunjunganState extends State<Kunjungan> {
-  var formKey = GlobalKey<FormState>();
-  var queryData;
+  var _formKey = GlobalKey<FormState>();
+  // var queryData;
   late TextEditingController namaController = TextEditingController();
   late TextEditingController alamatController = TextEditingController();
   late TextEditingController bbController = TextEditingController();
@@ -38,7 +38,6 @@ class _KunjunganState extends State<Kunjungan> {
     );
   }
 
-  @override
   @override
   Widget build(BuildContext context) {
     var mediaquery = MediaQuery.of(context);
@@ -61,10 +60,10 @@ class _KunjunganState extends State<Kunjungan> {
       ),
       backgroundColor: AppTheme.primaryColor,
       body: SizedBox(
-        height: mediaquery.size.height * 1,
+        height: mediaquery.size.height,
         child: Column(
           children: [
-            listDataWarga(mediaquery),
+            listDataWarga(mediaquery, _formKey),
             // Spacer(),
           ],
         ),
@@ -118,7 +117,7 @@ class _KunjunganState extends State<Kunjungan> {
                       ),
                       const SizedBox(height: 10),
                       Form(
-                        key: formKey,
+                        key: _formKey,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         child: Column(
                           children: [
@@ -280,7 +279,7 @@ class _KunjunganState extends State<Kunjungan> {
         label: Text(" Kunjungan"));
   }
 
-  listDataWarga(mediaquery) {
+  listDataWarga(mediaquery, _formKey) {
     return Expanded(
       child: Container(
         decoration: BoxDecoration(
@@ -297,26 +296,19 @@ class _KunjunganState extends State<Kunjungan> {
               width: mediaquery.size.width * 0.9,
               height: 40,
               alignment: Alignment.center,
-              child: Form(
-                key: formKey,
-                child: TextFormField(
-                  controller: searchController,
-                  validator: (value) {
-                    print(queryData);
-                    // if (n.hasMatch(value)) {
-                    //   return "Nama harus benar";
-                    // }
-                  },
-                  onChanged: (value) {
-                    queryData = value;
-                    log(queryData);
-                  },
-                  obscureText: false,
-                  decoration: const InputDecoration(
-                    prefixIcon: Icon(Icons.search),
-                    border: OutlineInputBorder(),
-                    labelText: 'Cari Data',
-                  ),
+              child: TextFormField(
+                controller: searchController,
+                validator: (value) {
+                  // if (n.hasMatch(value)) {
+                  //   return "Nama harus benar";
+                  // }
+                },
+                onChanged: (value) {},
+                obscureText: false,
+                decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.search),
+                  border: OutlineInputBorder(),
+                  labelText: 'Cari Data',
                 ),
               ),
             ),

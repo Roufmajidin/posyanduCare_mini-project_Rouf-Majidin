@@ -51,6 +51,9 @@ class _UptPageState extends State<UptPage> {
             if (uptProvider.requestState == RequestState.loading) {
               return const Center(child: CircularProgressIndicator());
             } else if (uptProvider.requestState == RequestState.loaded) {
+              if (uptProvider.item == null) {
+                return const Center(child: CircularProgressIndicator());
+              }
               return Expanded(
                   child: SingleChildScrollView(
                       child: Container(
