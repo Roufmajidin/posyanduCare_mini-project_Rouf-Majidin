@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -31,11 +32,12 @@ class PrimaryTextStyle {
     fontWeight: FontWeight.w700,
   );
   static TextStyle judulStyle = GoogleFonts.lato(
+      textStyle: const TextStyle(
     fontSize: 16,
     color: Color.fromARGB(255, 70, 70, 70),
-    // fontStyle: FontStyle.italic
+    overflow: TextOverflow.ellipsis,
     fontWeight: FontWeight.bold,
-  );
+  ));
   static TextStyle subTxt = GoogleFonts.lato(
     fontSize: 14,
     color: Colors.black,

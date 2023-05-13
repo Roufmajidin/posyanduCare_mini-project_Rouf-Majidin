@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
-import 'package:posyandu_care_apps/themes/colors.dart';
+import 'package:posyandu_care_apps/themes/style.dart';
+import 'package:posyandu_care_apps/view/artikel_page/artikel_kesehatan.dart';
 import 'package:posyandu_care_apps/view/dashboard_page.dart';
-import 'package:posyandu_care_apps/view/detail_screen/artikel_kesehatan.dart';
-import 'package:posyandu_care_apps/view/detail_screen/kunjungan.dart';
-import 'package:posyandu_care_apps/view/detail_screen/upt_page.dart';
 
-import '../models/list_menu.dart';
+import 'kaders_page/kader.dart';
+import 'kunjungan_page/kunjungan.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -40,7 +39,8 @@ class _HomePageState extends State<HomePage> {
           children: [
             const DashboardPage(),
             Kunjungan(index: 0),
-            UptPage(index: 1),
+            KaderPage(index: 1),
+            // UptPage(index: 1),
             ArtikelKesehatan()
           ],
           onPageChanged: updateIndexPage,
@@ -66,9 +66,14 @@ class _HomePageState extends State<HomePage> {
                 activeIcon: Icon(IconlyBroken.user_3),
               ),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.local_hospital_outlined),
-                  label: "UPT",
-                  activeIcon: Icon(Icons.local_hospital_sharp)),
+                icon: Icon(Icons.local_hospital_sharp),
+                label: "Kaders",
+                activeIcon: Icon(Icons.local_hospital_sharp),
+              ),
+              // BottomNavigationBarItem(
+              //     icon: Icon(Icons.local_hospital_outlined),
+              //     label: "UPT",
+              //     activeIcon: Icon(Icons.local_hospital_sharp)),
               BottomNavigationBarItem(
                   icon: Icon(IconlyBroken.paper_fail), label: "Artikel")
             ],

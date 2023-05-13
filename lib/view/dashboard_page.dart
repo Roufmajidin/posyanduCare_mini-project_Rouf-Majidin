@@ -1,16 +1,19 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:iconly/iconly.dart';
-import 'package:posyandu_care_apps/themes/colors.dart';
-import 'package:posyandu_care_apps/view/detail_screen/artikel_kesehatan.dart';
-import 'package:posyandu_care_apps/view/detail_screen/kader.dart';
-import 'package:posyandu_care_apps/view/detail_screen/upt_page.dart';
+import 'package:posyandu_care_apps/themes/style.dart';
+import 'package:posyandu_care_apps/view/kunjungan_page/kunjungan_detail.dart';
+import 'package:posyandu_care_apps/view/login/login_page.dart';
+import 'package:posyandu_care_apps/widget/artikel.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weekly_date_picker/weekly_date_picker.dart';
-
 import '../models/list_menu.dart';
-import 'detail_screen/artikel_detail.dart';
-import 'detail_screen/kunjungan.dart';
+import '../view_model/artikel_provider.dart';
+import 'artikel_page/artikel_kesehatan.dart';
+import 'kaders_page/kader.dart';
+import 'kunjungan_page/kunjungan.dart';
+import 'upt_page/upt_page.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -22,6 +25,34 @@ class DashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<DashboardPage> {
   DateTime _selectedDay = DateTime.now();
   @override
+  void initState() {
+    super.initState();
+
+    Future.microtask(
+      () => Provider.of<ArtikelProvider>(context, listen: false)
+          .fetchDataArtikel(),
+    );
+    getEmail();
+  }
+
+  Future logout() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    await sharedPreferences.clear();
+
+    sharedPreferences.remove('email');
+    Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
+  }
+
+  String role = '';
+  Future getEmail() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    setState(() {
+      role = sharedPreferences.getString('email')!;
+    });
+    print('isemail :{$role}');
+  }
+
+  @override
   Widget build(BuildContext context) {
     var mediaquery = MediaQuery.of(context);
     return Scaffold(
@@ -29,13 +60,13 @@ class _DashboardPageState extends State<DashboardPage> {
       body: SingleChildScrollView(
         physics: const NeverScrollableScrollPhysics(),
         child: SafeArea(
-          // before is sizebox, tapi listview nya beda2 ketika beda device antara SM
+          // before is sizebox, tapi listview nya beda2 ketika beda device antara SM & lain
           // height: mediaquery.size.height * 5,
 
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              widgetHeader(context),
+              widgetHeader(context, role),
               listMenu(context),
               const SizedBox(
                 height: 10,
@@ -48,7 +79,7 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
-  Widget widgetHeader(BuildContext context) {
+  Widget widgetHeader(BuildContext context, role) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 40),
       height: 300,
@@ -73,7 +104,9 @@ class _DashboardPageState extends State<DashboardPage> {
                     style: PrimaryTextStyle.secondStyle,
                   ),
                   Text(
-                    "Posyandu Cempaka Mulya",
+                    role == "posyandu@mail.com"
+                        ? "Posyandu Cempaka Mulya"
+                        : "Puskesmas Dukupuntang",
                     style: PrimaryTextStyle.primaryStyle,
                   ),
                   const SizedBox(
@@ -82,16 +115,22 @@ class _DashboardPageState extends State<DashboardPage> {
                   // seach bar
                 ],
               ),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(50),
-                child: Container(
-                  width: 50,
-                  height: 50,
-                  color: const Color.fromARGB(255, 250, 250, 250),
-                  // child: Image.network(
-                  //   "https://wiki.d-addicts.com/images/thumb/0/0f/NamJiHyun.jpg/300px-NamJiHyun.jpg",
-                  //   fit: BoxFit.contain,
-                  // ),
+              GestureDetector(
+                onTap: () {
+                  log("Logout");
+                  logout();
+                },
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(50),
+                  child: Container(
+                    width: 50,
+                    height: 50,
+                    // color: const Color.fromARGB(255, 250, 250, 250),
+                    child: Image.network(
+                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJXzbvzNK4gdppYD-rqrs1j4flRxmt3b8UCg&usqp=CAU",
+                      fit: BoxFit.contain,
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -150,44 +189,25 @@ class _DashboardPageState extends State<DashboardPage> {
 
   Widget listMenu(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding:
               const EdgeInsets.only(left: 20, right: 20, top: 40, bottom: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "Services",
-                style: PrimaryTextStyle.judulStyle,
-              ),
-              Column(
-                children: const [
-                  Icon(
-                    Icons.circle,
-                    size: 5,
-                  ),
-                  Icon(
-                    Icons.circle,
-                    size: 5,
-                  ),
-                ],
-              )
-            ],
+          child: Text(
+            "Services",
+            style: PrimaryTextStyle.judulStyle,
           ),
         ),
         SizedBox(
-          // width: 400,
-
           height: 150,
           child: ListView.builder(
-              physics: const NeverScrollableScrollPhysics(),
+              // physics: const NeverScrollableScrollPhysics(),
               scrollDirection: Axis.horizontal,
               itemCount: menu.length,
               itemBuilder: (context, index) {
                 return Padding(
-                  // padding: const EdgeInsets.all(8.0),
-                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
                     children: [
                       Stack(
@@ -273,122 +293,42 @@ class _DashboardPageState extends State<DashboardPage> {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => ArtikelKesehatan()));
                 },
-                child: Text(
-                  "More",
-                  style: PrimaryTextStyle.judulStyle,
-                ),
+                child: Text("More", style: PrimaryTextStyle.judulStyle),
               ),
             ],
           ),
         ),
-        SizedBox(
-          height: 300,
-          child: ListView.builder(
-            padding: const EdgeInsets.only(bottom: 20),
-            scrollDirection: Axis.vertical,
-            physics: ScrollPhysics(),
-            itemCount: listBerita.length,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.all(2.0),
-                child: Card(
-                  // wrap ke padding, :)
-                  elevation: 0.1,
-                  child: Container(
-                    padding: const EdgeInsets.all(12),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              width: 200,
-                              child: Text(
-                                listBerita[index]["judulBerita"],
-                                style: PrimaryTextStyle.judulStyle,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  listBerita[index]["tanggal"],
-                                  style: PrimaryTextStyle.subTxt,
-                                ),
-                                const SizedBox(
-                                  width: 5,
-                                ),
-                                const Icon(
-                                  Icons.circle,
-                                  size: 5,
-                                ),
-                                const SizedBox(
-                                  width: 5,
-                                ),
-                                Text(
-                                  listBerita[index]["waktu_pub"],
-                                  style: PrimaryTextStyle.subTxt,
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                log("Ke detail Artikel Kesehatan");
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => ArtikelDetail(
-                                          index: index,
-                                        )));
-                              },
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    IconlyBroken.arrow_right_2,
-                                    size: 10,
-                                    color: AppTheme.primaryColor,
-                                  ),
-                                  Text(
-                                    "Read more for read",
-                                    style:
-                                        TextStyle(color: AppTheme.primaryColor),
-                                  ),
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                        Container(
-                            padding: EdgeInsets.symmetric(horizontal: 12),
-                            decoration: BoxDecoration(
-                                color: Color.fromARGB(255, 189, 187, 187)
-                                    .withOpacity(0.2),
-                                borderRadius: BorderRadius.circular(12)),
-                            height: 100,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Icon(IconlyBroken.hide),
-                                Text("no image")
-                              ],
-                            )
-                            // Image.asset(
-                            //   listBerita[index]["gambar"].toString(),
-                            //   fit: BoxFit.contain,
-                            // )
-                            )
-                      ],
-                    ),
-                  ),
+        Consumer<ArtikelProvider>(
+          builder: ((context, providerArtikel, child) {
+            if (providerArtikel.requestState == RequestState.loading) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (providerArtikel.requestState == RequestState.loaded) {
+              final item = providerArtikel.dataArtikelFetched;
+              return SizedBox(
+                height: 250,
+                child: ListView.builder(
+                  padding: const EdgeInsets.only(bottom: 20),
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  physics: const ScrollPhysics(),
+                  itemCount: providerArtikel.dataArtikelFetched.length < 3
+                      ? providerArtikel.dataArtikelFetched.length
+                      : 3,
+                  itemBuilder: (context, index) {
+                    final artikel = item[index];
+                    return ArtikelWiget(artikel: artikel);
+                  },
                 ),
               );
-            },
-          ),
+            }
+            if (providerArtikel.requestState == RequestState.error) {
+              return const Center(
+                  child:
+                      Text("Gagal Mengambil Data, Periksa Akses Internet Mu"));
+            } else {
+              return const Text("tidak diketahui");
+            }
+          }),
         ),
       ],
     );
