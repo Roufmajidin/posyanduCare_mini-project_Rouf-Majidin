@@ -19,17 +19,19 @@ class Kunjungan extends StatefulWidget {
 }
 
 class _KunjunganState extends State<Kunjungan> {
-  var formKey = GlobalKey<FormState>();
+  var _formKey = GlobalKey<FormState>();
+  // var queryData;
   late TextEditingController namaController = TextEditingController();
   late TextEditingController alamatController = TextEditingController();
   late TextEditingController bbController = TextEditingController();
   late TextEditingController tinggiController = TextEditingController();
   late TextEditingController darahController = TextEditingController();
   late TextEditingController keluhanController = TextEditingController();
+  late TextEditingController searchController = TextEditingController();
   @override
   void initState() {
     super.initState();
-
+    searchController = TextEditingController();
     Future.microtask(
       () => Provider.of<KunjunganProvider>(context, listen: false)
           .fetchDataKunjungan(),
@@ -50,7 +52,7 @@ class _KunjunganState extends State<Kunjungan> {
           elevation: 0.6,
           actions: const [
             Padding(
-              padding: EdgeInsets.only(right: 8.0),
+              padding: EdgeInsets.only(right: 16.0),
               child: Icon(IconlyBroken.info_square),
             )
           ],
@@ -58,10 +60,10 @@ class _KunjunganState extends State<Kunjungan> {
       ),
       backgroundColor: AppTheme.primaryColor,
       body: SizedBox(
-        height: mediaquery.size.height * 1,
+        height: mediaquery.size.height,
         child: Column(
           children: [
-            listDataWarga(mediaquery),
+            listDataWarga(mediaquery, _formKey),
             // Spacer(),
           ],
         ),
@@ -115,7 +117,7 @@ class _KunjunganState extends State<Kunjungan> {
                       ),
                       const SizedBox(height: 10),
                       Form(
-                        key: formKey,
+                        key: _formKey,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         child: Column(
                           children: [
@@ -277,7 +279,7 @@ class _KunjunganState extends State<Kunjungan> {
         label: Text(" Kunjungan"));
   }
 
-  listDataWarga(mediaquery) {
+  listDataWarga(mediaquery, _formKey) {
     return Expanded(
       child: Container(
         decoration: BoxDecoration(
@@ -295,11 +297,13 @@ class _KunjunganState extends State<Kunjungan> {
               height: 40,
               alignment: Alignment.center,
               child: TextFormField(
+                controller: searchController,
                 validator: (value) {
                   // if (n.hasMatch(value)) {
                   //   return "Nama harus benar";
                   // }
                 },
+                onChanged: (value) {},
                 obscureText: false,
                 decoration: const InputDecoration(
                   prefixIcon: Icon(Icons.search),
@@ -310,7 +314,7 @@ class _KunjunganState extends State<Kunjungan> {
             ),
             Padding(
               padding: const EdgeInsets.only(
-                  top: 30.0, left: 10, right: 10, bottom: 20),
+                  top: 30.0, left: 12, right: 12, bottom: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -362,7 +366,7 @@ class _KunjunganState extends State<Kunjungan> {
                             Container(
                                 decoration: BoxDecoration(
                                     color: Colors.grey.withOpacity(0.2),
-                                    borderRadius: BorderRadius.circular(12)),
+                                    borderRadius: BorderRadius.circular(50)),
                                 height: 80,
                                 width: 80,
                                 child: Column(
@@ -384,7 +388,7 @@ class _KunjunganState extends State<Kunjungan> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  item.nama,
+                                  item.nama!,
                                   style: PrimaryTextStyle.judulStyle,
                                 ),
                                 const SizedBox(

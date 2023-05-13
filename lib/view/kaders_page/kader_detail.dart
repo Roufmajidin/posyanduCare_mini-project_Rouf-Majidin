@@ -6,6 +6,7 @@ import 'package:iconly/iconly.dart';
 import 'package:posyandu_care_apps/models/kader_model.dart';
 import 'package:posyandu_care_apps/view_model/kader_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../themes/style.dart';
 
@@ -29,6 +30,8 @@ class _KaderDetailState extends State<KaderDetail> {
   final TextEditingController gambarController = TextEditingController();
   final TextEditingController jabatanController = TextEditingController();
   final TextEditingController dropdownController = TextEditingController();
+  final TextEditingController pesanController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -37,6 +40,16 @@ class _KaderDetailState extends State<KaderDetail> {
           .fetchKaderById(widget.index),
     );
     // get ddetail di collection rekammedis
+    getEmail();
+  }
+
+  String role = '';
+  Future getEmail() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    setState(() {
+      role = sharedPreferences.getString('email')!;
+    });
+    print('isemail :{$role}');
   }
 
   @override
@@ -55,7 +68,7 @@ class _KaderDetailState extends State<KaderDetail> {
           centerTitle: true,
           actions: const [
             Padding(
-              padding: EdgeInsets.only(right: 8.0),
+              padding: EdgeInsets.only(right: 16.0),
               child: Icon(IconlyBroken.info_square),
             )
           ],
@@ -65,8 +78,6 @@ class _KaderDetailState extends State<KaderDetail> {
       body: SingleChildScrollView(
           child: Consumer<KaderProvider>(builder: (context, provKader, _) {
         if (provKader.requestState == RequestState.loading) {
-          // provDetail.fetchDataKunjunganById(widget.whereDocId);
-
           return const Center(child: CircularProgressIndicator());
         } else if (provKader.requestState == RequestState.loaded) {
           provKader.fetchKaderById(widget.index);
@@ -79,7 +90,8 @@ class _KaderDetailState extends State<KaderDetail> {
                   posisiKader, formKey),
               posisiDetail(mediaquery, provKader),
               alamatDetail(mediaquery, provKader),
-              statusDetail(mediaquery, provKader),
+              statusDetail(mediaquery, provKader, formKey),
+              pesan(mediaquery, provKader),
             ],
           );
         }
@@ -309,27 +321,6 @@ class _KaderDetailState extends State<KaderDetail> {
                                                       height: 12,
                                                     ),
                                                     SizedBox(
-                                                      height: 40,
-                                                      child: TextFormField(
-                                                        controller:
-                                                            alamatController,
-                                                        validator: (value) {},
-                                                        onChanged: (value) {
-                                                          value;
-                                                        },
-                                                        obscureText: false,
-                                                        decoration:
-                                                            const InputDecoration(
-                                                          border:
-                                                              OutlineInputBorder(),
-                                                          labelText: 'Alamat',
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    const SizedBox(
-                                                      height: 12,
-                                                    ),
-                                                    SizedBox(
                                                       // width: 400,
                                                       height: 40,
                                                       child: Row(
@@ -530,7 +521,8 @@ class _KaderDetailState extends State<KaderDetail> {
                                                                         .item!
                                                                         .image
                                                                     : provKader
-                                                                        .gambarKaderUpdate))
+                                                                        .gambarKaderUpdate,
+                                                                pesan: ""))
                                                             .whenComplete(() {
                                                           Navigator.pop(
                                                               context);
@@ -614,27 +606,36 @@ class _KaderDetailState extends State<KaderDetail> {
     );
   }
 
-  Container statusDetail(MediaQueryData mediaquery, provKader) {
+  Container statusDetail(MediaQueryData mediaquery, provKader, formKey) {
     return Container(
       alignment: Alignment.center,
       margin: EdgeInsets.only(top: 12),
       decoration: BoxDecoration(color: Color.fromARGB(255, 239, 238, 238)),
       padding: EdgeInsets.only(top: 20, left: 12),
       height: 80,
-      width: mediaquery.size.width * 1,
+      width: mediaquery.size.width,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: role == "posyandu@mail.com"
+            ? MainAxisAlignment.start
+            : MainAxisAlignment.spaceBetween,
         children: [
           const Icon(IconlyBroken.lock),
+          role == "posyandu@mail.com"
+              ? SizedBox(
+                  width: 12,
+                )
+              : SizedBox(
+                  width: 0,
+                ),
           SizedBox(
-            width: 240,
+            width: 280,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               // mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "Verfied Status",
+                  "Verified Status",
                   style: PrimaryTextStyle.judulStyle,
                 ),
                 provKader.item.verfiedAt == false
@@ -649,28 +650,167 @@ class _KaderDetailState extends State<KaderDetail> {
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20),
-            child: Row(
-              children: const [
-                Icon(
-                  Icons.circle,
-                  size: 5,
-                  color: Color.fromARGB(255, 69, 69, 69),
-                ),
-                Icon(
-                  Icons.circle,
-                  size: 5,
-                  color: Color.fromARGB(255, 69, 69, 69),
-                ),
-                Icon(
-                  Icons.circle,
-                  size: 5,
-                  color: Color.fromARGB(255, 69, 69, 69),
-                ),
-              ],
-            ),
-          )
+          role == "posyandu@mail.com"
+              ? Text("")
+              : Padding(
+                  padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 20),
+                  child: IconButton(
+                      onPressed: () {
+                        //  verifikasiDataKader
+                        namaController.text = provKader.item!.nama;
+
+                        if (provKader.item.verfiedAt == false) {
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false, // user must tap button!
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                icon: Builder(builder: (context) {
+                                  return GestureDetector(
+                                    onTap: () => Navigator.of(context).pop(),
+                                    child: const Align(
+                                      alignment: Alignment.topRight,
+                                      child: Icon(Icons.close),
+                                    ),
+                                  );
+                                }),
+                                insetPadding: EdgeInsets.all(12),
+                                content: SingleChildScrollView(
+                                  child: SizedBox(
+                                    width: mediaquery.size.height,
+                                    // form widget
+                                    child: Column(children: [
+                                      Container(
+                                        alignment: Alignment.center,
+                                        margin: EdgeInsets.all(12),
+                                        height: 2,
+                                        width: 100,
+                                        decoration: BoxDecoration(
+                                          color: AppTheme.primaryColor,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 10),
+                                      Text(
+                                        'Verifikasi Kader/pengurus posyandu Baru',
+                                        style: TextStyle(
+                                            color: Colors.grey[
+                                                600], // Set the text color.
+                                            fontSize: 18 // Set the text size.
+                                            ),
+                                      ),
+                                      const SizedBox(height: 25),
+                                      SingleChildScrollView(
+                                        scrollDirection: Axis.vertical,
+                                        child: SizedBox(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.40,
+                                          child: Form(
+                                            key: formKey,
+                                            autovalidateMode: AutovalidateMode
+                                                .onUserInteraction,
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                TextFormField(
+                                                  enabled: false,
+                                                  autofocus: true,
+                                                  controller: namaController,
+                                                  onChanged: (value) {
+                                                    value;
+                                                  },
+                                                  validator: (value) {},
+                                                  obscureText: false,
+                                                  decoration:
+                                                      const InputDecoration(
+                                                    border:
+                                                        OutlineInputBorder(),
+                                                    labelText: 'Nama Kader',
+                                                  ),
+                                                ),
+                                                SizedBox(height: 20),
+                                                TextFormField(
+                                                  maxLines: 4,
+                                                  controller: pesanController,
+                                                  validator: (value) {},
+                                                  obscureText: false,
+                                                  decoration:
+                                                      const InputDecoration(
+                                                    border:
+                                                        OutlineInputBorder(),
+                                                    labelText: 'Tambah Pesan',
+                                                  ),
+                                                ),
+                                                SizedBox(height: 20),
+                                                ElevatedButton(
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                          primary: AppTheme
+                                                              .primaryColor),
+                                                  onPressed: () {
+                                                    provKader
+                                                        .verifikasiKader(
+                                                            provKader
+                                                                .item!.docId,
+                                                            true,
+                                                            pesanController
+                                                                .text)
+                                                        .whenComplete(() {
+                                                      Navigator.pop(context);
+                                                      final snackBar = SnackBar(
+                                                        content: Text(
+                                                            'Sukses Verifikasi Data'),
+                                                        duration: Duration(
+                                                            seconds: 4),
+                                                      );
+
+                                                      ScaffoldMessenger.of(
+                                                              context)
+                                                          .showSnackBar(
+                                                              snackBar);
+                                                      setState(() {
+                                                        namaController.clear();
+                                                        alamatController
+                                                            .clear();
+                                                        jabatanController
+                                                            .clear();
+                                                        provKader
+                                                            .gambarKaderUpdate = '';
+
+                                                        provKader.posisiKader =
+                                                            '';
+                                                      });
+                                                    });
+                                                  },
+                                                  child: const Center(
+                                                    child: Text(
+                                                      "Verifikasi Data Kader",
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                          fontSize: 14),
+                                                    ),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ]),
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        }
+                      },
+                      icon: const Icon(Icons.more_horiz_outlined),
+                      color: Color.fromARGB(255, 69, 69, 69)),
+                )
         ],
       ),
     );
@@ -686,9 +826,9 @@ class _KaderDetailState extends State<KaderDetail> {
       width: mediaquery.size.width * 1,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           const Icon(IconlyBroken.home),
+          const SizedBox(width: 12),
           SizedBox(
             width: 240,
             child: Column(
@@ -706,28 +846,6 @@ class _KaderDetailState extends State<KaderDetail> {
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20),
-            child: Row(
-              children: const [
-                Icon(
-                  Icons.circle,
-                  size: 5,
-                  color: Color.fromARGB(255, 69, 69, 69),
-                ),
-                Icon(
-                  Icons.circle,
-                  size: 5,
-                  color: Color.fromARGB(255, 69, 69, 69),
-                ),
-                Icon(
-                  Icons.circle,
-                  size: 5,
-                  color: Color.fromARGB(255, 69, 69, 69),
-                ),
-              ],
-            ),
-          )
         ],
       ),
     );
@@ -743,9 +861,9 @@ class _KaderDetailState extends State<KaderDetail> {
       width: mediaquery.size.width * 1,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           const Icon(IconlyBroken.info_circle),
+          const SizedBox(width: 12),
           SizedBox(
             width: 240,
             child: Column(
@@ -763,32 +881,48 @@ class _KaderDetailState extends State<KaderDetail> {
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20),
-            child: Row(
-              children: const [
-                Icon(
-                  Icons.circle,
-                  size: 5,
-                  color: Color.fromARGB(255, 69, 69, 69),
-                ),
-                Icon(
-                  Icons.circle,
-                  size: 5,
-                  color: Color.fromARGB(255, 69, 69, 69),
-                ),
-                Icon(
-                  Icons.circle,
-                  size: 5,
-                  color: Color.fromARGB(255, 69, 69, 69),
-                ),
-              ],
-            ),
-          )
         ],
       ),
     );
   }
 
-// edit bottomsheet
+  Container pesan(MediaQueryData mediaquery, provKader) {
+    return Container(
+      alignment: Alignment.center,
+      margin: EdgeInsets.only(top: 12),
+      decoration: BoxDecoration(color: Color.fromARGB(255, 239, 238, 238)),
+      padding: EdgeInsets.only(top: 20, left: 12),
+      height: 80,
+      width: mediaquery.size.width * 1,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Icon(IconlyBroken.message),
+          const SizedBox(width: 12),
+          SizedBox(
+            width: 240,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              // mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Pesan",
+                  style: PrimaryTextStyle.judulStyle,
+                ),
+                provKader.item.pesan != ""
+                    ? Text(
+                        provKader.item!.pesan,
+                        style: PrimaryTextStyle.subTxt,
+                      )
+                    : Text(
+                        "null",
+                        style: PrimaryTextStyle.subTxt,
+                      ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }

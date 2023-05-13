@@ -96,7 +96,7 @@ class _KaderPageState extends State<KaderPage> {
                         'Add Data Kader Posyandu',
                         style: TextStyle(
                             color: Colors.grey[600], // Set the text color.
-                            fontSize: 16 // Set the text size.
+                            fontSize: 20 // Set the text size.
                             ),
                       ),
                       const SizedBox(height: 10),
@@ -259,7 +259,8 @@ class _KaderPageState extends State<KaderPage> {
                                         alamat: alamatController.text,
                                         verfiedAt: false,
                                         jabatan: kaderProv.posisiKader,
-                                        image: kaderProv.gambarKaderUpdate))
+                                        image: kaderProv.gambarKaderUpdate,
+                                        pesan: ""))
                                     .whenComplete(() {
                                   Navigator.pop(context);
                                   final snackBar = SnackBar(
@@ -320,7 +321,7 @@ class _KaderPageState extends State<KaderPage> {
         centerTitle: true,
         actions: const [
           Padding(
-            padding: EdgeInsets.only(right: 8.0),
+            padding: EdgeInsets.only(right: 16.0),
             child: Icon(IconlyBroken.info_square),
           )
         ],
@@ -357,7 +358,7 @@ class _KaderPageState extends State<KaderPage> {
             ),
             Padding(
               padding: const EdgeInsets.only(
-                  top: 30.0, left: 10, right: 10, bottom: 20),
+                  top: 30.0, left: 12, right: 12, bottom: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -408,26 +409,19 @@ class _KaderPageState extends State<KaderPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Container(
-                                    decoration: BoxDecoration(
-                                        color: Colors.grey.withOpacity(0.2),
-                                        borderRadius:
-                                            BorderRadius.circular(12)),
-                                    height: 80,
-                                    width: 80,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: const [
-                                        Icon(IconlyBroken.hide),
-                                        Text("Image Kader")
-                                      ],
-                                    )
-                                    // Image.asset(
-                                    //   listBerita[index]["gambar"].toString(),
-                                    //   fit: BoxFit.contain,
-                                    // )
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(50),
+                                  child: Container(
+                                    width: 70,
+                                    height: 70,
+                                    color: const Color.fromARGB(
+                                        255, 195, 195, 195),
+                                    child: Image.network(
+                                      item.image,
+                                      fit: BoxFit.contain,
                                     ),
+                                  ),
+                                ),
                                 const SizedBox(
                                   width: 20,
                                 ),

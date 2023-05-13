@@ -40,7 +40,8 @@ class KaderProvider extends ChangeNotifier {
               alamat: doc.get('alamat'),
               verfiedAt: doc.get('verified_status'),
               jabatan: doc.get('jabatan'),
-              image: doc.get('image')))
+              image: doc.get('image'),
+              pesan: doc.get('pesan')))
           .toList();
       _requestState = RequestState.loaded;
 
@@ -129,6 +130,16 @@ class KaderProvider extends ChangeNotifier {
         .doc(dataKader.docId)
         .update(dataKader.toMap());
     print("ini id nya : ${dataKader.docId} Sukses Update Data Kader");
+
+    notifyListeners();
+  }
+
+  Future<void> verifikasiKader(docId, status, String pesan) async {
+    // TODOD : 1 save data ke collection data_kunjungan
+    await FirebaseFirestore.instance.collection("data_kader").doc(docId).set({
+      'verified_status': true,
+      'pesan': pesan,
+    }, SetOptions(merge: true));
 
     notifyListeners();
   }

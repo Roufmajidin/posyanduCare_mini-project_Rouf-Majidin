@@ -7,20 +7,20 @@ import 'package:posyandu_care_apps/view/login/login_page.dart';
 import 'package:posyandu_care_apps/view_model/artikel_provider.dart';
 import 'package:posyandu_care_apps/view_model/kader_provider.dart';
 import 'package:posyandu_care_apps/view_model/kunjungan_provider.dart';
-import 'package:posyandu_care_apps/view_model/login_provider.dart';
 import 'package:posyandu_care_apps/view_model/upt_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'view/dashboard_page.dart';
 
-Future<SharedPreferences> prefIsLogin = SharedPreferences.getInstance();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(MyApp(pefIsLogin: prefIsLogin));
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  var email = preferences.getString('email');
+  runApp(MyApp(pefIsLogin: email));
 }
 
 class MyApp extends StatelessWidget {
@@ -32,18 +32,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => KunjunganProvider()),
-        ChangeNotifierProvider(create: (context) => KaderProvider()),
-        ChangeNotifierProvider(create: (context) => UptProvider()),
-        ChangeNotifierProvider(create: (context) => ArtikelProvider()),
-        ChangeNotifierProvider(create: (context) => LoginProvider())
+        ChangeNotifierProvider(create: (_) => KunjunganProvider()),
+        ChangeNotifierProvider(create: (_) => KaderProvider()),
+        ChangeNotifierProvider(create: (_) => UptProvider()),
+        ChangeNotifierProvider(create: (_) => ArtikelProvider()),
       ],
       child: MaterialApp(
           title: 'Posyandu Care Apps',
           theme: ThemeData(
               primarySwatch: Colors.blue, canvasColor: AppTheme.bgColor),
           debugShowCheckedModeBanner: false,
-          home: pefIsLogin == false ? Login() : HomePage()),
+          home: pefIsLogin == null ? Login() : HomePage()),
     );
   }
 }

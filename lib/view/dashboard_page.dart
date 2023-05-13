@@ -1,15 +1,13 @@
 import 'dart:developer';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:posyandu_care_apps/themes/style.dart';
+import 'package:posyandu_care_apps/view/kunjungan_page/kunjungan_detail.dart';
 import 'package:posyandu_care_apps/view/login/login_page.dart';
 import 'package:posyandu_care_apps/widget/artikel.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weekly_date_picker/weekly_date_picker.dart';
-
-import '../helper.dart';
 import '../models/list_menu.dart';
 import '../view_model/artikel_provider.dart';
 import 'artikel_page/artikel_kesehatan.dart';
@@ -34,6 +32,24 @@ class _DashboardPageState extends State<DashboardPage> {
       () => Provider.of<ArtikelProvider>(context, listen: false)
           .fetchDataArtikel(),
     );
+    getEmail();
+  }
+
+  Future logout() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    await sharedPreferences.clear();
+
+    sharedPreferences.remove('email');
+    Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
+  }
+
+  String role = '';
+  Future getEmail() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    setState(() {
+      role = sharedPreferences.getString('email')!;
+    });
+    print('isemail :{$role}');
   }
 
   @override
@@ -44,13 +60,13 @@ class _DashboardPageState extends State<DashboardPage> {
       body: SingleChildScrollView(
         physics: const NeverScrollableScrollPhysics(),
         child: SafeArea(
-          // before is sizebox, tapi listview nya beda2 ketika beda device antara SM
+          // before is sizebox, tapi listview nya beda2 ketika beda device antara SM & lain
           // height: mediaquery.size.height * 5,
 
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              widgetHeader(context),
+              widgetHeader(context, role),
               listMenu(context),
               const SizedBox(
                 height: 10,
@@ -63,7 +79,7 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
-  Widget widgetHeader(BuildContext context) {
+  Widget widgetHeader(BuildContext context, role) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 40),
       height: 300,
@@ -88,7 +104,9 @@ class _DashboardPageState extends State<DashboardPage> {
                     style: PrimaryTextStyle.secondStyle,
                   ),
                   Text(
-                    "Posyandu Cempaka Mulya",
+                    role == "posyandu@mail.com"
+                        ? "Posyandu Cempaka Mulya"
+                        : "Puskesmas Dukupuntang",
                     style: PrimaryTextStyle.primaryStyle,
                   ),
                   const SizedBox(
@@ -100,27 +118,18 @@ class _DashboardPageState extends State<DashboardPage> {
               GestureDetector(
                 onTap: () {
                   log("Logout");
-
-                  FirebaseAuth.instance.signOut().then((value) async {
-                    Navigator.pushAndRemoveUntil(
-                        (context),
-                        MaterialPageRoute(builder: (context) => const Login()),
-                        (route) => false);
-                    SharedPreferences pref =
-                        await SharedPreferences.getInstance();
-                    pref.remove("email");
-                  });
+                  logout();
                 },
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(50),
                   child: Container(
                     width: 50,
                     height: 50,
-                    color: const Color.fromARGB(255, 250, 250, 250),
-                    // child: Image.network(
-                    //   "https://wiki.d-addicts.com/images/thumb/0/0f/NamJiHyun.jpg/300px-NamJiHyun.jpg",
-                    //   fit: BoxFit.contain,
-                    // ),
+                    // color: const Color.fromARGB(255, 250, 250, 250),
+                    child: Image.network(
+                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJXzbvzNK4gdppYD-rqrs1j4flRxmt3b8UCg&usqp=CAU",
+                      fit: BoxFit.contain,
+                    ),
                   ),
                 ),
               ),
@@ -296,7 +305,7 @@ class _DashboardPageState extends State<DashboardPage> {
             } else if (providerArtikel.requestState == RequestState.loaded) {
               final item = providerArtikel.dataArtikelFetched;
               return SizedBox(
-                height: 200,
+                height: 250,
                 child: ListView.builder(
                   padding: const EdgeInsets.only(bottom: 20),
                   scrollDirection: Axis.vertical,

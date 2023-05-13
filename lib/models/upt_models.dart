@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DataUptModels {
-  final String docId;
-  final String namaUpt;
-  final String alamat;
-  final String kecamatan;
-  final String kabupaten;
-  final int kodePos;
-  final String noBangunan;
+  final String? docId;
+  final String? namaUpt;
+  final String? alamat;
+  final String? kecamatan;
+  final String? kabupaten;
+  final int? kodePos;
+  final String? noBangunan;
 
   DataUptModels({
     required this.docId,

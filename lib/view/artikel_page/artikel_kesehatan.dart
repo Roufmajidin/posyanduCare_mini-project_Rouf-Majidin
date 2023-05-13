@@ -46,7 +46,7 @@ class _ArtikelKesehatanState extends State<ArtikelKesehatan> {
           centerTitle: true,
           actions: const [
             Padding(
-              padding: EdgeInsets.only(right: 8.0),
+              padding: EdgeInsets.only(right: 16.0),
               child: Icon(IconlyBroken.info_square),
             )
           ],

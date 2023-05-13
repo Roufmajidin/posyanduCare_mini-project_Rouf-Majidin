@@ -61,7 +61,7 @@ class _ArtikelDetailState extends State<ArtikelDetail> {
                     Container(
                       height: height * .3,
                       width: width,
-                      child: Image.asset(
+                      child: Image.network(
                         artikelProvider.detailArtikel!.image,
                         fit: BoxFit.fitWidth,
                       ),

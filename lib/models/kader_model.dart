@@ -7,6 +7,7 @@ class DataKaderModels {
   final bool verfiedAt;
   final String jabatan;
   final String image;
+  final String pesan;
 
   DataKaderModels({
     required this.docId,
@@ -15,6 +16,7 @@ class DataKaderModels {
     required this.verfiedAt,
     required this.jabatan,
     required this.image,
+    required this.pesan,
   });
   factory DataKaderModels.fromJson(DocumentSnapshot doc) {
     return DataKaderModels(
@@ -24,6 +26,7 @@ class DataKaderModels {
       verfiedAt: doc.get("verified_status"),
       jabatan: doc.get("jabatan"),
       image: doc.get("image"),
+      pesan: doc.get("pesan"),
     );
   }
 
@@ -35,6 +38,7 @@ class DataKaderModels {
       'verified_status': verfiedAt,
       'jabatan': jabatan,
       'image': image,
+      'pesan': pesan,
     };
   }
 }
