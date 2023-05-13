@@ -60,13 +60,13 @@ class _DashboardPageState extends State<DashboardPage> {
       body: SingleChildScrollView(
         physics: const NeverScrollableScrollPhysics(),
         child: SafeArea(
-          // before is sizebox, tapi listview nya beda2 ketika beda device antara SM
+          // before is sizebox, tapi listview nya beda2 ketika beda device antara SM & lain
           // height: mediaquery.size.height * 5,
 
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              widgetHeader(context),
+              widgetHeader(context, role),
               listMenu(context),
               const SizedBox(
                 height: 10,
@@ -79,7 +79,7 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
-  Widget widgetHeader(BuildContext context) {
+  Widget widgetHeader(BuildContext context, role) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 40),
       height: 300,
@@ -125,11 +125,11 @@ class _DashboardPageState extends State<DashboardPage> {
                   child: Container(
                     width: 50,
                     height: 50,
-                    color: const Color.fromARGB(255, 250, 250, 250),
-                    // child: Image.network(
-                    //   "https://wiki.d-addicts.com/images/thumb/0/0f/NamJiHyun.jpg/300px-NamJiHyun.jpg",
-                    //   fit: BoxFit.contain,
-                    // ),
+                    // color: const Color.fromARGB(255, 250, 250, 250),
+                    child: Image.network(
+                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJXzbvzNK4gdppYD-rqrs1j4flRxmt3b8UCg&usqp=CAU",
+                      fit: BoxFit.contain,
+                    ),
                   ),
                 ),
               ),
@@ -305,7 +305,7 @@ class _DashboardPageState extends State<DashboardPage> {
             } else if (providerArtikel.requestState == RequestState.loaded) {
               final item = providerArtikel.dataArtikelFetched;
               return SizedBox(
-                height: 200,
+                height: 250,
                 child: ListView.builder(
                   padding: const EdgeInsets.only(bottom: 20),
                   scrollDirection: Axis.vertical,
