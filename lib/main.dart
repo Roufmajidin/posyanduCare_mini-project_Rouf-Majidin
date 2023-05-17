@@ -19,7 +19,8 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  var email = preferences.getString('email');
+  // var email = preferences.getString('email');
+  var email = "Hallo";
   runApp(MyApp(pefIsLogin: email));
 }
 
