@@ -60,6 +60,7 @@ class _DashboardPageState extends State<DashboardPage> {
       body: SingleChildScrollView(
         physics: const NeverScrollableScrollPhysics(),
         child: SafeArea(
+          key: Key("safeArea"),
           // before is sizebox, tapi listview nya beda2 ketika beda device antara SM & lain
           // height: mediaquery.size.height * 5,
 
@@ -126,10 +127,10 @@ class _DashboardPageState extends State<DashboardPage> {
                     width: 50,
                     height: 50,
                     // color: const Color.fromARGB(255, 250, 250, 250),
-                    child: Image.network(
-                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJXzbvzNK4gdppYD-rqrs1j4flRxmt3b8UCg&usqp=CAU",
-                      fit: BoxFit.contain,
-                    ),
+                    // child: Image.network(
+                    //   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJXzbvzNK4gdppYD-rqrs1j4flRxmt3b8UCg&usqp=CAU",
+                    //   fit: BoxFit.contain,
+                    // ),
                   ),
                 ),
               ),
@@ -202,6 +203,7 @@ class _DashboardPageState extends State<DashboardPage> {
         SizedBox(
           height: 150,
           child: ListView.builder(
+              key: Key("listMenu"),
               // physics: const NeverScrollableScrollPhysics(),
               scrollDirection: Axis.horizontal,
               itemCount: menu.length,
@@ -288,6 +290,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 style: PrimaryTextStyle.judulStyle,
               ),
               GestureDetector(
+                key: Key("onTap"),
                 onTap: () {
                   log("Ke halaman artikel kesehatan");
                   Navigator.of(context).push(MaterialPageRoute(
